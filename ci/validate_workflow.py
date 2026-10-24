@@ -44,7 +44,7 @@ def check(path):
     assert not any(word in raw for word in ('pull_request:', 'pull_request_target:', 'self-hosted',
         'git push', 'gh pr', '--autofix', '--fix', 'secrets.')), 'Unexpected automatic mutation/secret scope'
     return {'result': 'PASS_PRELIMINARY_WORKFLOW_CONTRACTS', 'yaml_parser_version': yaml.__version__,
-        'actions': actions, 'GitHub_execution': 'NOT_RUN_NO_ACCOUNT',
+        'actions': actions, 'GitHub_execution': 'NOT_ASSESSED_BY_THIS_YAML_VALIDATOR',
         'scope': 'YAML_PARSE_AND_EXPLICIT_POLICY_CONTRACTS; NOT_GENERAL_ACTION_CODE_AUDIT'}
 
 

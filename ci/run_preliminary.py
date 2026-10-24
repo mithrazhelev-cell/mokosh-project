@@ -40,19 +40,38 @@ def safe_path(path):
     return path
 
 
-def read_file(path):
-    path = safe_path(path)
-    before = path.lstat()
-    require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and before.st_size <= 32 * 1024 * 1024,
-        'Non-regular, linked or oversized source file')
-    with path.open('rb') as stream:
-        opened = os.fstat(stream.fileno())
-        require((opened.st_dev, opened.st_ino) == (before.st_dev, before.st_ino), 'Source replaced while opening')
-        raw = stream.read(32 * 1024 * 1024 + 1)
-        after = os.fstat(stream.fileno())
-    fields = lambda s: (s.st_dev, s.st_ino, s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
-    require(fields(before) == fields(after) and len(raw) == before.st_size, 'Source changed while reading')
-    return raw
+def _diagnostic_call(diagnostic, method, *args):
+    """Observer faults cannot replace an existing guard or change returned bytes."""
+    if diagnostic is None:
+        return None
+    try:
+        return getattr(diagnostic, method)(*args)
+    except BaseException:
+        try:
+            diagnostic.mark_incomplete('COLLECTOR_ERROR')
+        except BaseException:
+            pass
+        return None
+
+
+def read_file(path, *, diagnostic=None, context=None):
+    before = opened = after = raw = None
+    try:
+        path = safe_path(path)
+        before = path.lstat()
+        require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and before.st_size <= 32 * 1024 * 1024,
+            'Non-regular, linked or oversized source file')
+        with path.open('rb') as stream:
+            opened = os.fstat(stream.fileno())
+            require((opened.st_dev, opened.st_ino) == (before.st_dev, before.st_ino), 'Source replaced while opening')
+            raw = stream.read(32 * 1024 * 1024 + 1)
+            after = os.fstat(stream.fileno())
+        fields = lambda s: (s.st_dev, s.st_ino, s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+        require(fields(before) == fields(after) and len(raw) == before.st_size, 'Source changed while reading')
+        return raw
+    except BaseException as error:
+        _diagnostic_call(diagnostic, 'read_failure', context, path, error, before, opened, after, raw)
+        raise
 
 
 def validate_manifest(manifest):
@@ -89,9 +108,10 @@ def metadata_platform():
     return os.name
 
 
-def snapshot(project, manifest):
+def snapshot(project, manifest, *, diagnostic=None, phase='FROZEN_BEFORE'):
     project = safe_path(project)
     wanted = validate_manifest(manifest)
+    _diagnostic_call(diagnostic, 'register_sources', wanted)
     family = metadata_platform()
     require(family in ('posix', 'nt'), 'Unqualified filesystem metadata platform')
     allowed_dirs = {p.as_posix() for name in wanted for p in PurePosixPath(name).parents if p.as_posix() != '.'}
@@ -107,7 +127,8 @@ def snapshot(project, manifest):
             directories.add(name)
         else:
             require(name in wanted, 'Unexpected source member: ' + name)
-            raw = read_file(path)
+            raw = read_file(path, diagnostic=diagnostic, context=('SOURCE', phase, name,
+                wanted[name]['bytes'], wanted[name]['sha256']))
             require(len(raw) == wanted[name]['bytes'] and digest(raw) == wanted[name]['sha256'],
                 'Source bytes differ: ' + name)
             files[name] = raw
@@ -277,7 +298,8 @@ def validate_worker(record):
         and record.get('callback_reporting_acceptance') == 'NOT_TESTED_BY_THIS_UNIT_SUITE', 'Worker overclaims GUI acceptance')
 
 
-def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_probe, process_run=run_owned):
+def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_probe, process_run=run_owned,
+        diagnostic=None, diagnostic_only=False):
     project, manifest_path, output = safe_path(project), safe_path(manifest_path), safe_path(output)
     require(output != project and project not in output.parents, 'Reports must be outside frozen project')
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
@@ -289,10 +311,13 @@ def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_pro
         'GitHub_run': {key: os.environ.get(key) for key in ('GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_SHA', 'RUNNER_OS', 'ImageOS', 'ImageVersion')}}
     before, manifest, copy_root = None, None, None
     try:
+        require(not diagnostic_only or (diagnostic is not None and mode == 'portability-probe'),
+            'Diagnostic mode requires an observer and portability scope')
         require(mode in ('linux-baseline', 'portability-probe'), 'Unsupported audit mode')
         require(mode != 'linux-baseline' or sys.platform == 'linux', 'Full baseline CI mode is Linux-only until other suites are validated')
-        manifest = json.loads(read_file(manifest_path))
-        files, before = snapshot(project, manifest)
+        manifest = json.loads(read_file(manifest_path, diagnostic=diagnostic,
+            context=('FIXED', 'AUDIT_MANIFEST', 'SOURCE_MANIFEST.json', None, None)))
+        files, before = snapshot(project, manifest, diagnostic=diagnostic, phase='FROZEN_BEFORE')
         report['source_before'] = before
         write_json(output / 'SOURCE_BEFORE.json', before)
         with tempfile.TemporaryDirectory(prefix='mokosh-ci-source-', dir=private_temp_base(project)) as temporary:
@@ -303,7 +328,12 @@ def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_pro
                 target.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
                 target.write_bytes(raw)
                 target.chmod(before['observed_file_modes'][name])
-            _, copy_before = snapshot(copy_root, manifest)
+            _, copy_before = snapshot(copy_root, manifest, diagnostic=diagnostic, phase='COPY_BEFORE')
+            if diagnostic_only:
+                _diagnostic_call(diagnostic, 'event', 'COPY_SNAPSHOT_COMPLETE')
+                report['result'] = 'DIAGNOSTIC_NON_REPRODUCED'
+                report['diagnostic_stop'] = 'BEFORE_COMPILE_RUNTIME_PROBE_WORKER'
+                return 1
             for name, raw in files.items():
                 if name.endswith('.py'):
                     compile(raw, name, 'exec', dont_inherit=True)
@@ -331,7 +361,7 @@ def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_pro
                     report['result'] = 'PASS_PORTABILITY_PROBE_ONLY'
                     report['full_2509'] = 'NOT_EXECUTED_ON_THIS_PLATFORM'
             finally:
-                _, copy_after = snapshot(copy_root, manifest)
+                _, copy_after = snapshot(copy_root, manifest, diagnostic=diagnostic, phase='COPY_FINAL')
                 report['temporary_copy_unchanged'] = copy_after == copy_before
                 require(report['temporary_copy_unchanged'], 'Temporary project copy changed')
     except BaseException as error:
@@ -340,7 +370,7 @@ def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_pro
     finally:
         try:
             if manifest is not None:
-                _, after = snapshot(project, manifest)
+                _, after = snapshot(project, manifest, diagnostic=diagnostic, phase='FROZEN_FINAL')
                 report['source_after'] = after
                 report['frozen_source_unchanged'] = before is not None and after == before
                 write_json(output / 'SOURCE_AFTER.json', after)
@@ -357,6 +387,11 @@ def run_audit(project, manifest_path, output, mode, worker, *, probe=runtime_pro
             report['temporary_copy_retained'] = 'UNKNOWN'
             report['temporary_cleanup_error'] = type(error).__name__ + ': ' + str(error)
             report['result'] = 'FAIL_PRELIMINARY_ANALYSIS'
+        if diagnostic is not None:
+            report['diagnostic'] = _diagnostic_call(diagnostic, 'summary') or {'collection': 'DIAGNOSTIC_INCOMPLETE'}
+            if report['diagnostic']['collection'] != 'DIAGNOSTIC_INCOMPLETE':
+                report['diagnostic']['collection'] = 'PENDING_FINAL_RECEIPT'
+            report['diagnostic']['finalization_scope'] = 'PRE_ENTRY_FINAL_RECEIPT; FINAL_JOB_LOG_RECEIPT_REQUIRED'
         write_json(output / 'AUDIT_RESULT.json', report)
     return 0 if report['result'].startswith('PASS_') else 1
 

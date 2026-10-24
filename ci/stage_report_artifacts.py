@@ -6,7 +6,8 @@ import os
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run_preliminary import safe_path, read_file, write_json, require, digest
+from run_preliminary import safe_path, read_file, write_json, require, digest, _diagnostic_call
+from stat_diagnostics import reason_code
 
 REPORT_NAMES = {'AUDIT_RESULT.json', 'RUNTIME.json', 'SOURCE_BEFORE.json', 'SOURCE_AFTER.json',
     'runtime_stdout.log', 'runtime_stderr.log', 'worker_stdout.log', 'worker_stderr.log',
@@ -21,12 +22,14 @@ EXCLUDED = ('report/worker/isolated_test_data/', 'security/advisory-cache/', 'se
 MAX_APPROVED_BYTES = 99 * 1024 * 1024  # Reserve bounded room for failure/manifest receipts.
 
 
-def stage(root, output):
+def stage(root, output, *, diagnostic=None):
     root, output = safe_path(root), safe_path(output)
     require(root != output and root not in output.parents and output not in root.parents,
         'Artifact staging must be a separate new directory')
     require(root.is_dir() and not output.exists(), 'Existing report root and new artifact directory required')
     files, excluded, issues = {}, [], []
+    approved_rejections = []
+    _diagnostic_call(diagnostic, 'register_reports', ALLOWED)
     for path in root.rglob('*'):
         if path.is_symlink():
             issues.append('SYMLINK_REJECTED')
@@ -41,12 +44,16 @@ def stage(root, output):
             issues.append('UNAPPROVED_ARTIFACT_FILE_REJECTED')
             continue
         try:
-            raw = read_file(path)
+            raw = read_file(path, diagnostic=diagnostic,
+                context=('REPORT', 'STAGE', name, None, None))
             require(len(raw) <= 20 * 1024 * 1024, 'Artifact file exceeds bound')
             require(sum(map(len, files.values())) + len(raw) <= MAX_APPROVED_BYTES, 'Approved report budget exceeded')
             files[name] = raw
-        except Exception:
+        except Exception as error:
             issues.append('UNSAFE_APPROVED_REPORT_REJECTED')
+            if len(approved_rejections) < 32:
+                approved_rejections.append({'name': name, 'reason': reason_code(error)})
+            _diagnostic_call(diagnostic, 'report_rejection', name, reason_code(error))
     approved_count = len(files)
     if not files:
         issues.append('NO_APPROVED_RAW_REPORT_AVAILABLE')
@@ -56,7 +63,9 @@ def stage(root, output):
         files['ARTIFACT_SCOPE_FAILURE.json'] = (json.dumps({'result': 'FAIL_ARTIFACT_SCOPE',
             'issue_counts': {kind: issues.count(kind) for kind in sorted(set(issues))},
             'unapproved_content_included': False, 'approved_failure_logs_preserved': bool(approved_count),
-            'approved_raw_file_count': approved_count}) + '\n').encode()
+            'approved_raw_file_count': approved_count,
+            'approved_report_rejections': approved_rejections,
+            'approved_rejection_details_truncated': issues.count('UNSAFE_APPROVED_REPORT_REJECTED') > len(approved_rejections)}) + '\n').encode()
     output.mkdir(mode=0o700)
     for name, raw in sorted(files.items()):
         path = output / name

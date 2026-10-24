@@ -1,0 +1,75 @@
+name: MOKOSH Windows stat diagnosis only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-windows-stat-diagnostic-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-stat-diagnostic:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        id: python
+        with:
+          python-version: '3.12.3'
+          architecture: x64
+          check-latest: false
+      - name: Verify the reviewed diagnostic workflow template
+        run: python -I -B ci/validate_windows_diagnostic_workflow.py --workflow .github/workflows/windows-stat-diagnostic.yml
+      - name: Bootstrap the exact hashed runtime with bounded metadata observations
+        id: runtime
+        run: >-
+          python -I -B ci/windows_stat_diagnostic.py bootstrap --project project
+          --manifest SOURCE_MANIFEST.json --destination "$RUNNER_TEMP/mokosh-stat-runtime"
+          --requirements ci/runtime-dependencies.lock --output artifacts/bootstrap-runtime
+      - name: Observe only the initial disposable-copy guard
+        id: audit
+        env:
+          AUDIT_PYTHON: ${{ steps.runtime.outputs.python-path }}
+        run: >-
+          "$AUDIT_PYTHON" -I -B ci/windows_stat_diagnostic.py audit --project project
+          --manifest SOURCE_MANIFEST.json --output artifacts/report
+      - name: Record diagnostic outcomes even on failure
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        env:
+          BOOTSTRAP_OUTCOME: ${{ steps.runtime.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          mkdir -p artifacts
+          printf '{"bootstrap":"%s","audit":"%s","scope":"DIAGNOSTIC_ONLY_NOT_COMPATIBILITY_ACCEPTANCE"}\n' "$BOOTSTRAP_OUTCOME" "$AUDIT_OUTCOME" > artifacts/JOB_STATUS.json
+      - name: Seal only existing approved reports with bounded rejection observations
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        run: python -I -B ci/windows_stat_diagnostic.py stage --root artifacts --output artifact_upload
+      - name: Preserve the sealed safe report subset
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: windows-stat-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false

@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_preliminary import safe_path, read_file, snapshot, write_json, require, digest, run_owned, child_environment
 
 
-def bootstrap(project, manifest_path, destination, requirements, output):
+def bootstrap(project, manifest_path, destination, requirements, output, *, diagnostic=None):
     project, destination, output = map(safe_path, (project, destination, output))
     require(project not in destination.parents and destination != project
         and project not in output.parents and output != project, 'Environment/reports must be outside frozen project')
@@ -20,10 +20,12 @@ def bootstrap(project, manifest_path, destination, requirements, output):
     report = {'result': 'INCOMPLETE', 'product_mutation_allowed': False, 'autofix': False}
     before, manifest = None, None
     try:
-        manifest = json.loads(read_file(manifest_path))
-        _, before = snapshot(project, manifest)
+        manifest = json.loads(read_file(manifest_path, diagnostic=diagnostic,
+            context=('FIXED', 'BOOTSTRAP_MANIFEST', 'SOURCE_MANIFEST.json', None, None)))
+        _, before = snapshot(project, manifest, diagnostic=diagnostic, phase='BOOTSTRAP_BEFORE')
         require(not destination.exists(), 'Bootstrap destination must be new')
-        lock = read_file(requirements)
+        lock = read_file(requirements, diagnostic=diagnostic,
+            context=('FIXED', 'BOOTSTRAP_LOCK', 'ci/runtime-dependencies.lock', None, None))
         require(b'--hash=sha256:' in lock and b'==' in lock, 'Hash-pinned requirements required')
         report['requirements_sha256'] = digest(lock)
         venv.EnvBuilder(with_pip=True).create(destination)
@@ -44,7 +46,7 @@ def bootstrap(project, manifest_path, destination, requirements, output):
     finally:
         try:
             require(manifest is not None, 'Manifest unavailable for final source verification')
-            _, after = snapshot(project, manifest)
+            _, after = snapshot(project, manifest, diagnostic=diagnostic, phase='BOOTSTRAP_FINAL')
             report['frozen_source_unchanged'] = before is not None and after == before
             require(report['frozen_source_unchanged'], 'Frozen source changed during bootstrap')
         except BaseException as error:

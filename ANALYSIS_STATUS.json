@@ -11,8 +11,39 @@
   "source_content_changed": false,
   "connection": "AUTHENTICATED_ACCOUNT_AND_ALL_REPOSITORY_INSTALLATION_VERIFIED",
   "workflow": "MANUAL_ONLY; no automatic push/PR execution; no automatic fixes",
-  "result": "EXTERNAL_RUN_PENDING; local evidence is separately qualified in LOCAL_VALIDATION.json",
+  "result": "FIRST_EXTERNAL_RUN_COMPLETED_FAILURE; LOCAL_WINDOWS_DIAGNOSTIC_PREPARATION_VERIFIED_NOT_PUBLISHED_OR_RUN",
   "D005": "OPEN",
   "Stage2.48": "NOT_ACCEPTED",
-  "Dell_changes": false
+  "Dell_changes": false,
+  "first_actual_GitHub_run": {
+    "id": 40087175055,
+    "attempt": 1,
+    "commit": "838bd591b7a5d2a677e2f0d9511c410762442ea7",
+    "conclusion": "failure",
+    "linux": "2509uniquePASS_noFAIL_ERROR_SKIP",
+    "macos": "PASS_PORTABILITY_PROBE_ONLY_not_native",
+    "windows": "FAIL_initial_copy_guard_exact_path_fields_unknown",
+    "security": "COMPLETE_findings_320baseline_7R3_one_distinct_cryptography49_advisory_NOT_FIXED"
+  },
+  "local_diagnostic_preparation": {
+    "code_files": 9,
+    "documentation_files": 3,
+    "existing_CI_guards": 33,
+    "targeted": 20,
+    "independent": 17,
+    "fault_positive_pairs": 3,
+    "full_compatible": 2509,
+    "python": "3.12.14_localLinux",
+    "exact_Dell": false,
+    "initial_loader_failure_preserved": true,
+    "Windows_native_run": "NOT_EXECUTED",
+    "remote_publication": "PENDING_SEPARATE_DISCUSSION",
+    "workflow": "MOKOSH Windows stat diagnosis only",
+    "Windows_actual_cause": "NOT_MEASURED",
+    "collection_contract": "Fullfinalreceipt_AND_actualentryexit_required;exit2_or_missing=INCOMPLETE",
+    "product_source_changes": false,
+    "dependency_changes": false
+  },
+  "platform_acceptance": "Proposed criteria only; normal V2 currently explicitly Linux-only; Windows/macOS product/native/physical acceptance separate.",
+  "historical_validation_file": "LOCAL_VALIDATION.json preserves earlier local preparation; its DNS/no-account/run-pending state is not the actual cloud run conclusion."
 }
