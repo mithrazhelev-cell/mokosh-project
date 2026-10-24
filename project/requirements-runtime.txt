@@ -1,0 +1,4 @@
+# Verified MOKOSH Stage 0 runtime (Ubuntu, Python 3.12.3)
+# Keep exact versions reproducible until the dependency-update test lane exists.
+cryptography==49.0.0
+argon2-cffi==25.1.0

@@ -1,0 +1,38 @@
+{
+  "scope": "SIX_LAB_RUNTIME_OVERLAYS_STATIC_ANALYSIS_ONLY_NOT_APPLIED_NOT_EXECUTABLE_PACKAGE",
+  "reference_package_sha256": "f2edee1fb0d38b4bdc5bb639f81d1c1a89f3dbc3fd0199e4b0986a16c2957d71",
+  "source_closure_sha256": "e682cbb36432c442abcaabf990c1907149fcc1b84f8ec978a32982d06f8374de",
+  "records": [
+    {
+      "path": "d005_action_captions.py",
+      "bytes": 3799,
+      "sha256": "b62813adb60a6d786f331c3d45252a077c1c236acabe0fa2932c6b413c97becb"
+    },
+    {
+      "path": "d005_callback_guard.py",
+      "bytes": 13259,
+      "sha256": "b9ca07d14f1079b712d2326cb81262bb1e148b3ecacbf73e26e76d433e00d48e"
+    },
+    {
+      "path": "d005_max_parent_return.py",
+      "bytes": 7923,
+      "sha256": "be9759c43434bfa59d14b1e9eab97ff9c67631e477d78fc2ed3f9bde69a9a415"
+    },
+    {
+      "path": "d005_state_labels.py",
+      "bytes": 6841,
+      "sha256": "2687db6ef3f6500e649ea1f5e73f6a2f160bb34d56d87b5e212161047c286452"
+    },
+    {
+      "path": "d005_x11_restore.py",
+      "bytes": 8692,
+      "sha256": "b33904277ef339c62adbe6773abc307c9313b3dc89519bbec89c7fe8d2dbc1f1"
+    },
+    {
+      "path": "run_mokosh_v2_local_visual_harness.py",
+      "bytes": 22050,
+      "sha256": "9adcedeb13bf68cd43e85eb1b3a9f16d1848d021e67f0e7b3cc814b4057b8fe8"
+    }
+  ],
+  "candidate_tests_and_support_not_in_this_directory": true
+}

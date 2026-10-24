@@ -1,0 +1,1609 @@
+{
+  "schema": 2,
+  "purpose": "PRELIMINARY_SELF_ANALYSIS_NOT_RELEASE",
+  "file_count": 263,
+  "total_bytes": 5223645,
+  "verified_canonical_sha256": "92e159ed818bc6fbf858549452ad78fd0b238f9d8193ac9842147555afb3dcca",
+  "canonical_basis": "Independent byte-exact baseline263 binding from raw25975 evidence; file manifest below is also checked independently",
+  "source": "Exact Stage2.48 working snapshot; last acceptedGitHEAD7b99df6 does notinclude34workingchanges",
+  "records": [
+    {
+      "path": ".gitignore",
+      "bytes": 909,
+      "sha256": "0db84b90958b2431268416495cdb0949d9c9d7135a04b306360ba179c3e969eb",
+      "user_executable": false
+    },
+    {
+      "path": "MOKOSH_KEY_VAULT_SPEC_BG.md",
+      "bytes": 57875,
+      "sha256": "610add209ea9a4b592ff8826e5097c8976bcc28b6d897d076ceffbb2b61b655c",
+      "user_executable": false
+    },
+    {
+      "path": "MOKOSH_V2_FORMAT_SPEC_BG.md",
+      "bytes": 55311,
+      "sha256": "015a84cd3490acc09a4986a8ba71bc0972b1c1f399d253d1c09aba9582ff8267",
+      "user_executable": false
+    },
+    {
+      "path": "PROJECT_STATUS_BG.md",
+      "bytes": 121741,
+      "sha256": "cb12adfa6893e6d71579a64c26ef7886480530603c1b99805c60f0653d3227fa",
+      "user_executable": false
+    },
+    {
+      "path": "RUNTIME_ENVIRONMENT_BG.md",
+      "bytes": 2876,
+      "sha256": "69783f8f52b7955510b389be75636c2546e15874250be85bc3117fdc19a778c3",
+      "user_executable": false
+    },
+    {
+      "path": "SECURITY_REVIEW_STAGE0_BG.md",
+      "bytes": 3695,
+      "sha256": "2fb4a53142d4414412c5fb1feef8ebd671bfb2bfbc1ab9aa83496d639c62aa05",
+      "user_executable": false
+    },
+    {
+      "path": "STAGE0_PATCH_BG.md",
+      "bytes": 1635,
+      "sha256": "116aab3237022e5a9d52fcea5d07e55b2c27f0f4774e33b27c009ecb51804534",
+      "user_executable": false
+    },
+    {
+      "path": "contacts_core.py",
+      "bytes": 876,
+      "sha256": "3c1e64ae4a2d86f73ffad167b8c00bb429407eb135d58d8c494ca86b659eb064",
+      "user_executable": false
+    },
+    {
+      "path": "crypto_core.py",
+      "bytes": 20227,
+      "sha256": "a53fab9f9b31c079fed330ec8bc7e6835f98657677a5ed51ff0764096b46ef62",
+      "user_executable": false
+    },
+    {
+      "path": "docs/FUTURE_OPTIONS_BG.md",
+      "bytes": 4645,
+      "sha256": "f05d33f38f41a91a25b4f733ecc8d40327c476cabc2c2f522610d41b9c952508",
+      "user_executable": false
+    },
+    {
+      "path": "docs/GUARDIAN_RECOVERY_CAPSULE_BG.md",
+      "bytes": 9049,
+      "sha256": "2043bf6e6c166b5c582b7403e345e15f84a4a561b7bf4cc1c427e64ea8b348b3",
+      "user_executable": false
+    },
+    {
+      "path": "docs/INTEGRITY_HEALTH_CHECK_BG.md",
+      "bytes": 7431,
+      "sha256": "737fc6e159c253b8fda68a564144e1eef6ed3413331aa83e9584141c8dc02689",
+      "user_executable": false
+    },
+    {
+      "path": "docs/LEGACY_CONTACT_CRYPTO_QUARANTINE_BG.md",
+      "bytes": 16355,
+      "sha256": "20051b873aae6c173af5fe99d6382ba0111ea66d3a3d9564a16d2608a1b03413",
+      "user_executable": false
+    },
+    {
+      "path": "docs/LEGACY_MOK1_COMPATIBILITY_QUARANTINE_BG.md",
+      "bytes": 9010,
+      "sha256": "1c62fd0992f3fc8bb4b0aabee818a0bb3a086b28c6174ced6c0685623f4bef4c",
+      "user_executable": false
+    },
+    {
+      "path": "docs/MAIN_GUI_RECOVERY_CHAIN_LAYOUT_AUDIT_CONTRACT_BG.md",
+      "bytes": 11818,
+      "sha256": "ded75eafd31487b990cd409d1454e9c3568c19dcb0056e152b469da68667eb17",
+      "user_executable": false
+    },
+    {
+      "path": "docs/MAIN_GUI_RECOVERY_IMPORT_ISOLATION_CONTRACT_BG.md",
+      "bytes": 4770,
+      "sha256": "016f0fa744904a46fea55474d6a7820334695f055c29e3481b00b61fe58a6598",
+      "user_executable": false
+    },
+    {
+      "path": "docs/MAIN_GUI_RUNTIME_PATH_INITIALIZATION_CONTRACT_BG.md",
+      "bytes": 5209,
+      "sha256": "0cc9491c26c9813cd3621e99860f53519be975ee5e12652cbf0f20c2e39793f0",
+      "user_executable": false
+    },
+    {
+      "path": "docs/MAIN_GUI_VISUAL_FILESYSTEM_CLAIM_SEMANTICS_CONTRACT_BG.md",
+      "bytes": 5709,
+      "sha256": "b016a14a364a344a82d08e4a0f18d12780d70156dbcc0a636223afb329751217",
+      "user_executable": false
+    },
+    {
+      "path": "docs/PRIVACY_LICENSING_BG.md",
+      "bytes": 19840,
+      "sha256": "8b1d1f6802dc58cc60a0dafc2b7593ea68672792cc0e52e07acab1fde15896b2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/PROFILE_RECOVERY_PHRASE_CONTRACT_BG.md",
+      "bytes": 16133,
+      "sha256": "13320efd3fe99221cf049d8da86d7c52c322fc05a354c24941bfd5adff416a7f",
+      "user_executable": false
+    },
+    {
+      "path": "docs/PROFILE_RECOVERY_STATE_CONTRACT_BG.md",
+      "bytes": 8430,
+      "sha256": "d9677c5220aa3406018b45776845e19342974c25caf3d771324cad4839838ea3",
+      "user_executable": false
+    },
+    {
+      "path": "docs/RECOVERY_PHRASE_STORAGE_CONTRACT_BG.md",
+      "bytes": 9937,
+      "sha256": "f141989c46d5030eac0c55136aa38dcc96795c26b6023e947577e78e0f47a12c",
+      "user_executable": false
+    },
+    {
+      "path": "docs/RESILIENT_RECOVERY_SHARDS_BG.md",
+      "bytes": 16968,
+      "sha256": "0118ca0e9e229d3424ab02d1796ac7180f172fdedbd8ef041786801a7cec31ac",
+      "user_executable": false
+    },
+    {
+      "path": "docs/ROADMAP_TO_PUBLIC_V1_BG.md",
+      "bytes": 19487,
+      "sha256": "1138fe8145f2736737ed5d52d1abb4804db98a37e8d23676c4b4ae13d143dfd2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/SECURE_PROFILE_SESSION_CONTRACT_BG.md",
+      "bytes": 39430,
+      "sha256": "0c63dd37f45e8c2b443aec74d71209c89f2ddb6f1d19990c341cbb4f4a339e10",
+      "user_executable": false
+    },
+    {
+      "path": "docs/SECURITY_EVIDENCE_AND_TESTING_BG.md",
+      "bytes": 228663,
+      "sha256": "f2daf5b014dfb1a858271bd6e4f2c187d31a1bbf5ae19a8606918919032dc78d",
+      "user_executable": false
+    },
+    {
+      "path": "docs/SECURITY_STANDARDS_CROSSWALK_BG.md",
+      "bytes": 118530,
+      "sha256": "ba045406565fdbafe71df6feffd9d064c151791e31fa93c2a0118e43abc1a57f",
+      "user_executable": false
+    },
+    {
+      "path": "docs/SESSION_LOG_BG.md",
+      "bytes": 240366,
+      "sha256": "7ce91536152001a3181e42f5a373d004062f30bd372dd19fb8317bc7c17b4da0",
+      "user_executable": false
+    },
+    {
+      "path": "docs/TRANSPARENCY_SOURCE_AND_EVIDENCE_BG.md",
+      "bytes": 16880,
+      "sha256": "97d7d5d9b1851875066c4468982bbcd0a2d64773241fdedc4b29b0279bec027e",
+      "user_executable": false
+    },
+    {
+      "path": "docs/TRUSTED_UPDATE_RECOVERY_ARCHITECTURE_BG.md",
+      "bytes": 16544,
+      "sha256": "2306cc1395b4f63c41310c98be1c7d069cc2202e9684db14a3ea8f4f9a2094e6",
+      "user_executable": false
+    },
+    {
+      "path": "docs/USER_AUTONOMY_PORTABILITY_ENTITLEMENT_BG.md",
+      "bytes": 19873,
+      "sha256": "f5d9831db385193020d5087c65f58d8335417676930eb2885b0a3384a88f4a7c",
+      "user_executable": false
+    },
+    {
+      "path": "docs/V2_LOCAL_ENCRYPT_DECRYPT_GUI_CONTRACT_BG.md",
+      "bytes": 25192,
+      "sha256": "fb795959b446bc48ecbd23c8ebd6325cbc3655857ede68a961d1868dad79af72",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_ACKNOWLEDGEMENT_CONTRACT_BG.md",
+      "bytes": 14058,
+      "sha256": "4cbf10972cb05f9b85936f8d85552957113220c276e1e2422c8514daab24d51a",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_CANDIDATE_CONTRACT_BG.md",
+      "bytes": 14847,
+      "sha256": "45c0f26050279439452012b939e23ab9bec823a05b003cf860bd0a3858989cf9",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_CONTRACT_BG.md",
+      "bytes": 14277,
+      "sha256": "1765e44efcd215e5045bea08135f61dbf22fef8ddb099c22c9cdbcd2a72f7c77",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_ENTRY_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 5554,
+      "sha256": "f14f95577cee70bfdbe6574e32888687db13fc64538727ad039508a378bd59ff",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_ENTRY_REQUEST_CONTRACT_BG.md",
+      "bytes": 4334,
+      "sha256": "f7e6bfcd1b9340e526593f0328feb4d43ea10dff3c53b4b5d06503ab618b7c0c",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_ENTRY_TRANSITION_CONTRACT_BG.md",
+      "bytes": 5696,
+      "sha256": "80f7c69815897e8a6be22818cc6c80c6a4e047fb55527f0e5d69ec10c8a85f6d",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_ENTRY_TRANSITION_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 8704,
+      "sha256": "dc9d2892c91b8b9d8ad97bfda5ba3af759bb2f42ea2f3497a1e94840a708ee29",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_LOCALE_LEAF_CONTRACT_BG.md",
+      "bytes": 4098,
+      "sha256": "437758de91d7af797a42bdae85d24beabf566096e8780bebfbbb8447000737d6",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_LOCALIZATION_CONTRACT_BG.md",
+      "bytes": 14613,
+      "sha256": "9e1c10cc2020f68a8eefb13abd973454aa501413ac94081333e6ddcaf17eb898",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_MAIN_GUI_BRIDGE_CONTRACT_BG.md",
+      "bytes": 6731,
+      "sha256": "0e094660c68d084e178657c9a0099fea31ec4e4b6d90de61fd4ca5f2fd00c0e6",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 8511,
+      "sha256": "10b3519879c3297d1ee68b111d54f629558eca373d05283d6fd10cc045c1e2b2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_PLATFORM_CHECKLIST_BG.md",
+      "bytes": 7676,
+      "sha256": "8c2c7ebfd10549787822f30a14f47dbcbfd43dc87c0495084e110aa470c1d989",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_PRESENTATION_CONTRACT_BG.md",
+      "bytes": 13161,
+      "sha256": "12a6708d912dbe7fb05eb0ea8b01ea97dd00fbf288049da282ea907439e6d226",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_PUBLISH_CONTRACT_BG.md",
+      "bytes": 15116,
+      "sha256": "4e016a618ba458ca34f0a83926df49009af61962e8b65fd278676b416f38b915",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_RECONCILIATION_CONTRACT_BG.md",
+      "bytes": 14528,
+      "sha256": "cc49d5ad2652c840566e0b2e534374b82de06966ba7d325ca2649a35afeba0eb",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_REVIEW_CONTROLLER_CONTRACT_BG.md",
+      "bytes": 9110,
+      "sha256": "0a488bb34a12976ad45875edb8e7efa2dd215faa71608be6a781706f7178bd98",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_REVIEW_WINDOW_CONTRACT_BG.md",
+      "bytes": 12853,
+      "sha256": "30607a71471ebd48c411e2b45f528f179b6763360c1264bdf185eb9e0078c027",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_ACKNOWLEDGEMENT_CONTRACT_BG.md",
+      "bytes": 8368,
+      "sha256": "53c7d795305473f13ba06498cd1d4d19a9ed668933e7d2214b85b646b960bcaf",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_EXECUTION_CONTRACT_BG.md",
+      "bytes": 6149,
+      "sha256": "a3463d1effaca90a4be753ffbe08c9a9bc7ef3158be112cb08ce8a590e104a3d",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_LOCALIZATION_CONTRACT_BG.md",
+      "bytes": 9297,
+      "sha256": "80a51c6708705586f9e32c1496887d8da48f9dcc7a3aeb0c55fdbe02997965c5",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_MAIN_GUI_BRIDGE_CONTRACT_BG.md",
+      "bytes": 10810,
+      "sha256": "1b3eb1aa08c3730d43c3929c08708a4cc9f952cd95c27ea13f54e7d8523837e2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 7037,
+      "sha256": "970e1e941bc81fcf3fd26d3958456586f56b073c4232e46db7f23f6adc0bc7e2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_NORMAL_GUI_AUTHORIZATION_READINESS_AUDIT_BG.md",
+      "bytes": 18092,
+      "sha256": "4afaa3021720b075750facbed0b660faefaa548d3bdba9a3058b9f238ca8d7ef",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_PREPARATION_REQUEST_CONTRACT_BG.md",
+      "bytes": 3069,
+      "sha256": "e236b086a514e60e6c378ee251bdbdd4d87a82c29c03f5273fb19e0539d53d5c",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_PREPARATION_REQUEST_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 15083,
+      "sha256": "f87fec079dbf2be694063e2dd7d5da66d3a8df9ba98b83b095b65089118dd505",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_PRESENTATION_CONTRACT_BG.md",
+      "bytes": 5001,
+      "sha256": "70d2f0c17d92390141ceeb2807a8021effb652b68b4df810ad9c5fe8068ac03d",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_REQUEST_CONTRACT_BG.md",
+      "bytes": 7831,
+      "sha256": "284d742a53e0860961173523ae97ea8eb41c50daeef29866ea0188da65f1cd0a",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_REQUEST_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 5518,
+      "sha256": "394ec84348fd8f39b6d0c66a8041a0a04fff21c8e8e84a25d5cd66d903eea33b",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_REVIEW_CONTROLLER_CONTRACT_BG.md",
+      "bytes": 4064,
+      "sha256": "d2d50c2725da84f1bd5384c52552b1aff5483c7a65b14f17dfb33d32cee77116",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_REVIEW_WINDOW_CONTRACT_BG.md",
+      "bytes": 11979,
+      "sha256": "243c14273f035a1146bdbb960fc4624555573dabefd0a423249add223a1536a1",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_UI_ADAPTER_CONTRACT_BG.md",
+      "bytes": 9957,
+      "sha256": "c6a764d48a4b67bfaa35966f6cf62b92b8cb0ac9a023bb2de95f91435f7a30cc",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_INSPECTION_VISUAL_HARNESS_CONTRACT_BG.md",
+      "bytes": 16957,
+      "sha256": "50232293aad9919479b947be050e91d27da596d40c04bad41582333f32beca1d",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_READER_HARDENING_CONTRACT_BG.md",
+      "bytes": 5072,
+      "sha256": "aa6c19edf1422bf2e3c526f060b6e3e210d214414a20f623d45d92499574f5f2",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_SELECTION_CONTRACT_BG.md",
+      "bytes": 7893,
+      "sha256": "52af4b9844711a50b53beab9f138b6aa96a51b3a0e9da5f89dd787c60243d2f4",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_SOURCE_SELECTION_MAIN_GUI_WIDGET_CONTRACT_BG.md",
+      "bytes": 8343,
+      "sha256": "869c932978381a176222f096d2e052162f4bc2481d011d0da583c69bb5d981ce",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_STORAGE_CONTRACT_BG.md",
+      "bytes": 17169,
+      "sha256": "0b4726cda6cb6668e5ee59b8481effe92f833bcbf3c66525c821b38e72776f99",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_UI_ADAPTER_CONTRACT_BG.md",
+      "bytes": 16632,
+      "sha256": "cdd97220c11c2295ad37549e58ed419dead6e48801b58e6f3417796cc0691f93",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_VISUAL_HARNESS_CONTRACT_BG.md",
+      "bytes": 5400,
+      "sha256": "65a41a233865a72b8b8aaa8e691d077a9e3a8f13dc2f07a2566f647e29be4ea9",
+      "user_executable": false
+    },
+    {
+      "path": "docs/VAULT_RECOVERY_WORKFLOW_CONTRACT_BG.md",
+      "bytes": 12733,
+      "sha256": "e8434aa7f265f14ec0e4e6fb87e1d82d199448b8f534f3cea1234ebaf1ec0199",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_gui.py",
+      "bytes": 111670,
+      "sha256": "15c8a75922aac6bef78783d99150c1c14ed9fb861c57c71d8ebb3e8f31c2cec5",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_legacy_mok1_recovery_gui.py",
+      "bytes": 7452,
+      "sha256": "38c0f25ac4e56538c82c2bfc0298db6f65c07de4c2a0c4a6f22cba42efeb25b9",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_main_gui_recovery_chain_layout_audit.py",
+      "bytes": 12044,
+      "sha256": "edb5682dc1a9f75c8da9ff5eaf60ed36742e2d8147af2e88c6c0e9f0bb610a42",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_paths.py",
+      "bytes": 998,
+      "sha256": "3c0d8acb92bfc3a24e5bef28f83b96f709da6e0c1547cd53d1a1d08b2bdc0dd2",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_gui.py",
+      "bytes": 50253,
+      "sha256": "5efc0db1b0adfed5feb644e071389436dc8b084df150d2312961ff883cf55c64",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_localization.py",
+      "bytes": 49619,
+      "sha256": "4c58209903725088b069ebf9366e7480b7eff3a888edffc92405af379e43536b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_main_gui_visual_harness.py",
+      "bytes": 9428,
+      "sha256": "62b915644701514038f4f81deb02543b41ab56c9fe2e66c44b3e413b1eb22ddc",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_recovery.py",
+      "bytes": 36090,
+      "sha256": "8ef3a70e9323b44ea7084b5e851b1820c407aecefb1d3e1ece1bc21d9ebcc3ae",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_recovery_gui.py",
+      "bytes": 36919,
+      "sha256": "7751999b2207c4bb44db26862af89e21b3ed1af59cd7f2fc08963f700a145e91",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_recovery_state.py",
+      "bytes": 24622,
+      "sha256": "40ae742a9e39094ad77b7a2a48369606b3497e445d3c825235fd0c39d42f4ada",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_recovery_visual_harness.py",
+      "bytes": 11105,
+      "sha256": "285a2c965c7344cc2ff0d2ecca5e62b7e87b2f805d50cfccd4d0738ae2b88228",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_session.py",
+      "bytes": 23764,
+      "sha256": "fd3cae4f80cdd7d8091fe6539a0b1dde489161d1acfb54dd8e709380dcd88c82",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_storage.py",
+      "bytes": 26777,
+      "sha256": "6b36abdc8902a03b0a17f284d22faef9f51f16b33ce21a9da227cc894c5e694b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_profile_ui.py",
+      "bytes": 27365,
+      "sha256": "456eb1a6378915baeb66e17d1133a79025693fa9e25dd956d6e28f68eccb3845",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_recovery_phrase.py",
+      "bytes": 8277,
+      "sha256": "9e9234a5ad27261cb427017e5e9432bec3c5bbcb06597958688f32d223ff7986",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_recovery_phrase_storage.py",
+      "bytes": 37587,
+      "sha256": "d6cf07220d102cc3a9ab4a0cd234a6025dc8e74c2f154b73eb127d3f8c4c3f72",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_cleanup_authorization.py",
+      "bytes": 10562,
+      "sha256": "2a22494fc3d3dbbc56bc68a0f6997dafd659cc23b2e912042dd4365c045459ba",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_cleanup_executor.py",
+      "bytes": 15631,
+      "sha256": "3025909bbce72c9467a294f075961c444e1762bfabc9c80df4034be5708a5240",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_complete_envelope.py",
+      "bytes": 13826,
+      "sha256": "4cde69648f40feba968e98e88095a850b6301b623ef9d572969bea57a39f97a3",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_contact_slots.py",
+      "bytes": 12191,
+      "sha256": "fecdf24a92565a0f7c9ea601294edb9c8cfbeb56c034d3b7964e173f3cd508cc",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_crypto.py",
+      "bytes": 6507,
+      "sha256": "37759d06c93910f41ff2a8f07398ebb4ef4990e6c73d1f836bc8c61e929a7639",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_envelope.py",
+      "bytes": 5976,
+      "sha256": "372a463b3f1897792c1362527cf3b4aa9cfdd77ba2c1c31d43b8e896d94eb83d",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_file_pipeline.py",
+      "bytes": 14545,
+      "sha256": "c35f0642061c1738e4091ea112d8a05e4e967bcbb72f0712ad3ba9bb361e1c9b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_filesystem.py",
+      "bytes": 31279,
+      "sha256": "1b997352cb45935ad8b49303de6188fec39d90dd747747981ec0541df6ea88bc",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_format.py",
+      "bytes": 17901,
+      "sha256": "9a08d0041f817e344e67881fa9e5664dc2b5e9ecb48cdfad769b18af49a1f63f",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_key_slots.py",
+      "bytes": 11535,
+      "sha256": "bf0c6a16f764afe9c5b39ad7c44c6ca9804defae82065b9e8c84b6500ff4ad55",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_local_gui.py",
+      "bytes": 26724,
+      "sha256": "f7552ee68f48ec72c839a4ecc8197719298974d08fff8ec59c1c6f297a9d8adf",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_local_service.py",
+      "bytes": 30851,
+      "sha256": "c4a5f01da15c0b6e33c2020427e5dcfc1bf34cb1bc19e1ffc416fe78f4418fe3",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_local_visual_harness.py",
+      "bytes": 5034,
+      "sha256": "9fa6a2eb566c4df21658435cc31822d0f975713236c0ae5790f369f73f1e3e6f",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_manifest.py",
+      "bytes": 9351,
+      "sha256": "f7a36d8f9317745464fa59a6d661ece9e9441f3a0a4b1db8494cae8e836150d9",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_operation_activity.py",
+      "bytes": 11441,
+      "sha256": "8d6f452c8903994b9725bd41ccd8fd57bf3775a94dfb6a0594142265b112aa0a",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_operation_journal.py",
+      "bytes": 7644,
+      "sha256": "6353d0afec260ddad8fb135f99fae43ea7e326ead3fc2e2f6cc899ead70e95cd",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_operation_lease.py",
+      "bytes": 8247,
+      "sha256": "5b28544ef2db4b4d7df4301878de5ca2a09200ff1d854b58c1ee2ac192e9d857",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_operation_lifecycle.py",
+      "bytes": 14298,
+      "sha256": "79aa7a035dc4aae9ef07d4a16dcb900e5999181edb96d04482105f29a7e99e2b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_password_slots.py",
+      "bytes": 8342,
+      "sha256": "3d82ef83cccc04ceb0f21a3caabb001b8f8d8e01a72d15de1556321a4d73bafc",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_reconciliation.py",
+      "bytes": 12666,
+      "sha256": "418ac25637b9bbb54a3a1e8d67a591c34a709f9428d3b6b1ecf2ea5dc698b34b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_reconciliation_evidence.py",
+      "bytes": 19568,
+      "sha256": "10aa2540d1e9de6907c18e0092a819d361be9285f27076b27f9045e6621a5d43",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_signatures.py",
+      "bytes": 6959,
+      "sha256": "77da2ec545a324ba62d6ec5afe6f63c9511fa53b9a7c070d85b9277835ad27b9",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_slot_orchestration.py",
+      "bytes": 10097,
+      "sha256": "95e2235e133a451cfc97c1787a1428462fc988def6f1f5e09ee15dc42008c1c5",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_streaming.py",
+      "bytes": 26935,
+      "sha256": "a16c548cc9f4658f8e2f7a1189313a86e76da586442b1d3b2d66e209c1726d03",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_trailer.py",
+      "bytes": 11040,
+      "sha256": "4d83b0886072735e53164097085646349ab9f2e4512cd8e202283ec0fdf97074",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_v2_vault_slots.py",
+      "bytes": 7199,
+      "sha256": "ef763912e20bbad4a28ea046173c66fb77f4777f3d6aef5497370842e6ff5f1f",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_format.py",
+      "bytes": 46629,
+      "sha256": "c286a406ff267df1ad31723ffd8b9d3b068586821ea7ea281aeed74c6fd8e47d",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_keyring.py",
+      "bytes": 17495,
+      "sha256": "b522cc3a5b559c1079c93c95dc4977db287d82012e5078a4608d4892bcfc5408",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery.py",
+      "bytes": 28731,
+      "sha256": "db64b62ffd16c6ba92b535028f140a4267b7c32c9f10bb8156e347e9dbaeff0a",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_acknowledgement.py",
+      "bytes": 18260,
+      "sha256": "8f7310d71fbbcd837a781b993fe194ef2d0cdd6db0e29a690777eddd6a53a9fd",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_candidate.py",
+      "bytes": 25057,
+      "sha256": "9e1c162c5f0ff25c91109e9ec351c8db632ff97c0b7a45b664ccece255e75d4b",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_entry_main_gui_visual_harness.py",
+      "bytes": 7148,
+      "sha256": "91bd240ef479fc3a0fbe6fc4947ad62143904a2d7dcc71b82d6fd1e6b26cfe51",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_entry_request.py",
+      "bytes": 8507,
+      "sha256": "dac0b1ff779b6fd86403e8ec7ec84d2edc08d1ba1fc75da8f2ec29ab45bf15d1",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_entry_transition.py",
+      "bytes": 12958,
+      "sha256": "8558efa6b8b27c28969e55bc179e3da97796b14f3a06c1b6d8cee08cf91ed697",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_entry_transition_main_gui_visual_harness.py",
+      "bytes": 8583,
+      "sha256": "fde07ddadb502d7a2b5a10668365d21839d009147eb6fc4de1ca3c58dd69d4eb",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_locale.py",
+      "bytes": 583,
+      "sha256": "4d4a2e4db1b2a41335a208d42b2aeb7fdcb2d08784f42c8e1d95f5d1a8dfa827",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_localization.py",
+      "bytes": 36401,
+      "sha256": "e32ef10fab3a93fe2392414a2f871b852787f614f3ef926dc3a156df3cac0f0e",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_main_gui_bridge.py",
+      "bytes": 6803,
+      "sha256": "0bd00a10a21a0e5d595dbacafe1f20bdcfb13ca516d1caba1d32af731eec8047",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_main_gui_visual_harness.py",
+      "bytes": 14898,
+      "sha256": "65a0dad589754e318c03e8665eda7132f2f46e439d2bc6a3133ba0afcd742576",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_presentation.py",
+      "bytes": 20843,
+      "sha256": "d067030028738fdbd43a01eb794e440f18c751d4efdd179aab39288f5f822a83",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_publish.py",
+      "bytes": 18488,
+      "sha256": "abcd0a99b80744eda30e18aaef90271f8fad778cba09f8ec4a2d13107511e7a4",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_reconciliation.py",
+      "bytes": 19541,
+      "sha256": "5a40fdced3fe5bbce19d6b20428e1e3511953e300189a86a692a5face0e27b6d",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_review_controller.py",
+      "bytes": 9239,
+      "sha256": "88d1088fc53b92a71a96e019ee3ce6f33b7348ec5d7cf34bdbadfb265b8d33d5",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_review_window.py",
+      "bytes": 32469,
+      "sha256": "3b5aa6d82ca254357675517d6d21777861e8039f3a5058e77285abd2090f2844",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_acknowledgement.py",
+      "bytes": 18729,
+      "sha256": "dbbb810d1ac074e2274cf250d8fc4a21f90566eabfdb5d749337a6ddf9170dc4",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_execution.py",
+      "bytes": 18723,
+      "sha256": "11ff2ff5ca81be5f994e8ef261098fc26a8b31573eee97acbe4123d25a989500",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_localization.py",
+      "bytes": 34924,
+      "sha256": "104a1edcc05e9d59251c966d1af34a9cee19afed8cc405ef07b7890aad0d701f",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_main_gui_bridge.py",
+      "bytes": 8342,
+      "sha256": "a031849c1a6da82b35df803de344c081068196c8ec8816685c78b1fdadd6de1a",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_main_gui_visual_harness.py",
+      "bytes": 22387,
+      "sha256": "d1821624cddc74c07933011cd24a300237e0515755ac5af1f01b7ec6a2d47c43",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_preparation_request.py",
+      "bytes": 19438,
+      "sha256": "ed03471d6196455244fb7d5f04934c21935328d4cf07be6a83d14e1608f57703",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_preparation_request_main_gui_visual_harness.py",
+      "bytes": 17783,
+      "sha256": "849aa48c17f27621385b4f192bba47fe0d5f684f66bf3c37360408d2a0e61e9a",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_presentation.py",
+      "bytes": 14342,
+      "sha256": "747f6b2b3d5cc1c039c9449caae0c42688ab41fce3635641d02c57ce13e67b82",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_request.py",
+      "bytes": 16496,
+      "sha256": "e494709a2cd501a3957b947e7bd913168d0a1ee4e58a5db2a8b6e963dd18d403",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_request_main_gui_visual_harness.py",
+      "bytes": 11241,
+      "sha256": "f3d0b9d3e5ee8773dc7b0472aca842f6f85fe0909e3d997dc379797663e562b9",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_review_controller.py",
+      "bytes": 11004,
+      "sha256": "330a6a79451a4fc8e4d982c7468b55faa3064afc08efe1c9eafa869db2b7fda2",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_review_window.py",
+      "bytes": 47653,
+      "sha256": "ce8ae89d656ced0be35fcbeacfe743c2baa843d8cd9d6cd036990397612b6eea",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_ui_adapter.py",
+      "bytes": 35708,
+      "sha256": "93addcafcbbeb8db5aba359e3772c415faac36e8a158f03da37c34a0409561c7",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_inspection_visual_harness.py",
+      "bytes": 27927,
+      "sha256": "082984d44c5871576247fac0f078dcff006f3db448d33a4216f5f11b0ee39d37",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_selection.py",
+      "bytes": 17741,
+      "sha256": "856143153b21cc6c3ff81e908cbf875c0433492a79a023ee2ab3e4b793024600",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_source_selection_main_gui_visual_harness.py",
+      "bytes": 10282,
+      "sha256": "eec9d8833294c61b9e759756c2b4f0a8ae9785572dfd514c129d5d3d33aa7f23",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_storage.py",
+      "bytes": 35411,
+      "sha256": "5f8213882a8914917f330e3a1bbd69952ecc4932cd0c68b4fb62e0646382c13c",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_ui_adapter.py",
+      "bytes": 32153,
+      "sha256": "04f68c60fdc6200ad7afd1ce704721f266526986bcd7736c949da0f8c8dad056",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_visual_harness.py",
+      "bytes": 17723,
+      "sha256": "af83c94a9546ad8bcac3e86a3421b0f985c550bfed8e668d9b3d006dfbc926cf",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_recovery_workflow.py",
+      "bytes": 29344,
+      "sha256": "c78d4bca1bc476d55a8301be229c3f863bc14ea7434ff35ab953ca17015fd760",
+      "user_executable": false
+    },
+    {
+      "path": "mokosh_vault_storage.py",
+      "bytes": 30416,
+      "sha256": "dd486706536a93df510e4799af28a2789f8d447f0e92d5662b0f73460a039bb6",
+      "user_executable": false
+    },
+    {
+      "path": "requirements-runtime.txt",
+      "bytes": 180,
+      "sha256": "726ba5c5e0d058a6ca5b10c8c3e59a86e04487103915b1fc5a1a2305143b0330",
+      "user_executable": false
+    },
+    {
+      "path": "run_main_gui_recovery_chain_layout_audit.py",
+      "bytes": 6755,
+      "sha256": "33dc7f0b1a81909baaa0091c8a0c5c58373df95540c01857af6aef04b5a270f8",
+      "user_executable": true
+    },
+    {
+      "path": "run_main_gui_recovery_entry_transition_visual_harness.py",
+      "bytes": 3585,
+      "sha256": "28f0eb96635726c5bc8e1cacb7d2a40b179cb8cfb394e70e02768131ec27ed9d",
+      "user_executable": true
+    },
+    {
+      "path": "run_main_gui_recovery_entry_visual_harness.py",
+      "bytes": 2868,
+      "sha256": "12a628be55f9548938d8aa8a073ed6c67c025178f95a10badffc2a1a36ac232b",
+      "user_executable": false
+    },
+    {
+      "path": "run_main_gui_recovery_review_visual_harness.py",
+      "bytes": 4814,
+      "sha256": "3fec1480ae27c26314cdea111254e4e02a839d58930c511b7d725e66c7952bda",
+      "user_executable": false
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_preparation_request_visual_harness.py",
+      "bytes": 33772,
+      "sha256": "7183bcd5324473c95878ab9ddb624573b43bd056a36758cc202e5ed01c3e8662",
+      "user_executable": true
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_request_visual_harness.py",
+      "bytes": 4797,
+      "sha256": "ca3681395bb163ee7bdec56e00a6ef79527ce3e42002c1f9d8b654dec8e5ef3f",
+      "user_executable": true
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_review_visual_harness.py",
+      "bytes": 6909,
+      "sha256": "36fb4f5f41840118d6cc638a23661879797981793204e0ce4f906835a1125abc",
+      "user_executable": true
+    },
+    {
+      "path": "run_main_gui_recovery_source_selection_visual_harness.py",
+      "bytes": 4303,
+      "sha256": "386366f110c7cf7a550605c4c603d2e7d1433d30ce9b1a830ef21663fc590be5",
+      "user_executable": true
+    },
+    {
+      "path": "run_mokosh_gui.sh",
+      "bytes": 440,
+      "sha256": "a5f65af7437ac733cbaf808e94756a2f41352410a17bab65a3b90f07c672b4eb",
+      "user_executable": true
+    },
+    {
+      "path": "run_mokosh_profile_main_gui_visual_harness.py",
+      "bytes": 9953,
+      "sha256": "3cde0057a25e6792375460e42629999733561a856a69c43337197465e7b1bb83",
+      "user_executable": true
+    },
+    {
+      "path": "run_mokosh_profile_recovery_visual_harness.py",
+      "bytes": 32164,
+      "sha256": "a40b4589855164fd3d16a2faef009c6bfe5282a6ffd00cce383ecffb34011add",
+      "user_executable": true
+    },
+    {
+      "path": "run_mokosh_v2_local_visual_harness.py",
+      "bytes": 13811,
+      "sha256": "8de853c3f16ac2e936b19b7dbf5edafc73d659f306a2023f432c4cde3169eb11",
+      "user_executable": true
+    },
+    {
+      "path": "run_recovery_review_visual_harness.py",
+      "bytes": 7981,
+      "sha256": "6382d017572a6e50a97fff119fb21c3dd4cd99a87f45ef9dc64d7bf1b886577c",
+      "user_executable": true
+    },
+    {
+      "path": "run_recovery_source_inspection_review_visual_harness.py",
+      "bytes": 33518,
+      "sha256": "e12def77c9b76c897b2e8509422129629c0768d9294dfbb37080a5c481b4cb6c",
+      "user_executable": true
+    },
+    {
+      "path": "seed_manager.py",
+      "bytes": 7601,
+      "sha256": "3b5b7c3d1b47338185a2fb8b28b9a7f621ce48698e31df6cdef429aadafe818e",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_contacts_core_quarantine.py",
+      "bytes": 5989,
+      "sha256": "c7d534f74ac6ed6eb6c7ff639c66ab48d57fed5b356f3799647446b298ac7d57",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_crypto_core.py",
+      "bytes": 13325,
+      "sha256": "1ccb1e2efa6f054bd2d02139b4955b12f2677a370d4d8bccc4f90cfddcc1df97",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_crypto_core_negative.py",
+      "bytes": 20998,
+      "sha256": "62c36f34ea2c8b7b6ccbdd653066d5a8f3b0b54bc3d47e1dc69a44458873b10b",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_legacy_mok1_recovery_gui.py",
+      "bytes": 3832,
+      "sha256": "ddb18b96ee37d5aff13382d01eeefd013f042c79bc6d7dade8e52963108cbccd",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_main_gui_recovery_chain_layout_audit.py",
+      "bytes": 23330,
+      "sha256": "5765d817089047240b18c55cdc91fea1309dd12cc1478233c45a34235ad29a1a",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_main_gui_recovery_import_isolation.py",
+      "bytes": 13130,
+      "sha256": "7a9d3bf01e619d8173de2a54a5d075fe3de34ce836f7b74bf775da25fad1cd27",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_main_gui_runtime_path_initialization.py",
+      "bytes": 13484,
+      "sha256": "5f783dd42fb2c47dde54c0923fcd0cd2b450c34790593431f174cf9cbe4322c0",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_main_gui_visual_filesystem_claims.py",
+      "bytes": 10550,
+      "sha256": "2c9e39c4123f10107c294eb2fd0e5b60a419be9bef8b094f499f21f3888c2fe9",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_gui.py",
+      "bytes": 39651,
+      "sha256": "bad3248b97afe332c80c2f6f04da14e8b260f3ace14d5d3dac3b68badf222d7a",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_integration.py",
+      "bytes": 9650,
+      "sha256": "7d570e39e9f5eef3b0b96ca8371626ac411c5230da7ee6e45ec24bdfcd939a0c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_localization.py",
+      "bytes": 7443,
+      "sha256": "e33b36b5d5087cd89469014e6ed3dee8393d013c7d4cc98e30a3a992035a47af",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_main_gui_visual_harness.py",
+      "bytes": 11079,
+      "sha256": "8807a417fff5c6ec773c9c4e962361a2ba679d45f8a405695ad9f1b732c6f829",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_recovery.py",
+      "bytes": 18711,
+      "sha256": "cf6974fa1dcae45fd4c66133fcdbabf33fbaa23046d4d0bf0ed766e317c5b045",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_recovery_adversarial.py",
+      "bytes": 8699,
+      "sha256": "cb0d3bb03212ec620ee3fc99e16c819815b4317bd2bfa35681fc9a7b12f68545",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_recovery_gui.py",
+      "bytes": 22047,
+      "sha256": "ee78db7d01a3d39c77213ab76d2736394c184ef1c8426ab54ce4c9ba5e94c91c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_recovery_state.py",
+      "bytes": 11572,
+      "sha256": "7d9cd7d86222ad0d8ab3db0bdbe258bc7819b3d9b008e494d9bdf017498e36a4",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_recovery_visual_harness.py",
+      "bytes": 15778,
+      "sha256": "d2672625e09c0d1c871e5e470227710697dda4f8c26b49e94638369e5d1c2208",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_session.py",
+      "bytes": 11242,
+      "sha256": "3aa895a27c4a29723405c9dbbfdad94c8078ccf068e6c94d1d773cc5856c77de",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_storage.py",
+      "bytes": 7735,
+      "sha256": "97e0ec4a6744c9b3ae5619dd7d935e03ba707bd90f2d0c19785c17079d5aaaf7",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_profile_ui.py",
+      "bytes": 21862,
+      "sha256": "3982d8bdea39852934b24a775749695f51c82749fb909466c9d9ccd1c7f02a85",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_recovery_phrase.py",
+      "bytes": 5856,
+      "sha256": "a140348c5362359f219b54b21d1b221b963d2bf62e5a790309227a4149fa317c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_recovery_phrase_storage.py",
+      "bytes": 13060,
+      "sha256": "ae8a10ead541341d83db0b597743ccd32f5fa8268bd4a07f285ecaf625e8c95c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_binding.py",
+      "bytes": 5621,
+      "sha256": "b297fecff888527616953657b3f6281d32fabd59aca5de74bbe4c3cefd295392",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_cleanup_authorization.py",
+      "bytes": 19399,
+      "sha256": "92a14b8cb3692a6f2886c77743a1a9a92936aa6aaf74a5df98349d01af16bc9c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_cleanup_executor.py",
+      "bytes": 15674,
+      "sha256": "2ec919d716db4676da26f9f5da329bb8e949ae81e664f1f21125f34873e217c1",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_complete_envelope.py",
+      "bytes": 19545,
+      "sha256": "cc3f113e9ad56bf50f6ad9ad611e2c198df5bb2e52c1f31b69b2c23c0aab4bc9",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_contact_slots.py",
+      "bytes": 15228,
+      "sha256": "7c664385fd07b463c909b0c191665b0786338c6fb9d0e027fec842db059df382",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_crypto.py",
+      "bytes": 8242,
+      "sha256": "d3fb8dfd6765cd6207bedfa547e25d20967a9fe2b3cdb928310bf056cda6b827",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_envelope.py",
+      "bytes": 11523,
+      "sha256": "e630f2e4ffa3be95b0a8a30e0629d1545aed17b12318a81bb8b8e440e4544d5b",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_file_pipeline.py",
+      "bytes": 25113,
+      "sha256": "2ebc00f6e2f86b31e8701a691e59a44b21a752704b09cc9c81aeb54f2930158e",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_filesystem.py",
+      "bytes": 27943,
+      "sha256": "038de4ac61bc4a79783e7519a684a3a09f6b0d090194613c4ec40458f9d20d80",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_format.py",
+      "bytes": 6537,
+      "sha256": "273fcdc54b3fb1b6efaebe5382fe872990f109904b9e408de4594abecab81ab8",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_frames.py",
+      "bytes": 5980,
+      "sha256": "759829a9abe64fbf1b6e075b3a3f33b1fb48915e9accd6b91097be3fb88cefcc",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_key_slots.py",
+      "bytes": 12372,
+      "sha256": "11bb1ab88614ee8664b16fb4d7b9dfad0d1f0d32d6d65e024d585a6a0b9c4740",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_local_gui.py",
+      "bytes": 19468,
+      "sha256": "9cf69467680ed395dcb46e2d09f5acd1f4a9b49e69239147375f74900b496375",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_local_integration.py",
+      "bytes": 6106,
+      "sha256": "c3edad7c0db56fac8008b606def53b6b23d24be319429876e910b46c9135eb51",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_local_service.py",
+      "bytes": 27511,
+      "sha256": "8d259bfacdf8feaaf6330119327d29940db27feed1e4b131d076ea7e64857c40",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_local_visual_harness.py",
+      "bytes": 15008,
+      "sha256": "9885cdf57c909ee6478ff18343a094a791cf8db8bd760beab2918a53e1793a36",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_manifest.py",
+      "bytes": 9563,
+      "sha256": "972bd64761a6fa2368710c776bc0758b5e85448da534b6f74e7874d4a7645ae2",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_operation_activity.py",
+      "bytes": 12416,
+      "sha256": "ef7037bd24a788ff0e39473c0b11b642b6d301c367cfe48842e18e999cb2392a",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_operation_journal.py",
+      "bytes": 5364,
+      "sha256": "95dee698aed821b00b2d95e4ed58ce1b2b3a7b10ad1d1bde57e64dc1115594a8",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_operation_lease.py",
+      "bytes": 10538,
+      "sha256": "46518bdce5fc7dd69755bb6df77ddd71c458bcc952c25577d8dca36dc980bc00",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_operation_lifecycle.py",
+      "bytes": 13644,
+      "sha256": "b337763f1a1d37c4171abb755c02541238414dd835458fc9f51f75fc579f008f",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_password_slots.py",
+      "bytes": 8831,
+      "sha256": "7b559eb5b5c2f35ecf2bbf975a29cc601e7cb70fd43d99b1a4e265ff02edc62f",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_reconciliation.py",
+      "bytes": 12804,
+      "sha256": "559ba4406dd4e772591dddb796125d510d9336bb18f7fc040230f25570afc335",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_reconciliation_evidence.py",
+      "bytes": 14645,
+      "sha256": "5b6aecdc58baee5adb6282a4bd26bf265158dbc0c01b2a032244df7fa55a0e48",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_signatures.py",
+      "bytes": 10408,
+      "sha256": "1cb818dfc1ba74685da086d34ef83cb6f04686f6746563bdecd5d086e8b9f679",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_slot_orchestration.py",
+      "bytes": 11917,
+      "sha256": "2f66c31b5398b6c6a3914e56845985827fc5aab8f312492107983a1dd4560d24",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_streaming.py",
+      "bytes": 29460,
+      "sha256": "828ae05c9ced57d5f73eee44d0b170490ab017b771c488160e1d84692165c7f4",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_trailer.py",
+      "bytes": 11975,
+      "sha256": "6928b7d45171c85f839a5a0c7512557c3b625c71783ee228e97167d4cf551b7c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_v2_vault_slots.py",
+      "bytes": 8854,
+      "sha256": "61b79bd29849fd0531e31116631a2f2dcd34cfa78295ad4f5baaa601acbf14f2",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_format.py",
+      "bytes": 19435,
+      "sha256": "50e76c24a315b74e32cfbdc9c8f1a6b16d18a725db9d434bf2b39eacf3ec0d17",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_keyring.py",
+      "bytes": 30788,
+      "sha256": "007c3d0f7ffaa8e6f240a0ed16cde130d44595e1086109e5c5362eccb85664cd",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery.py",
+      "bytes": 28835,
+      "sha256": "afe2b3d2cbd943755b6223eb1f185bcfb36dca61c4443c202202cb91abca43be",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_acknowledgement.py",
+      "bytes": 28894,
+      "sha256": "ad51678a3d596152d605b50650b2b38e08a762fcc0ed5c6ae8ade9fa0b5b1392",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_candidate.py",
+      "bytes": 42747,
+      "sha256": "014d817f025b15479ad27d0a20f7d1838493d87ed67e6aabf4ea6394c3894da8",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_entry_main_gui_widget.py",
+      "bytes": 22808,
+      "sha256": "14acd8df5b90389aea71e2cc598399cf317ed5015358af9a9d1fc23c48de9f43",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_entry_request.py",
+      "bytes": 11402,
+      "sha256": "a4fd7bb9ee5204cdb3c7be3cfdd539560e29e9f47583d91712b89c81fc4e698c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_entry_transition.py",
+      "bytes": 17123,
+      "sha256": "dd97b38a913a5b5d770ef894c04c1fca9c8a416ebbd989d1be5d6257ddaf5c53",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_entry_transition_main_gui_widget.py",
+      "bytes": 32595,
+      "sha256": "8fddcbee82d35fb655077684fb6283a3d6bf86e9d80fa8e26773cc4721c1315c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_locale.py",
+      "bytes": 9473,
+      "sha256": "4b89d17aa2a673b136b4e792d69399275d3a4d2e995d6e4012c508790d9d6b56",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_localization.py",
+      "bytes": 31107,
+      "sha256": "084c3b86d7d33b97b724666c49d087a35573cadd8f1685ce7dc56ac853fd11fa",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_main_gui_bridge.py",
+      "bytes": 19148,
+      "sha256": "95720e9c7dfbfd6d8f5c0b6f1413d7d7202fda549b192f187a7f7abf9e09cab2",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_main_gui_widget.py",
+      "bytes": 27809,
+      "sha256": "fbc75a0a4857328ff191578d09fc559f298ab5c51ec04a0373dde43a6089f874",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_presentation.py",
+      "bytes": 28232,
+      "sha256": "cddbaba302d9a251e966b4c1d644a0a40d59d891ddb09128ed24c372e45b46bf",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_publish.py",
+      "bytes": 31300,
+      "sha256": "e11f0d77d385b99e0b9e84797ec405e3ac399d8e37a5ad9f55b45233c6a99812",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_reconciliation.py",
+      "bytes": 28590,
+      "sha256": "1aca25fb774fd985414e0e7d08ad0b6c8d3c60d280520afd8ab91c935bbb680d",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_review_controller.py",
+      "bytes": 21073,
+      "sha256": "5cdb4dca494090293dc929e747dfcedb9be4ff4f4d388b95d211e50c766c797c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_review_window.py",
+      "bytes": 29790,
+      "sha256": "053c9035b67ec01f0b5ff536e419fdc8e27ceea3b3023d49ad0096b5c4787763",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_acknowledgement.py",
+      "bytes": 30870,
+      "sha256": "f47c779b82f4a91fdfad43d00530cd79d94c690d1d1a403fc4fead343edc0c68",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_execution.py",
+      "bytes": 30136,
+      "sha256": "7a5816fa4c80cb2d6ab78f290a709d9b28903c39a78effe5afb3d57f456a13f9",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_localization.py",
+      "bytes": 40148,
+      "sha256": "034eb63763f05a2576914215e504afe0f702ed731b67541eef31930c6c9c0de3",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_main_gui_bridge.py",
+      "bytes": 26321,
+      "sha256": "3ef9334eb6e3a2e582ed3e880b402d98443041e93bcf168c2a129619d73894c0",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_main_gui_widget.py",
+      "bytes": 34505,
+      "sha256": "eae5e798f3a07913c77b9443ccf96beda0cdc14176788fcdbb402aa8ae6310bd",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_normal_gui_authorization_readiness_audit.py",
+      "bytes": 15476,
+      "sha256": "d92452ca55d36f0b87a0452b22e30901f33d4e692b3b58f2d4a05d4301b2af71",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_preparation_request.py",
+      "bytes": 31884,
+      "sha256": "8121bce10590aa61b51e70a528679800c22f8975b62af15db1a775bccfae13ad",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_preparation_request_main_gui_widget.py",
+      "bytes": 55891,
+      "sha256": "efd6cdf7b199ad92e2e3afa10c73572bb4c4320691609b82e70c0612b2386c1c",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_presentation.py",
+      "bytes": 22714,
+      "sha256": "b13cb4cbf6c95f6700c229ea5f9bd5855a420e599272789a0ed58e2a93dee308",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_request.py",
+      "bytes": 26381,
+      "sha256": "d99edb8c2cc4e5f5445c49f85a380cb15646cd5ca9d5b9a69f7b268e0fb2dca0",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_request_main_gui_widget.py",
+      "bytes": 38597,
+      "sha256": "77d60c35bc44d738d03b8756c9243e749c2c4ef58057a7ac06a2196ff61fef4a",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_review_controller.py",
+      "bytes": 18552,
+      "sha256": "e6d14db38ed7606e3b82e50562dfea5a7433b1b4a89e581acae244eff32449ad",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_review_window.py",
+      "bytes": 45179,
+      "sha256": "fafa72f5cf8fd5231914a2bdadc601e345d33dd4da148f888cb7de09f258811a",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_ui_adapter.py",
+      "bytes": 35194,
+      "sha256": "ed60468ef0ed2b86fa8088a62a5752389f9a2e63e4df0d66ecf6883a1caa1ffc",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_inspection_visual_harness.py",
+      "bytes": 40554,
+      "sha256": "b4a3645ff340ad0630b5e128dd350a6b64db97c8afbb2d78e83269b576514fdb",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_selection.py",
+      "bytes": 21631,
+      "sha256": "6e337c8c3b84079434f3bdb8c77cb3e6d84015d7b91167dc0fe27fc78a9b2ef0",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_source_selection_main_gui_widget.py",
+      "bytes": 35772,
+      "sha256": "288bb7d0fb0f77174be08329927d8dba0f833d3095b97fcb6ab98963b50abf4b",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_storage.py",
+      "bytes": 43536,
+      "sha256": "806f09f404a0217f97f2b9e5832f5eaecb12a4a4d92f03b3eb89422cb4e61957",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_ui_adapter.py",
+      "bytes": 32084,
+      "sha256": "38768c840c3a896ca73b6df1ec3b01bd48361199d8cc78ba92b726232528b8c7",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_visual_harness.py",
+      "bytes": 16338,
+      "sha256": "38c7f176ad16f64eae94500eba37f4e8174dd033ffa20e0eba85b38412fd0cd9",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_recovery_workflow.py",
+      "bytes": 37118,
+      "sha256": "9932c94bb7a05913e5fef5d18ec89d6b4d60195bacfbc722666d85655c6a266b",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_mokosh_vault_storage.py",
+      "bytes": 19745,
+      "sha256": "ed103238322b560ad78e77ebb19bcca5ba2e78630af0b84063806b266386a223",
+      "user_executable": false
+    },
+    {
+      "path": "tests/test_stage0_safety.py",
+      "bytes": 1895,
+      "sha256": "20f1da6458bf425b7fb63f7a88c43b24347f72b58283c64fc30dcc9f14a3d4b0",
+      "user_executable": false
+    },
+    {
+      "path": "third_party/bip39/LICENSE",
+      "bytes": 1147,
+      "sha256": "d7a8a9de997a812f84b31748aa069e5210817bf5e946fa56ef9abe8086ba4d62",
+      "user_executable": false
+    },
+    {
+      "path": "third_party/bip39/PROVENANCE_BG.md",
+      "bytes": 1095,
+      "sha256": "5555fb77b9471dd9e31938165a83dfb1703a776f5727d16141dbc41ea76b8a95",
+      "user_executable": false
+    },
+    {
+      "path": "third_party/bip39/english.txt",
+      "bytes": 13116,
+      "sha256": "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda",
+      "user_executable": false
+    }
+  ],
+  "product_mutation_allowed": false,
+  "metadata_contract": {
+    "name": "GIT_USER_EXECUTABLE_SEMANTICS_V1",
+    "trusted_core_index_sha256": "fd448cd2a0e85df1a65846af2f308e5d718fd05b0cd826b1d40346283797f1fd",
+    "required_executable_paths": [
+      "run_main_gui_recovery_chain_layout_audit.py",
+      "run_main_gui_recovery_entry_transition_visual_harness.py",
+      "run_main_gui_recovery_source_inspection_preparation_request_visual_harness.py",
+      "run_main_gui_recovery_source_inspection_request_visual_harness.py",
+      "run_main_gui_recovery_source_inspection_review_visual_harness.py",
+      "run_main_gui_recovery_source_selection_visual_harness.py",
+      "run_mokosh_gui.sh",
+      "run_mokosh_profile_main_gui_visual_harness.py",
+      "run_mokosh_profile_recovery_visual_harness.py",
+      "run_mokosh_v2_local_visual_harness.py",
+      "run_recovery_review_visual_harness.py",
+      "run_recovery_source_inspection_review_visual_harness.py"
+    ],
+    "full_posix_modes_preserved_by_git": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "WITHHELD_PENDING_EXECUTABLE_METADATA_DISCUSSION",
+  "workflow_active": false,
+  "actual_controller": {
+    "tests": 2509,
+    "successes": 2505,
+    "failures": 4,
+    "errors": 0,
+    "skips": 0
+  },
+  "source_content_unchanged": true,
+  "metadata_correction_applied": false,
+  "GitHub_repository_created": false,
+  "GitHub_run_url": null,
+  "next": "Discuss exact analysis-copy metadata correction; no source/test changes; then revalidate before enabling workflow."
+}

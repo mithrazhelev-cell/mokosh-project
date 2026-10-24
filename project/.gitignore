@@ -1,0 +1,63 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# MOKOSH private runtime data
+/config.json
+/config.json.*
+/master_config.json
+/contacts.json
+/contacts.json.*
+/identity.json
+/my_keys.json
+/alice_keys.json
+/seed_store.enc
+/seed_store.enc.*
+/seed_meta.json
+/seed_meta.json.*
+/nn_store.db
+*.mokr
+
+# Local encrypted, decrypted and test documents
+/*.mok
+/*_dec
+/*_decoded*
+/*.receipt
+/test*.txt
+/raw_test.txt
+/broken_test.txt
+/crypto_core_test.txt
+
+# Local backups, launchers and retired environments
+/backup/
+/legacy_launchers/
+/venv_old_*/
+/*.bak
+/*.bak_*
+/*.BAK_*
+/*.BACKUP_*
+/*.save
+/*.before_*
+
+# Retired code and local plaintext test areas
+/legacy/
+/legacy_backups/
+/protected_test/
+/run_phi_agent.sh
+
+# Historical source copies
+*.backup
+*.backup_*
+*_backup.py
+*_working_backup.py
+*.pre_*
+*.disabled
+*.pyes
+
+# Broken experimental GUI kept only in the protected legacy backup
+/mokosh_gui_fixed.py
+
+/legacy_modules/

@@ -1,0 +1,49 @@
+{
+  "scope": "UNFINISHED_APPLICATION_PRELIMINARY_SELF_ANALYSIS_ONLY",
+  "source_snapshot": {
+    "files": 263,
+    "bytes": 5223645,
+    "canonical_sha256": "92e159ed818bc6fbf858549452ad78fd0b238f9d8193ac9842147555afb3dcca"
+  },
+  "product_or_test_content_changed": false,
+  "source_overlay_applied": false,
+  "R3_runtime_executed_by_this_pipeline": false,
+  "R3_scope": "Six separate candidate files for static analysis only; never overlaid on project/",
+  "local_actual_baseline": {
+    "tests_run": 2509,
+    "unique_PASS": 2509,
+    "FAIL": 0,
+    "ERROR": 0,
+    "SKIP": 0,
+    "environment": "Local Linux Python3.12.14 headless; exact frozen five dependencies; NOT exact Dell3.12.3"
+  },
+  "local_infrastructure_guards": 33,
+  "local_metadata_fault_controls": "Two deliberate faults detected with passing positive controls",
+  "local_static_scan": {
+    "baseline_flags": 320,
+    "separate_R3_flags": 7,
+    "interpretation": "Pattern findings requiring review; not confirmed defect count"
+  },
+  "latest_local_dependency_audit": "INCOMPLETE_DNS_PYPI_NAME_RESOLUTION_FAILURE; not PASS",
+  "previous_dependency_advisory": "cryptography49.0.0 CVE-2026-69247 / GHSA-g6cj-pr64-35w5 NOT_FIXED; affected PKCS7 API path not identified in previous static scope",
+  "old_four_FAIL": {
+    "cause": "Missing executable metadata in first derived analysis copy",
+    "record_sha256": "6dd5a8b3c6ae20a02e3329cbd30bb1ecd5c89994a8be0da8bbd617f45059c92f",
+    "full_log_sha256": "d374d7cb2724049697ec87e2c39b2f7488776ec03d5e850ba83a7c46d7c4e797",
+    "preserved": true
+  },
+  "controller_sha256": "6667413312e814feddf213ec5865f31af4322dae566c36f4977e86c0daf07df5",
+  "worker_sha256": "7401f48e4827b06f87088c7edc5cb32e4d93b1725ad5721d8cf1af401613c510",
+  "manifest_sha256": "fddfd92dd246129d00cdd3ce4804eb65ad165e861446373ceb1ab513dbd2bfbc",
+  "workflow": "MANUAL_WORKFLOW_DISPATCH_ONLY; activation after remote Git tree verification",
+  "GitHub_runs_at_preparation": "NOT_RUN",
+  "application_autofix": false,
+  "dependency_upgrade": false,
+  "D005": "OPEN",
+  "Stage2.48": "NOT_ACCEPTED",
+  "Dell_access_or_changes": false,
+  "Windows_macOS_native_physical": "NOT_EXECUTED; headless probes do not confer GUI acceptance",
+  "platform_wheel_limit": "Frozen cryptography49 wheel route excludes macOS Intel/Windows32bit; intended probes macOS ARM64/Windows x64",
+  "metadata_scope": "Git user-executable semantics only; full POSIX permissions/ownership/ACL not reproduced; Windows POSIX bits explicitly NOT_VERIFIED",
+  "prepare_archive_sha256": "4660e90619e24a7fc3a979207477142f6bb624351972aaec1d2203ba7a9296a8"
+}

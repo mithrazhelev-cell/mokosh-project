@@ -1,0 +1,11 @@
+# Only source, pinned analysis configuration and documentation are tracked.
+/artifacts/
+/artifact_upload/
+/.analysis-venv/
+/.runtime-venv/
+/.venv/
+/wheelhouse/
+**/__pycache__/
+*.pyc
+*.pyo
+.DS_Store

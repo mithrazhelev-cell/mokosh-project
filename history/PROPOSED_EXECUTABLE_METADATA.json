@@ -1,0 +1,118 @@
+{
+  "status": "PROPOSAL_ONLY_NOT_APPLIED; USER_DISCUSSION_REQUIRED",
+  "basis": "Exact pinned core_index.json user_executable records; no inference from failing test expectations",
+  "pinned_core_index_sha256": "fd448cd2a0e85df1a65846af2f308e5d718fd05b0cd826b1d40346283797f1fd",
+  "scope": "Analysis auditcopy/Git executable attributes only; no Dell/product content/architecture/dependency/test changes",
+  "records": [
+    {
+      "path": "run_main_gui_recovery_chain_layout_audit.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_main_gui_recovery_entry_transition_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_preparation_request_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_request_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_main_gui_recovery_source_inspection_review_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_main_gui_recovery_source_selection_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_mokosh_gui.sh",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_mokosh_profile_main_gui_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_mokosh_profile_recovery_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_mokosh_v2_local_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_recovery_review_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    },
+    {
+      "path": "run_recovery_source_inspection_review_visual_harness.py",
+      "baseline_user_executable": true,
+      "audit_copy_mode": "0o644",
+      "proposed_user_executable": true,
+      "proposed_Git_mode": "100755",
+      "proposed_minimal_POSIX_mode": "0o744"
+    }
+  ],
+  "content_canonical_sha256_after_proposed_metadata_change": "92e159ed818bc6fbf858549452ad78fd0b238f9d8193ac9842147555afb3dcca",
+  "not_applied": [
+    "chmod",
+    "manifest executable fields",
+    "Git index mode changes",
+    "test alignments",
+    "actual suite rerun"
+  ],
+  "validation": "No new proposal execution after STOP; existing23guardfixtures passed and4integration FAIL retained",
+  "next_only_after_discussion": [
+    "Reconcile original12 executable flags in analysis snapshot and Git index with full mode diff",
+    "Record explicit executable metadata in source manifest",
+    "Re-run only affected controller integration, retaining old4FAIL"
+  ]
+}

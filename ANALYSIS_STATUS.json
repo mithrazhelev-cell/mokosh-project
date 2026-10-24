@@ -1,0 +1,18 @@
+{
+  "purpose": "UNFINISHED_APPLICATION_PRELIMINARY_SELF_ANALYSIS_ONLY",
+  "repository": "mithrazhelev-cell/mokosh-project",
+  "repository_visibility": "public",
+  "publication_scope": "User authorized preliminary analysis and explicitly waived privacy concerns; not production release",
+  "source_snapshot": {
+    "files": 263,
+    "bytes": 5223645,
+    "canonical_sha256": "92e159ed818bc6fbf858549452ad78fd0b238f9d8193ac9842147555afb3dcca"
+  },
+  "source_content_changed": false,
+  "connection": "AUTHENTICATED_ACCOUNT_AND_ALL_REPOSITORY_INSTALLATION_VERIFIED",
+  "workflow": "MANUAL_ONLY; no automatic push/PR execution; no automatic fixes",
+  "result": "EXTERNAL_RUN_PENDING; local evidence is separately qualified in LOCAL_VALIDATION.json",
+  "D005": "OPEN",
+  "Stage2.48": "NOT_ACCEPTED",
+  "Dell_changes": false
+}

@@ -1,0 +1,167 @@
+name: MOKOSH preliminary analysis only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-preliminary-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compatibility:
+    name: ${{ matrix.mode }} on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            mode: linux-baseline
+            architecture: x64
+          - os: windows-2022
+            mode: portability-probe
+            architecture: x64
+          - os: macos-15
+            mode: portability-probe
+            architecture: arm64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        id: python
+        with:
+          python-version: '3.12.3'
+          architecture: ${{ matrix.architecture }}
+          check-latest: false
+      - name: Bootstrap exact hashed runtime dependencies
+        id: runtime
+        run: >-
+          python -I -B ci/bootstrap_venv.py --project project --manifest SOURCE_MANIFEST.json
+          --destination "$RUNNER_TEMP/mokosh-runtime" --requirements ci/runtime-dependencies.lock
+          --output artifacts/bootstrap-runtime
+      - name: Unchanged baseline or explicitly limited portability probe
+        id: audit
+        env:
+          AUDIT_PYTHON: ${{ steps.runtime.outputs.python-path }}
+          AUDIT_MODE: ${{ matrix.mode }}
+        run: >-
+          "$AUDIT_PYTHON" -I -B ci/run_preliminary.py --project project
+          --manifest SOURCE_MANIFEST.json --mode "$AUDIT_MODE" --output artifacts/report
+      - name: Record job outcome even on failure
+        if: ${{ always() }}
+        env:
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          PYTHON_OUTCOME: ${{ steps.python.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.runtime.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          mkdir -p artifacts
+          printf '{"checkout":"%s","python":"%s","bootstrap":"%s","audit":"%s","scope":"PRELIMINARY_ONLY_NO_NATIVE_ACCEPTANCE"}\n' "$CHECKOUT_OUTCOME" "$PYTHON_OUTCOME" "$BOOTSTRAP_OUTCOME" "$AUDIT_OUTCOME" > artifacts/JOB_STATUS.json
+      - name: Seal only approved report paths
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        run: python -I -B ci/stage_report_artifacts.py --root artifacts --output artifact_upload
+      - name: Preserve sealed reports including failures
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: preliminary-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false
+
+  security:
+    name: Read-only baseline and separate R3 static reports
+    needs: compatibility
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        id: python
+        with:
+          python-version: '3.12.3'
+          architecture: x64
+          check-latest: false
+      - name: Bootstrap pinned analysis tools
+        id: tools
+        run: >-
+          python -I -B ci/bootstrap_venv.py --project project --manifest SOURCE_MANIFEST.json
+          --destination "$RUNNER_TEMP/mokosh-analysis-tools" --requirements ci/analysis-tools.lock
+          --output artifacts/bootstrap-tools
+      - name: Report findings without applying changes
+        id: scan
+        env:
+          TOOL_PYTHON: ${{ steps.tools.outputs.python-path }}
+        run: >-
+          "$TOOL_PYTHON" -I -B ci/run_owned_command.py --timeout 600 --
+          "$TOOL_PYTHON" -I -B ci/run_scans.py --source project --output artifacts/security
+          --runtime-requirements ci/runtime-dependencies.lock --candidate candidates/R3
+      - name: Verify CI guard contracts without changing the product
+        if: ${{ always() && steps.tools.outcome == 'success' }}
+        env:
+          TOOL_PYTHON: ${{ steps.tools.outputs.python-path }}
+        run: |
+          mkdir -p artifacts/controls
+          "$TOOL_PYTHON" -I -B ci/test_ci_guards.py > artifacts/controls/CI_GUARDS.log 2>&1
+          "$TOOL_PYTHON" -I -B ci/validate_workflow.py --workflow .github/workflows/preliminary-analysis.yml --output artifacts/controls/WORKFLOW_REVIEW.json
+      - name: Record job outcome even on findings or tool failure
+        if: ${{ always() }}
+        env:
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          PYTHON_OUTCOME: ${{ steps.python.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.tools.outcome }}
+          SCAN_OUTCOME: ${{ steps.scan.outcome }}
+        run: |
+          mkdir -p artifacts
+          printf '{"checkout":"%s","python":"%s","bootstrap":"%s","scan":"%s","scope":"FINDINGS_ONLY_NO_AUTOFIX"}\n' "$CHECKOUT_OUTCOME" "$PYTHON_OUTCOME" "$BOOTSTRAP_OUTCOME" "$SCAN_OUTCOME" > artifacts/JOB_STATUS.json
+      - name: Seal approved security report paths
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        run: python -I -B ci/stage_report_artifacts.py --root artifacts --output artifact_upload
+      - name: Preserve sealed findings and failures
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: preliminary-security-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false
