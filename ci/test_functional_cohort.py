@@ -106,9 +106,10 @@ class ContractGuards(unittest.TestCase):
 
     def test_02_modified_cohort_manifest_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / 'changed.json'
+            root = Path(directory).resolve(strict=True)
+            path = root / 'changed.json'
             path.write_bytes(contract.CONTRACT_PATH.read_bytes() + b' ')
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, '^Pinned cohort manifest bytes differ$'):
                 contract.load_contract(path)
 
     def test_03_missing_or_duplicate_success_id_is_rejected(self):
@@ -315,30 +316,34 @@ class WorkflowGuards(unittest.TestCase):
             (b'fail-fast: false', b'fail-fast: true'), (b'--target', b'--local-lab --target'),
             (b'checkout@3d3c42e5aac5ba805825da76410c181273ba90b1', b'checkout@main'))
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / 'changed.yml'
+            root = Path(directory).resolve(strict=True)
+            path = root / 'changed.yml'
             for before, after in changes:
                 self.assertIn(before, raw)
                 path.write_bytes(raw.replace(before, after))
-                with self.subTest(before=before), self.assertRaises(ValueError):
+                with self.subTest(before=before), self.assertRaisesRegex(ValueError,
+                        '^Functional cohort workflow differs from the exact reviewed template$'):
                     workflow.check(path)
 
     def test_29_workflow_review_cannot_write_inside_product(self):
         with tempfile.TemporaryDirectory() as directory:
-            project = Path(directory) / 'project'
+            root = Path(directory).resolve(strict=True)
+            project = root / 'project'
             project.mkdir()
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, '^Workflow review output must be outside frozen project$'):
                 workflow.main(['--workflow', str(ROOT / '.github/workflows/functional-cohort-248.yml'),
                     '--project', str(project), '--output', str(project / 'injected.json')])
             self.assertEqual(list(project.iterdir()), [])
 
     def test_30_existing_allowlist_keeps_cohort_failure_reports_and_no_source(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory) / 'artifacts'
+            temporary_root = Path(directory).resolve(strict=True)
+            root = temporary_root / 'artifacts'
             (root / 'report/worker').mkdir(parents=True)
             (root / 'report/AUDIT_RESULT.json').write_text('{"result":"FAIL_COHORT"}\n')
             (root / 'report/worker/RESULT.json').write_text('{"result":"FAIL_WORKER"}\n')
             (root / 'report/worker/FULL_TESTS.log').write_text('synthetic failed product test detail\n')
-            result = artifacts.stage(root, Path(directory) / 'sealed')
+            result = artifacts.stage(root, temporary_root / 'sealed')
             self.assertEqual(result['result'], 'PASS_EXPLICIT_REPORT_ARTIFACT_ALLOWLIST')
             self.assertEqual(set(result['files']), {'report/AUDIT_RESULT.json',
                 'report/worker/RESULT.json', 'report/worker/FULL_TESTS.log'})
@@ -349,7 +354,7 @@ class ControllerGuards(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve(strict=True)
         self.project = self.root / 'project'
         self.project.mkdir()
         self.manifest = self.root / 'SOURCE_MANIFEST.json'
@@ -601,7 +606,7 @@ class DiscoveryGuards(unittest.TestCase):
         old_cwd, old_path = os.getcwd(), sys.path[:]
         old_tests = sys.modules.get('tests')
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve(strict=True)
             project = root / 'synthetic_project'
             project.mkdir()
             manifest = root / 'SYNTHETIC_MANIFEST.json'
