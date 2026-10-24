@@ -55,22 +55,37 @@ def _diagnostic_call(diagnostic, method, *args):
 
 
 def read_file(path, *, diagnostic=None, context=None):
-    before = opened = after = raw = None
+    before = opened = after = guard_after = raw = None
+    guard_after_attempted = False
+    fields = lambda s: (s.st_dev, s.st_ino, s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+    comparable = lambda s: fields(s)[:-1]
+    regular = lambda s: stat.S_ISREG(s.st_mode) and s.st_nlink == 1 and 0 <= s.st_size <= 32 * 1024 * 1024
     try:
         path = safe_path(path)
         before = path.lstat()
-        require(stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and before.st_size <= 32 * 1024 * 1024,
-            'Non-regular, linked or oversized source file')
+        require(regular(before), 'Non-regular, linked or oversized source file')
         with path.open('rb') as stream:
             opened = os.fstat(stream.fileno())
+            require(regular(opened), 'Non-regular, linked or oversized source file')
             require((opened.st_dev, opened.st_ino) == (before.st_dev, before.st_ino), 'Source replaced while opening')
+            require(comparable(before) == comparable(opened), 'Source changed while reading')
             raw = stream.read(32 * 1024 * 1024 + 1)
             after = os.fstat(stream.fileno())
-        fields = lambda s: (s.st_dev, s.st_ino, s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
-        require(fields(before) == fields(after) and len(raw) == before.st_size, 'Source changed while reading')
+            # CPython 3.12 Windows path ctime is birthtime, while fstat uses
+            # ChangeTime. Compare ctime only within the same API, never drop it.
+            # Sample the path while this descriptor is still held, including
+            # when a subsequent pair comparison will refuse the read.
+            guard_after_attempted = True
+            guard_after = path.lstat()
+            require(regular(after) and regular(guard_after)
+                and fields(opened) == fields(after) and fields(before) == fields(guard_after)
+                and comparable(after) == comparable(guard_after)
+                and len(raw) == before.st_size == opened.st_size == after.st_size == guard_after.st_size,
+                'Source changed while reading')
         return raw
     except BaseException as error:
-        _diagnostic_call(diagnostic, 'read_failure', context, path, error, before, opened, after, raw)
+        _diagnostic_call(diagnostic, 'read_failure', context, path, error, before, opened, after, raw,
+            guard_after, guard_after_attempted)
         raise
 
 

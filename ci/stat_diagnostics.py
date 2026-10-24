@@ -70,7 +70,7 @@ class Collector:
         self.incomplete = True
         self.reasons.add(reason if reason in {'COLLECTOR_ERROR', 'BUDGET_EXHAUSTED',
             'INVALID_CONTEXT', 'INVALID_METADATA', 'RECORD_TOO_LARGE', 'WRITE_FAILED',
-            'POST_PATH_STAT_UNAVAILABLE'} else 'COLLECTOR_ERROR')
+            'POST_PATH_STAT_UNAVAILABLE', 'GUARD_POST_PATH_STAT_UNAVAILABLE'} else 'COLLECTOR_ERROR')
 
     def register_sources(self, wanted):
         # Keep only names authorized by the validated source manifest. Invalid
@@ -141,10 +141,13 @@ class Collector:
         except BaseException:
             self.mark_incomplete('WRITE_FAILED')
 
-    def read_failure(self, context, path, error, before, opened, after, raw):
+    def read_failure(self, context, path, error, before, opened, after, raw, guard_after=None,
+            guard_after_attempted=False):
         # Failure observation must never replace the original read exception.
         try:
             bound = self._context(context)
+            if guard_after_attempted and guard_after is None:
+                self.mark_incomplete('GUARD_POST_PATH_STAT_UNAVAILABLE')
             post = None
             post_error = None
             try:
@@ -153,14 +156,20 @@ class Collector:
                 post_error = 'POST_PATH_STAT_UNAVAILABLE'
                 self.mark_incomplete(post_error)
             stats = {'lstat_before': self._stat(before), 'fstat_opened': self._stat(opened),
-                'fstat_after_read': self._stat(after), 'lstat_after': self._stat(post)}
+                'fstat_after_read': self._stat(after), 'lstat_guard_after': self._stat(guard_after),
+                'lstat_failure_probe': self._stat(post)}
             differences = {}
             for label, left, right in [('path_vs_opened', 'lstat_before', 'fstat_opened'),
                     ('same_handle_during_read', 'fstat_opened', 'fstat_after_read'),
-                    ('path_before_vs_after', 'lstat_before', 'lstat_after')]:
+                    ('path_before_vs_guard_after', 'lstat_before', 'lstat_guard_after'),
+                    ('path_before_vs_failure_probe', 'lstat_before', 'lstat_failure_probe')]:
                 a, b = stats[left], stats[right]
                 differences[label] = None if a is None or b is None else [k for k in FIELDS if a[k] != b[k]]
             self._emit({'event': 'READ_REJECTED', 'context': bound, 'guard': reason_code(error),
+                'observation_contract': 'LIKE_API_GUARD_PAIRS_V2',
+                'guard_post_path': {'status': 'OBSERVED' if guard_after is not None
+                    else 'FAILED' if guard_after_attempted else 'NOT_REACHED',
+                    'error': reason_code(error) if guard_after_attempted and guard_after is None else None},
                 'observations': stats, 'differing_fields': differences, 'post_path_error': post_error,
                 'read_bytes': None if raw is None else len(raw),
                 'read_sha256': None if raw is None else hashlib.sha256(raw).hexdigest()})

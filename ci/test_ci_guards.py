@@ -398,9 +398,153 @@ class Guards(unittest.TestCase):
         self.assertIn('Source user-executable metadata differs: app.py', record['error']['detail'])
         self.assertFalse((self.root / 'venv').exists())
 
+    def stat_fixture(self, value, **changes):
+        values = {key: getattr(value, key) for key in ('st_dev', 'st_ino', 'st_mode',
+            'st_nlink', 'st_size', 'st_mtime_ns', 'st_ctime_ns')}
+        values.update(changes)
+        return types.SimpleNamespace(**values)
+
+    @contextlib.contextmanager
+    def reader_samples(self, before, opened, after, post):
+        # These deterministic shape controls complement the separately prepared
+        # native test. They do not claim a real Windows kernel observation.
+        path = self.project / 'app.py'
+        with patch.object(m, 'safe_path', return_value=path), \
+                patch.object(Path, 'lstat', autospec=True, side_effect=[before, post]), \
+                patch.object(m.os, 'fstat', side_effect=[opened, after]):
+            yield path
+
+    def test_34_stable_windows_shaped_cross_api_ctime_is_positive(self):
+        value = (self.project / 'app.py').stat()
+        fd = self.stat_fixture(value, st_ctime_ns=value.st_ctime_ns + 100)
+        with self.reader_samples(value, fd, fd, value) as path:
+            self.assertEqual(m.read_file(path), b'value = 1\n')
+
+    def test_35_same_handle_ctime_only_change_is_rejected(self):
+        value = (self.project / 'app.py').stat()
+        opened = self.stat_fixture(value, st_ctime_ns=value.st_ctime_ns + 100)
+        after = self.stat_fixture(value, st_ctime_ns=value.st_ctime_ns + 101)
+        with self.reader_samples(value, opened, after, value) as path, \
+                self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+            m.read_file(path)
+
+    def test_36_posix_preopen_ctime_change_is_rejected_even_with_stable_fd(self):
+        before = (self.project / 'app.py').stat()
+        later = self.stat_fixture(before, st_ctime_ns=before.st_ctime_ns + 100)
+        with self.reader_samples(before, later, later, later) as path, \
+                self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+            m.read_file(path)
+
+    def test_37_post_path_changed_fields_are_all_rejected(self):
+        value = (self.project / 'app.py').stat()
+        cases = {'st_dev': value.st_dev + 1, 'st_ino': value.st_ino + 1,
+            'st_mode': stat.S_IFLNK | 0o644, 'st_nlink': 2, 'st_size': value.st_size + 1,
+            'st_mtime_ns': value.st_mtime_ns + 1, 'st_ctime_ns': value.st_ctime_ns + 1}
+        for key, changed in cases.items():
+            with self.subTest(field=key), self.reader_samples(value, value, value,
+                    self.stat_fixture(value, **{key: changed})) as path, \
+                    self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+                m.read_file(path)
+
+    def test_38_opened_descriptor_type_link_and_bound_are_checked(self):
+        value = (self.project / 'app.py').stat()
+        cases = ({'st_mode': stat.S_IFDIR | 0o700}, {'st_nlink': 2},
+            {'st_size': 32 * 1024 * 1024 + 1}, {'st_size': -1})
+        for changes in cases:
+            with self.subTest(changes=changes), self.reader_samples(value,
+                    self.stat_fixture(value, **changes), value, value) as path, \
+                    self.assertRaisesRegex(ValueError, '^Non-regular, linked or oversized source file$'):
+                m.read_file(path)
+
+    def test_39_opened_descriptor_comparable_metadata_is_bound_before_read(self):
+        value = (self.project / 'app.py').stat()
+        for key, changed in (('st_mode', value.st_mode ^ stat.S_IXUSR),
+                ('st_size', value.st_size + 1), ('st_mtime_ns', value.st_mtime_ns + 1)):
+            with self.subTest(field=key), self.reader_samples(value,
+                    self.stat_fixture(value, **{key: changed}), value, value) as path, \
+                    self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+                m.read_file(path)
+
+    def test_40_same_handle_changed_fields_are_all_rejected(self):
+        value = (self.project / 'app.py').stat()
+        cases = {'st_dev': value.st_dev + 1, 'st_ino': value.st_ino + 1,
+            'st_mode': value.st_mode ^ stat.S_IXUSR, 'st_nlink': 2, 'st_size': value.st_size + 1,
+            'st_mtime_ns': value.st_mtime_ns + 1, 'st_ctime_ns': value.st_ctime_ns + 1}
+        for key, changed in cases.items():
+            with self.subTest(field=key), self.reader_samples(value, value,
+                    self.stat_fixture(value, **{key: changed}), value) as path, \
+                    self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+                m.read_file(path)
+
+    def test_41_guard_post_path_sample_occurs_while_descriptor_held(self):
+        path = self.project / 'app.py'
+        real_fstat, real_lstat = os.fstat, Path.lstat
+        held = []
+        samples = []
+        def capture(fd):
+            held.append(fd)
+            return real_fstat(fd)
+        def sample(target):
+            samples.append(1)
+            if len(samples) == 2:
+                self.assertEqual(len(held), 2)
+                self.assertEqual(real_fstat(held[0]).st_ino, real_lstat(target).st_ino)
+            return real_lstat(target)
+        with patch.object(m, 'safe_path', return_value=path), \
+                patch.object(m.os, 'fstat', side_effect=capture), \
+                patch.object(Path, 'lstat', autospec=True, side_effect=sample):
+            self.assertEqual(m.read_file(path), b'value = 1\n')
+        self.assertEqual(len(samples), 2)
+        with self.assertRaises(OSError):
+            real_fstat(held[0])
+
+    def test_42_same_length_content_mutation_restored_mtime_fails_manifest_hash(self):
+        path = self.project / 'app.py'
+        value = path.stat()
+        path.write_bytes(b'value = 2\n')
+        os.utime(path, ns=(value.st_atime_ns, value.st_mtime_ns))
+        self.assertEqual(path.stat().st_size, value.st_size)
+        self.assertEqual(path.stat().st_mtime_ns, value.st_mtime_ns)
+        with self.assertRaisesRegex(ValueError, '^Source bytes differ: app.py$'):
+            m.snapshot(self.project, self.manifest)
+
+    def test_43_read_length_and_bounded_request_are_enforced(self):
+        path = self.project / 'app.py'
+        real = path.open
+        requests = []
+        class Stream:
+            def __init__(self, stream, raw):
+                self.stream, self.raw = stream, raw
+            def __enter__(self): return self
+            def __exit__(self, *args): self.stream.close()
+            def fileno(self): return self.stream.fileno()
+            def read(self, limit):
+                requests.append(limit)
+                return self.raw
+        for raw in (b'', b'value = 1', b'value = 1\nX'):
+            stream = Stream(real('rb'), raw)
+            with patch.object(m, 'safe_path', return_value=path), \
+                    patch.object(Path, 'open', return_value=stream), \
+                    self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
+                m.read_file(path)
+        self.assertEqual(requests, [32 * 1024 * 1024 + 1] * 3)
+
+    def test_44_stager_accepts_unchanged_approved_report_with_cross_api_ctime(self):
+        root = self.root / 'artifacts'
+        root.mkdir()
+        (root / 'JOB_STATUS.json').write_bytes(b'{}\n')
+        real_fstat = os.fstat
+        def different_api_ctime(fd):
+            value = real_fstat(fd)
+            return self.stat_fixture(value, st_ctime_ns=value.st_ctime_ns + 100)
+        with patch.object(m.os, 'fstat', side_effect=different_api_ctime):
+            result = artifacts.stage(root, self.root / 'sealed')
+        self.assertEqual(result['result'], 'PASS_EXPLICIT_REPORT_ARTIFACT_ALLOWLIST')
+        self.assertEqual((self.root / 'sealed/JOB_STATUS.json').read_bytes(), b'{}\n')
+
 
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(Guards)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 33
+    raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 44
         and not(result.skipped or result.expectedFailures or result.unexpectedSuccesses) else 1)

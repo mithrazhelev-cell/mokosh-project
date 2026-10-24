@@ -41,8 +41,15 @@ class DiagnosticGuards(unittest.TestCase):
         return self.changed_stat(value, st_ctime_ns=value.st_ctime_ns + 100)
 
     def reject_with_ctime(self, observer):
-        self.real_fstat = os.fstat
-        with patch.object(m.os, 'fstat', side_effect=self.ctime_mismatch), \
+        # Negative logger/privacy controls retain a real same-handle change;
+        # the measured stable cross-API mismatch is now the positive below.
+        real = os.fstat
+        calls = []
+        def changed(fd):
+            value = real(fd)
+            calls.append(1)
+            return self.changed_stat(value, st_ctime_ns=value.st_ctime_ns + 100 * len(calls))
+        with patch.object(m.os, 'fstat', side_effect=changed), \
                 self.assertRaisesRegex(ValueError, '^Source changed while reading$'):
             m.read_file(self.project / 'app.py', diagnostic=observer, context=self.context)
 
@@ -54,18 +61,17 @@ class DiagnosticGuards(unittest.TestCase):
         self.assertEqual(self.log.getvalue(), '', 'Successful reads must not exhaust the failure budget')
         self.assertEqual(path.read_bytes(), before)
 
-    def test_02_cross_api_ctime_difference_remains_failure_with_exact_metadata(self):
-        self.reject_with_ctime(None)
-        self.reject_with_ctime(self.observer)
-        record = self.records()[0]
-        self.assertEqual(record['guard'], 'SOURCE_CHANGED_WHILE_READING')
-        self.assertEqual(record['context']['name'], 'app.py')
-        self.assertEqual(record['differing_fields']['path_vs_opened'], ['st_ctime_ns'])
-        self.assertEqual(record['differing_fields']['same_handle_during_read'], [])
-        self.assertEqual(record['read_sha256'], self.manifest['records'][0]['sha256'])
-        self.assertEqual(record['read_bytes'], self.manifest['records'][0]['bytes'])
-        self.assertIsNone(record['observations']['lstat_before']['st_birthtime_ns'])
-        self.assertNotIn('value = 1', self.log.getvalue())
+    def test_02_stable_cross_api_ctime_difference_returns_exact_bytes(self):
+        # Approved alignment: Windows path creation time and fd ChangeTime
+        # may differ without any in-read change. Keep both ctime pairs strict.
+        self.real_fstat = os.fstat
+        raw = (self.project / 'app.py').read_bytes()
+        with patch.object(m.os, 'fstat', side_effect=self.ctime_mismatch):
+            self.assertEqual(m.read_file(self.project / 'app.py'), raw)
+            self.assertEqual(m.read_file(self.project / 'app.py', diagnostic=self.observer,
+                context=self.context), raw)
+        self.assertEqual(self.log.getvalue(), '')
+        self.assertFalse(self.observer.incomplete)
 
     def test_03_same_handle_change_is_distinct_from_cross_api_only(self):
         real = os.fstat
@@ -248,8 +254,10 @@ class DiagnosticGuards(unittest.TestCase):
             kwargs['stdout'].write('synthetic pip log\n')
             return types.SimpleNamespace(returncode=0)
         observer = d.Collector('BOOTSTRAP', self.log)
+        self.real_fstat = os.fstat
         with patch.object(bootstrap.venv.EnvBuilder, 'create', side_effect=create), \
-                patch.object(bootstrap, 'run_owned', side_effect=success):
+                patch.object(bootstrap, 'run_owned', side_effect=success), \
+                patch.object(m.os, 'fstat', side_effect=self.ctime_mismatch):
             status = bootstrap.bootstrap(self.project, self.manifest_path, self.root / 'venv',
                 requirements, self.output, diagnostic=observer)
         self.assertEqual(status, 0)
@@ -310,9 +318,111 @@ class DiagnosticGuards(unittest.TestCase):
         report = json.loads((self.output / 'AUDIT_RESULT.json').read_text())
         self.assertEqual(report['diagnostic']['collection'], 'PENDING_FINAL_RECEIPT')
 
+    def test_21_actual_guard_post_snapshot_is_distinct_from_failure_probe(self):
+        real = Path.lstat
+        target = self.project / 'app.py'
+        value = real(target)
+        calls = []
+        def samples(path):
+            if path != target:
+                return real(path)
+            calls.append(1)
+            return self.changed_stat(value, st_ctime_ns=value.st_ctime_ns + len(calls) - 1)
+        with patch.object(m, 'safe_path', return_value=target), \
+                patch.object(Path, 'lstat', autospec=True, side_effect=samples), \
+                self.assertRaisesRegex(ValueError, 'Source changed while reading'):
+            m.read_file(target, diagnostic=self.observer, context=self.context)
+        record = self.records()[0]
+        self.assertEqual(len(calls), 3)
+        self.assertEqual(record['guard_post_path'], {'status': 'OBSERVED', 'error': None})
+        self.assertEqual(record['observation_contract'], 'LIKE_API_GUARD_PAIRS_V2')
+        self.assertEqual(record['observations']['lstat_guard_after']['st_ctime_ns'], value.st_ctime_ns + 1)
+        self.assertEqual(record['observations']['lstat_failure_probe']['st_ctime_ns'], value.st_ctime_ns + 2)
+        self.assertEqual(record['differing_fields']['path_before_vs_guard_after'], ['st_ctime_ns'])
+        self.assertEqual(record['differing_fields']['path_before_vs_failure_probe'], ['st_ctime_ns'])
+
+    def test_22_guard_post_missing_is_failed_not_later_diagnostic_success(self):
+        real = Path.lstat
+        target = self.project / 'app.py'
+        calls = []
+        def samples(path):
+            if path != target:
+                return real(path)
+            calls.append(1)
+            if len(calls) == 2:
+                raise FileNotFoundError('private-missing-path')
+            return real(path)
+        with patch.object(m, 'safe_path', return_value=target), \
+                patch.object(Path, 'lstat', autospec=True, side_effect=samples), \
+                self.assertRaisesRegex(FileNotFoundError, 'private-missing-path'):
+            m.read_file(target, diagnostic=self.observer, context=self.context)
+        record = self.records()[0]
+        self.assertEqual(record['guard_post_path'], {'status': 'FAILED', 'error': 'FILE_NOT_FOUND'})
+        self.assertIsNone(record['observations']['lstat_guard_after'])
+        self.assertIsNotNone(record['observations']['lstat_failure_probe'])
+        self.assertNotIn('private-missing-path', self.log.getvalue())
+        self.assertTrue(self.observer.incomplete)
+        self.assertIn('GUARD_POST_PATH_STAT_UNAVAILABLE', self.observer.summary()['reason_codes'])
+
+    def test_23_guard_post_not_reached_on_open_binding_refusal(self):
+        real = os.fstat
+        with patch.object(m.os, 'fstat', side_effect=lambda fd: self.changed_stat(real(fd), st_ino=0)), \
+                self.assertRaisesRegex(ValueError, 'Source replaced while opening'):
+            m.read_file(self.project / 'app.py', diagnostic=self.observer, context=self.context)
+        record = self.records()[0]
+        self.assertEqual(record['guard_post_path'], {'status': 'NOT_REACHED', 'error': None})
+        self.assertIsNone(record['observations']['lstat_guard_after'])
+        self.assertIsNotNone(record['observations']['lstat_failure_probe'])
+
+    def test_24_same_handle_ctime_change_keeps_exact_hash_and_bounded_record(self):
+        self.reject_with_ctime(self.observer)
+        record = self.records()[0]
+        self.assertEqual(record['guard'], 'SOURCE_CHANGED_WHILE_READING')
+        self.assertEqual(record['differing_fields']['same_handle_during_read'], ['st_ctime_ns'])
+        self.assertEqual(record['read_sha256'], self.manifest['records'][0]['sha256'])
+        self.assertEqual(record['read_bytes'], self.manifest['records'][0]['bytes'])
+        self.assertEqual(record['guard_post_path']['status'], 'OBSERVED')
+        self.assertLessEqual(len(self.log.getvalue().encode('ascii')), 4096)
+        self.assertNotIn('value = 1', self.log.getvalue())
+
+    def test_25_maximal_numeric_metadata_stays_within_record_budget(self):
+        # Five distinct snapshots must still obey the original record bound.
+        # Extremely large valid integer fields must not exceed the log bound.
+        snapshots = [types.SimpleNamespace(**{key: 2 ** 127 - 1 - i for key in d.FIELDS})
+            for i in range(5)]
+        with patch.object(Path, 'lstat', return_value=snapshots[4]):
+            self.observer.read_failure(self.context, self.project / 'app.py',
+                ValueError('Source changed while reading'), *snapshots[:3],
+                b'value = 1\n', snapshots[3], True)
+        self.observer.finish()
+        self.assertTrue(all(len(line.encode('ascii')) <= 4096
+            for line in self.log.getvalue().splitlines(keepends=True)))
+        self.assertLessEqual(len(self.log.getvalue().encode('ascii')), 32 * 4096)
+        self.assertFalse(self.observer.incomplete)
+        self.assertEqual(self.records()[0]['event'], 'READ_REJECTED')
+
+    def test_26_long_bound_name_and_maximal_metadata_refuse_oversized_record(self):
+        name = 'a' * 237 + '.py'
+        row = self.manifest['records'][0]
+        self.observer.register_sources({name: row})
+        context = ('SOURCE', 'COPY_BEFORE', name, row['bytes'], row['sha256'])
+        snapshots = [types.SimpleNamespace(**{key: 2 ** 127 - 1 - i for key in d.FIELDS})
+            for i in range(5)]
+        with patch.object(Path, 'lstat', return_value=snapshots[4]):
+            self.observer.read_failure(context, self.project / 'app.py',
+                ValueError('Source changed while reading'), *snapshots[:3],
+                b'value = 1\n', snapshots[3], True)
+        self.assertEqual(self.log.getvalue(), '', 'Oversized record must not be partially written')
+        self.observer.finish()
+        self.assertTrue(self.observer.incomplete)
+        self.assertIn('RECORD_TOO_LARGE', self.observer.summary()['reason_codes'])
+        self.assertEqual(len(self.records()), 1)
+        self.assertEqual(self.records()[0]['collection'], 'DIAGNOSTIC_INCOMPLETE')
+        self.assertLessEqual(len(self.log.getvalue().encode('ascii')), 4096)
+
 
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(DiagnosticGuards)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 20
+    raise SystemExit(0 if result.wasSuccessful() and result.testsRun == 26
         and not (result.skipped or result.expectedFailures or result.unexpectedSuccesses) else 1)

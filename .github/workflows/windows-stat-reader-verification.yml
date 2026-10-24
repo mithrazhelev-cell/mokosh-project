@@ -1,0 +1,90 @@
+name: MOKOSH Windows CI reader verification only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-windows-reader-verification-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-reader-verification:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        id: python
+        with:
+          python-version: '3.12.3'
+          architecture: x64
+          check-latest: false
+      - name: Verify the exact reviewed verification workflow
+        id: template
+        run: >-
+          python -I -B ci/validate_stat_reader_workflow.py
+          --workflow .github/workflows/windows-stat-reader-verification.yml
+          --output artifacts/controls/WORKFLOW_REVIEW.json
+      - name: Bootstrap the unchanged exact hashed runtime
+        id: runtime
+        run: >-
+          python -I -B ci/run_reported_step.py --step BOOTSTRAP --timeout 360 --
+          python -I -B ci/bootstrap_venv.py --project project --manifest SOURCE_MANIFEST.json
+          --destination "$RUNNER_TEMP/mokosh-reader-runtime" --requirements ci/runtime-dependencies.lock
+          --output artifacts/bootstrap-runtime
+      - name: Exercise real owned Windows metadata positive and fault controls
+        id: native
+        run: >-
+          python -I -B ci/run_reported_step.py --step NATIVE_READER --timeout 30 --
+          python -I -B ci/verify_stat_reader.py --project project --output artifacts/controls/CI_GUARDS.log
+      - name: Run the limited immutable-source portability probe
+        id: audit
+        env:
+          AUDIT_PYTHON: ${{ steps.runtime.outputs.python-path }}
+        run: >-
+          python -I -B ci/run_reported_step.py --step PORTABILITY_PROBE --timeout 120 --
+          "$AUDIT_PYTHON" -I -B ci/run_preliminary.py --project project --manifest SOURCE_MANIFEST.json
+          --mode portability-probe --output artifacts/report
+      - name: Record verification outcomes even on failure
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        env:
+          TEMPLATE_OUTCOME: ${{ steps.template.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.runtime.outcome }}
+          NATIVE_OUTCOME: ${{ steps.native.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          mkdir -p artifacts
+          printf '{"template":"%s","bootstrap":"%s","native_reader":"%s","portability_probe":"%s","scope":"CI_READER_AND_LIMITED_PROBE_ONLY_NOT_PRODUCT_ACCEPTANCE"}\n' "$TEMPLATE_OUTCOME" "$BOOTSTRAP_OUTCOME" "$NATIVE_OUTCOME" "$AUDIT_OUTCOME" > artifacts/JOB_STATUS.json
+      - name: Seal only existing approved report paths
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        run: >-
+          python -I -B ci/run_reported_step.py --step STAGE --timeout 30 --
+          python -I -B ci/stage_report_artifacts.py --root artifacts --output artifact_upload
+      - name: Preserve the sealed safe report subset
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: windows-reader-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false

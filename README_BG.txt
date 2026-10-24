@@ -1,25 +1,67 @@
 MOKOSH — НЕЗАВЪРШЕНО ПРИЛОЖЕНИЕ, ПРЕДВАРИТЕЛЕН АНАЛИЗ
-Това е точно копие за сверяване и съвети. Няма release, сертификация или независим продуктов security audit.
+Няма release, сертификация, продуктов security audit или приемане за готовност.
 Stage2.47 е приет вътрешно; Stage2.48 NOT_ACCEPTED; D005 OPEN.
+263 product файла,6 отделни R3 inputs и петте dependency pins остават непроменени.
+Нормалният LocalV2Service изрично допуска Linux. Windows/macOS продуктовата
+поддръжка изисква отделен файлов договор и native/физически приемания.
 
-project/:263 точни файла, непроменени тестове и пет фиксирани зависимости.
-Шестте R3 файла са отделни входове за статичен анализ, без overlay или изпълнение.
-Нормалният LocalV2Service в наличния код изрично допуска само Linux. Windows/macOS продуктовото приемане изисква отделно задание и native/физически проверки.
+ИЗПЪЛНЕНИЯ, КОИТО ОСТАВАТ ИСТОРИЯ
+40087175055/attempt1/838bd591...: общ FAILURE. Linux2509uniquePASS/0FAIL/ERROR/SKIP,
+189compile; macOSARM64 само limited portability probe. Windows отказва при
+началната copy проверка; точното старо име/поле не е записано.
+Cloud security320baseline+7R3 сигнала не са327 доказани дефекта. Един distinct
+cryptography49 advisory CVE-2026-69247/GHSA-g6cj-pr64-35w5 остава NOT_FIXED.
 
-Първи действителен GitHub run40087175055/attempt1, commit838bd591...: общ FAILURE.
-Linux2509 уникални PASS/0FAIL/ERROR/SKIP; macOSARM64 само ограничен compile/runtime probe.
-Windows е спрял преди компилация/runtime при началната проверка на временното копие; точният файл/stat поле не е записан.
-Security: завършени320baseline+7R3 pattern сигнала, не327 доказани дефекта. Cloud dependency audit е COMPLETE: един distinct advisory за cryptography49, NOT_FIXED. Старият локален DNS/INCOMPLETE запис остава исторически.
+40096716338/attempt1/8f62fa6: FAILURE в BOOTSTRAP_BEFORE иFINAL. Измерена грешка
+в нашия CI reader: Windows/CPython3.12.3 lstatctime=birthtime, fstatctime=ChangeTime.
+Вход mokosh_vault_recovery_source_selection.py,17741bytes,
+SHA256856143153b21cc6c3ff81e908cbf875c0433492a79a023ee2ab3e4b793024600.
+Само crossAPIctime е различен; path/path иfd/fd са стабилни, bytes/hash точни.
+Пълният263before/after guard не завършва. Appvenv/pip/copy/compile/probe/worker
+не са достигнати; старият отказанpip report не е възпроизведен и е OPEN.
+BOOTSTRAPreceipt+raw1 са налични. STAGEreceipt+runner success има, raw0 не е
+отпечатан; изводът за0 и строгият evidence пропуск са запазени отделно.
 
-CI кандидатът добавя отделна РЪЧНА задача MOKOSH Windows stat diagnosis only.
-Основният workflow/матрица са непроменени. Read-only contents, pinned actions/locks, частни временни копия и artifact allowlist остават.
-Новата задача наблюдава метаданни и спира преди product compile/probe/worker. Няма автоматични поправки, update, merge, release или push/PR trigger.
-Публикуването/пускането на кандидата се обсъждат отделно. Реален нов Windows run още няма.
+ЛОКАЛНО ПОДГОТВЕНАТА CI ПОПРАВКА
+Потребителят одобри подготовката в отделно копие. Path/path7fields inclctime
+иsamefd/fd7fields inclctime се сравняват отделно. CrossAPIidentity/regular/link/
+size/mode/mtime, boundedread, length/SHA/count/canonical, finalsource/copy и
+cleanup остават. Задължителният postpath е при още отворен descriptor.
+Няма tolerance/retry/sleep в reader, Python upgrade или продуктова поправка.
+Windows pathctime не е ChangeTime baseline преди отварянето. FD наблюдението
+започва при първия проверенfstat; няма универсално обещание за минали събития,
+ACL/owner или Windows backend за ключове/профили.
+Новите diagnostic записи разграничават actual lstat_guard_after от по-късния
+lstat_failure_probe, observation_contract LIKE_API_GUARD_PAIRS_V2. Старите raw
+записи са непроменени. Неуспешен guardstat остава INCOMPLETE дори при успешен
+по-късен probe. Бюджет16/32/16 записа, общо64×4096bytes; без content/envdump.
+Стар baseline0eccbc1832459c98e19142d2907cba3786c2185a/treebcefce72... е равен на
+публикуван8f62fa6. Само доказаните false-refusal очаквания са подравнени към
+одобрения договор; privacy/sink/phase отрицателните цели остават с истинска
+FD промяна. Старите тестове/код/FAIL са запазени.
 
-Диагностичният журнал е ограничен до16/32/16 записа, общо64×4096 bytes. Няма файлово съдържание или environment dump. ctime и другите guards не са отслабени; отказаните artifact байтове остават блокирани.
-Пълнота се установява от финалния receipt И точния изходен код за същите run/job/attempt/commit. Exit2 или липсващи данни = INCOMPLETE. Audit exit1 = първоначален FAIL или NON_REPRODUCED, не compatibility PASS. PENDING_FINAL_RECEIPT не е крайна пълнота.
+СЛЕДВАЩ WINDOWS КОНТРОЛ — САМО ПОДГОТВЕН
+Двата стари workflows са byte-exact. Новият MOKOSH Windows stat reader
+verification only е manual-only, Windows2022/x64/Python3.12.3, pinned actions,
+read-only contents. Bootstrap, owned non-secret native fixtures, ограничен
+compile/runtime portability probe и allowlisted reports; без fullmatrix/GUI.
+Реалните kernel метаданни трябва да докажат стабилната разлика и истинската
+ctime-only промяна. Невъзпроизведено условие = nonzero/UNEXERCISED, не PASS.
+Wrapper записва действителния числов childexit и запазва отказите. Timeout,
+collection/write/flush/cleanup грешка не може да се представи за wrapperPASS.
+Marker, действителният wrapperexit и run/job/attempt/commit се четат заедно.
+Преди публикуване и новrun се представят точният кандидат и резултатите.
+Локалните резултати са в ANALYSIS_STATUS.json; няма nativeWindows/macOS,
+exactDell/физическо или продуктово security приемане от Linux лабораторията.
+LOCAL_VALIDATION/history/draft_workflows пазят по-старата подготовка. Git пази
+executable bit, не всички POSIX права/owner/ACL; WindowsPOSIXbits NOT_VERIFIED.
+Всички продуктови дефекти остават по отделните си доказателства и gates.
 
-Локално:33 съществуващи CI guards,20 целеви и17 независими проверки PASS;3 смислени fault/positive двойки доказани. Нормалният контролер премина2509 в квалифицирана Linux/Python3.12.14 среда с точните пет pin-а.
-Първият опит без наличната Tk loader настройка е FAIL и е запазен. Няма exactDell/nativeWindows/macOS/физическо приемане от тези резултати.
-ANALYSIS_STATUS.json е текущото разграничение; LOCAL_VALIDATION.json/history/draft_workflows пазят старите подготовителни състояния.
-Git пази executable bit, не пълните POSIX права/owner/ACL. Windows POSIXbits NOT_VERIFIED.
+ЛОКАЛНИ ПРОВЕРКИ НА ГОТОВИЯ КАНДИДАТ
+89 интегрирани CI контроли PASS:44controller+26diagnostic+19verification,
+включително33 дословно запазени стари проверки. Независими29+17,8reader fault/
+positive двойки,32workflow/wrapper контроли и1exit-projection двойка PASS.
+Full2509uniquePASS/0FAIL/ERROR/SKIP,92модула/189compile,30.603s controller,
+qualifiedlocalLinux/Python3.12.14/същите5pins/наличнатаprivateTkloader среда.
+Развойните fixture грешки и първоначалните reviewFAIL са запазени, не са
+броени за успешни контратестове. NativeWindows и физическият обхват предстоят.
