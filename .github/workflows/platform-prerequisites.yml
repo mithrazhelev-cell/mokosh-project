@@ -1,0 +1,105 @@
+name: MOKOSH platform prerequisite observations only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-platform-prerequisites-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  platform-prerequisites:
+    name: platform-prerequisites-${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            architecture: x64
+            target: linux-x64
+          - os: windows-2022
+            architecture: x64
+            target: windows-x64
+          - os: macos-15
+            architecture: arm64
+            target: macos-arm64
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        id: python
+        with:
+          python-version: '3.12.3'
+          architecture: ${{ matrix.architecture }}
+          check-latest: false
+      - name: Verify the exact reviewed prerequisite workflow
+        id: template
+        run: >-
+          python -I -B ci/validate_platform_prerequisites_workflow.py
+          --workflow .github/workflows/platform-prerequisites.yml --project project
+          --output artifacts/controls/WORKFLOW_REVIEW.json
+      - name: Verify prerequisite failure and scope guards before application imports
+        id: guards
+        run: |
+          mkdir -p artifacts/controls
+          python -I -B ci/test_platform_prerequisites.py > artifacts/controls/CI_GUARDS.log 2>&1
+      - name: Bootstrap the unchanged five hashed runtime dependencies
+        id: runtime
+        run: >-
+          python -I -B ci/run_reported_step.py --step BOOTSTRAP --timeout 360 --
+          python -I -B ci/bootstrap_venv.py --project project --manifest SOURCE_MANIFEST.json
+          --destination "$RUNNER_TEMP/mokosh-prerequisites-runtime" --requirements ci/runtime-dependencies.lock
+          --output artifacts/bootstrap-runtime
+      - name: Run selected unchanged cases and five prerequisite observations
+        id: prerequisites
+        env:
+          AUDIT_PYTHON: ${{ steps.runtime.outputs.python-path }}
+        run: >-
+          python -I -B ci/run_reported_step.py --step CONTROL --timeout 360 --
+          "$AUDIT_PYTHON" -I -B ci/run_platform_prerequisites.py --project project
+          --manifest SOURCE_MANIFEST.json --output artifacts/report --target "${{ matrix.target }}"
+      - name: Record all outcomes even on failure
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        env:
+          TEMPLATE_OUTCOME: ${{ steps.template.outcome }}
+          GUARDS_OUTCOME: ${{ steps.guards.outcome }}
+          BOOTSTRAP_OUTCOME: ${{ steps.runtime.outcome }}
+          PREREQUISITES_OUTCOME: ${{ steps.prerequisites.outcome }}
+        run: |
+          mkdir -p artifacts
+          printf '{"template":"%s","guards":"%s","bootstrap":"%s","prerequisites":"%s","scope":"SELECTED_35_POSIX_OR_21_WINDOWS_TESTS_AND_5_DIAGNOSTIC_ROWS_ONLY_NO_PRODUCT_PLATFORM_GUI_STORAGE_ACCEPTANCE"}\n' "$TEMPLATE_OUTCOME" "$GUARDS_OUTCOME" "$BOOTSTRAP_OUTCOME" "$PREREQUISITES_OUTCOME" > artifacts/JOB_STATUS.json
+      - name: Seal only existing approved report paths
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' }}
+        run: >-
+          python -I -B ci/run_reported_step.py --step STAGE --timeout 30 --
+          python -I -B ci/stage_report_artifacts.py --root artifacts --output artifact_upload
+      - name: Preserve the sealed safe evidence subset
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: platform-prerequisites-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false

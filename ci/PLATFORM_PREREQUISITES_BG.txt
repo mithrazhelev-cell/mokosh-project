@@ -1,0 +1,62 @@
+MOKOSH — ДОПЪЛНИТЕЛНИ ТЕСТОВЕ И ПЛАТФОРМЕНИ ПРЕДПОСТАВКИ
+
+Това е предварителна CI проверка на точния замразен код. Тя не разрешава
+продуктови функции, не сменя архитектура или зависимости и не приема цялото
+приложение за Windows/macOS. Всички съществуващи 309 Git файла са запазени.
+
+Точните допълнителни test IDs са в platform_prerequisites.json:
+- Linux x64 и macOS ARM64: по 35 непроменени случая.
+- Windows x64: 21 непроменени validation/encoding/codec/scope случая.
+Общите 21 случая се изпълняват на трите ОС. Другите 14 са явен POSIX filesystem
+обхват: 10 evidence construction и 4 VerifiedFileSource случая на Linux/macOS.
+Старите 21 reconciliation-evidence случая остават непроменени и са изпълними
+като пълен модул само в заявения POSIX обхват. Windows не получава такъв PASS.
+Тези случаи не се припокриват с вече проверения комплект от 248 случая.
+Няма динамично пропускане на задължителни случаи за зелен резултат.
+
+Отделно се събират точно пет native диагностични наблюдения:
+file_identity_path_fd, permission_semantics, file_and_directory_fsync,
+filesystem_capabilities, explicit_product_linux_gates.
+Наблюдават се само собствени временни обекти с фиксирани несекретни данни.
+Стойностите и изричните OS откази са доказателства за следващия платформен
+договор; завършеното наблюдение не означава поддържана продуктова възможност.
+Неочаквана грешка, непълен отчет или нарушен контрол на целостта са отказ.
+
+Продуктовият FileIdentity запазва всичките си полета и сравнения. Разликите
+между path и descriptor samples се записват; CI reader поправката не се
+пренася в продукта. Външна stat проба не е автоматично trace на вътрешните
+извиквания на продуктовия reader. Реалният reader резултат се отчита отделно.
+Успешно mkdir/chmod не доказва ACL изолация на Windows. Python 3.12.3 е преди
+Windows mode0700 ACL промяната от 3.12.4; ACL privacy остава UNPROVEN.
+File fsync и directory fsync са отделни опити. Успешен syscall не е доказателство
+за устойчивост при загуба на захранване. MAP-Q01 за publication_sync_complete
+остава отделен договорен въпрос. Няма volume flush, admin права или power-loss тест.
+
+Profile и normal LocalV2 Linux gates са запазени. Пробите използват действителната
+ОС и точните съществуващи откази, без patch на sys.platform/os.name. Profile
+inspection получава изрични собствени profile/legacy пътища; не използва реален
+профил или default legacy директория. Невалидният nickname отказва преди profile
+creation/KDF. Четенето на filesystem magic не създава recovery sheet или ключ.
+Директният VaultStorage няма общ Linux gate; такъв отказ не се измисля за него.
+
+Изпълнителят проверява точното discovery преди тестовете. Успех на test частта
+изисква всички заявени уникални IDs, пълен raw журнал и нула FAIL/ERROR/SKIP/
+XFAIL/XPASS. Петте отделни raw observation rows трябва да съвпадат с receipt.
+Runtime, източникът от 263 файла, частното копие, заредените модули, CI кодът
+и cleanup се проверяват преди/след, включително при отказ. Лабораторният режим
+Linux/Python3.12.14 е изрично различен от действителния GitHub Python3.12.3.
+
+Ръчният workflow използва трите досегашни OS targets, непроменените пет hashed
+dependencies и pinned checkout/setup/upload actions. Няма auto-fix/merge/release.
+Качват се само предварително разрешени отчети и журнали с hashes. Source copy,
+частна среда и synthetic test data не се качват. Гаранция за Windows ACL,
+универсално спиране на всички normal descendants или OS sandbox не се добавя.
+
+O048, sourced diagnosis, side-effect review и lawful learning правилото важат.
+Новият CI код е наше изпълнение със стандартната библиотека; няма включен нов
+външен код, набор от данни или dependency. Официалната документация е използвана
+за API семантиката, с точно разграничение на поддържаните Python версии.
+D005 OPEN; Stage2.48 NOT_ACCEPTED; всички 12 продуктови operational items пазени;
+cryptography49 advisory NOT_FIXED; normal LocalV2/Profile Linux gates остават;
+GUI/profile/storage/recovery/physical приемане е отделно; Dell apply/commit/tag NO;
+USB PENDING. Старите доказателства и неуспешни изпълнения се запазват.
