@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "scope": "ONE_EXISTING_FUNCTION_ONLY_IN_PRIVATE_TEMPORARY_COPY",
+  "function": "_sync_directory",
+  "old_text": "def _sync_directory(descriptor: int) -> None:\n    try:\n        os.fsync(descriptor)\n    except OSError as exc:\n        unsupported = {\n            errno.EBADF,\n            errno.EINVAL,\n            getattr(errno, \"ENOTSUP\", errno.EINVAL),\n            getattr(errno, \"EOPNOTSUPP\", errno.EINVAL),\n        }\n        if exc.errno not in unsupported:\n            raise FilesystemSafetyError(\"parent directory fsync failed\") from exc",
+  "new_text": "def _sync_directory(descriptor: int) -> None:\n    try:\n        os.fsync(descriptor)\n    except OSError as exc:\n        raise FilesystemSafetyError(\"parent directory fsync failed\") from exc",
+  "old_segment_sha256": "f4ab1196745222d3b3fb9d243722a3cfc2dfc1c4deecbd2b4fef22dedb11935c",
+  "new_segment_sha256": "ccb590a1003b8c20a7f6b8d85e56f0d70a7447054a5eb3c222cf65a54e5378f9",
+  "baseline_file": {
+    "bytes": 31279,
+    "sha256": "1b997352cb45935ad8b49303de6188fec39d90dd747747981ec0541df6ea88bc"
+  },
+  "candidate_file": {
+    "bytes": 31040,
+    "sha256": "1851a2ad5be8a95b277098e4665957717c6652a62e3dd225478cab351c2e0f90"
+  },
+  "product_apply": false
+}

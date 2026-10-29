@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "status": "PREPARED_FROZEN_SCOPE_PARENT_QA_REQUIRED_NO_EXECUTION",
+  "purpose": "Test narrow stricter _sync_directory candidate through actual unchanged sink control flow and pure lifecycle warning mapping; resolve caller side effects before any product patch.",
+  "oracle": {
+    "path": "/workspace/scratch/23003d4444d0/mokosh-actual-control-routes-20261029/analysis/SYNC_ACTUAL_COMPONENT_ORACLE_V2.json",
+    "bytes": 42963,
+    "sha256": "f2135342c80e7b49f5c21e1926b3bf7f6d3f95800c577b6d0746ccfd5450ba58"
+  },
+  "inputs": {
+    "mokosh_v2_filesystem.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_filesystem.py",
+      "bytes": 31279,
+      "sha256": "1b997352cb45935ad8b49303de6188fec39d90dd747747981ec0541df6ea88bc"
+    },
+    "mokosh_v2_format.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_format.py",
+      "bytes": 17901,
+      "sha256": "9a08d0041f817e344e67881fa9e5664dc2b5e9ecb48cdfad769b18af49a1f63f"
+    },
+    "mokosh_v2_key_slots.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_key_slots.py",
+      "bytes": 11535,
+      "sha256": "bf0c6a16f764afe9c5b39ad7c44c6ca9804defae82065b9e8c84b6500ff4ad55"
+    },
+    "mokosh_v2_operation_journal.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_journal.py",
+      "bytes": 7644,
+      "sha256": "6353d0afec260ddad8fb135f99fae43ea7e326ead3fc2e2f6cc899ead70e95cd"
+    },
+    "mokosh_v2_operation_lease.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_lease.py",
+      "bytes": 8247,
+      "sha256": "5b28544ef2db4b4d7df4301878de5ca2a09200ff1d854b58c1ee2ac192e9d857"
+    },
+    "mokosh_v2_operation_lifecycle.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_lifecycle.py",
+      "bytes": 14298,
+      "sha256": "79aa7a035dc4aae9ef07d4a16dcb900e5999181edb96d04482105f29a7e99e2b"
+    }
+  },
+  "candidate": {
+    "path": "/workspace/scratch/23003d4444d0/mokosh-file-protocol-design-20261029/candidate/mokosh_v2_filesystem.py",
+    "bytes": 31040,
+    "sha256": "1851a2ad5be8a95b277098e4665957717c6652a62e3dd225478cab351c2e0f90"
+  },
+  "upstream_reviews": [
+    {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-file-protocol-design-20261029/analysis/SYNC_CANDIDATE_PROPOSED_CALLER_REVIEW.json",
+      "bytes": 9685,
+      "sha256": "cb98de9b99a2df7aa62f8157d6cecba972fb4eca3532a1ab913b692b2dd29d48"
+    },
+    {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-file-protocol-design-20261029/analysis/CODE_CHANGE_MAP_REVIEW.json",
+      "bytes": 27093,
+      "sha256": "cd6e091184fdae5cb29230cc8f2a86776a1e1f5937d563f1d9401e3a5c04c94b"
+    }
+  ],
+  "current_source": {
+    "classification": "LOCAL_RECONSTRUCTION_NOT_FRESH_DELL_READ",
+    "files": 263,
+    "bytes": 5249127,
+    "sha256": "0d4b80d12b413cc829bb7bbf78addcaef91bbfea7ed6be7b15010a31059cf4de",
+    "binding": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-g02-guarded-writer-20261027/delivery/CANDIDATE_BINDING.json",
+      "bytes": 92433,
+      "sha256": "060384765fc9df4cc3983487e92f26fea7055f54348e0ae2e6713663bf961c35"
+    },
+    "base_source": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source",
+    "G02_overlays": "/workspace/scratch/23003d4444d0/mokosh-gui-g02-candidate-20261027/native_packet/overlay",
+    "selected_six_files_match_current_catalogue": true,
+    "G02_overlay_modules_used": false
+  },
+  "copy_contract": {
+    "baseline": "Copy exactly six pinned local modules to dedicated baseline source directory; no source edits.",
+    "candidate": "Same six module bytes except replace only filesystem module with exact pinned 31040-byte candidate.",
+    "no_stubbed_application_modules": true,
+    "no_AST_slices": true,
+    "import_resolution": "-I -B; explicitly insert only current variant source-copy directory for these six module names; verify each loaded __file__ and digest; no imports from retained originals. Clear six app modules between variants or use a clean controlled entrypoint, but do not add worker/helper processes to this scope.",
+    "application_import_allowlist": [
+      "mokosh_v2_filesystem.py",
+      "mokosh_v2_format.py",
+      "mokosh_v2_key_slots.py",
+      "mokosh_v2_operation_journal.py",
+      "mokosh_v2_operation_lease.py",
+      "mokosh_v2_operation_lifecycle.py"
+    ],
+    "disallowed_invocations": [
+      "classify_operation_error",
+      "safe_failure",
+      "run_encryption_operation",
+      "run_decryption_operation",
+      "any encrypt/decrypt/key/session/vault function",
+      "GUI/Tk/native window operations"
+    ],
+    "copied_modules_expected_change_count": 1
+  },
+  "dependency_footprint": {
+    "local_modules": 6,
+    "graph": {
+      "mokosh_v2_filesystem": [
+        "mokosh_v2_format",
+        "mokosh_v2_operation_journal",
+        "mokosh_v2_operation_lease"
+      ],
+      "mokosh_v2_format": [
+        "mokosh_v2_key_slots"
+      ],
+      "mokosh_v2_operation_journal": [
+        "mokosh_v2_format"
+      ],
+      "mokosh_v2_operation_lease": [],
+      "mokosh_v2_key_slots": [],
+      "mokosh_v2_operation_lifecycle": []
+    },
+    "stdlib": [
+      "__future__",
+      "errno",
+      "os",
+      "secrets",
+      "stat",
+      "dataclasses",
+      "typing",
+      "base64",
+      "binascii",
+      "hashlib",
+      "json",
+      "re",
+      "struct",
+      "datetime",
+      "importlib",
+      "enum",
+      "threading",
+      "fcntl (lazy POSIX lease backend)"
+    ],
+    "third_party_dependencies": 0,
+    "not_included": "file_pipeline/local_service/crypto/profile/vault/GUI modules; lifecycle lazy classifier/pipeline imports must not be triggered"
+  },
+  "injection_contract": {
+    "mechanism": "Only copied filesystem module os binding replaced temporarily with delegating proxy that injects selected fsync and records component os.open descriptors; do not patch process-wide os.fsync or change source bytes. All nonselected operations delegate exactly once.",
+    "selector": "Exact direct code boundary _sync_directory with immediate caller _create_private_temp/commit/abort, own held-directory descriptor identity/kind, and per-action ordinal. Pin function code/segment hashes and fail if no exact boundary.",
+    "boundaries": {
+      "constructor_directory": "_create_private_temp → _sync_directory → fsync; directory call1 during construction, after journal regular fsync and acquired writer lease",
+      "commit_directory_1": "commit → _sync_directory → fsync; first directory sync after actual link L and object verification",
+      "commit_directory_2": "commit → _sync_directory → fsync; second sync only after first success and both residue unlinks",
+      "abort_directory": "abort → _sync_directory → fsync; only after both residue names removed"
+    },
+    "errors": [
+      "EINVAL",
+      "EBADF",
+      "ENOTSUP",
+      "EIO"
+    ],
+    "injections_per_case": 1,
+    "no_fault_cases": 4,
+    "fault_cases": 10,
+    "matrix_limit": "Three swallowed errno values tested at constructor and first post-L sync; EINVAL at second post-L and abort; EIO at first post-L and abort. Not full cross-product.",
+    "must_not_inject": "journal regular-file fsync, seal regular-file fsync, file opens, writes, unlink, hardlink, flock, descriptor closure, observer, or initial synthetic reason"
+  },
+  "effect_budget": {
+    "read_only_originals": "Read/hash source, catalogue, review files, and harness/runtime identity only. No original imports, changes, apply, commits, tags, dependency installs or updates.",
+    "writes": "New report/harness/source copies and fresh own synthetic case directories only under a new work root inside this analysis workspace. No existing Dell or external paths.",
+    "native_actions_later_only": "Own named regular files, owner directory, normal fsync, POSIX flock, hardlink no-clobber, unlink and close. Failure fsync calls are mocked.",
+    "excluded": [
+      "network",
+      "credentials/keys/user data",
+      "crypto operations",
+      "GUI",
+      "privilege/account/service/policy/system changes",
+      "anonymous/disk/persistent protected backend experiments",
+      "P01–P11 stopped route",
+      "process synchronization or adversarial worker processes",
+      "parallel concurrent mutation",
+      "real power loss/crash",
+      "fs15 attack schedules",
+      "Windows/Mac backend activation",
+      "Security/permission prevention proof under root"
+    ],
+    "today_execution_count": 0
+  },
+  "guards_before_and_after": [
+    "Pinned six input bytes and candidate digest match; source snapshots unchanged.",
+    "All 263 catalogue-listed current source files hash to original binding using G02 overlay for the two overlay paths; never import originals.",
+    "Copied baseline/candidate digests exactly as frozen; only intended one function differs; actual loaded modules are selected copied modules.",
+    "Caller runtime is reported honestly; local runtime not claimed as pinned Dell Python3.12.3. Use -I -B, no bytecode, no optimize and equal uid/euid; root is permitted solely for fresh own-file observations and must be recorded with explicit no unprivileged/isolation/prevention claim; no install.",
+    "Case roots are new owner-controlled 0700 directories; each case uses its own files, exact payload and sentinel basenames; no symlinks/hardlinks inherited from outside.",
+    "Track own component descriptors and exact fixture objects; post-case readout before any teardown. Real unrelated sentinel and retained-input bytes and identity must remain unchanged.",
+    "Restore copied module os binding and ensure no global standard-library mutation remains.",
+    "Raw count must equal all 14 aliases for both variants or explicitly report missing cases; a guard refusal is not application success.",
+    "Final original source/candidate/catalogue hashes unchanged; no original apply or runtime update."
+  ],
+  "open_gates_unchanged": [
+    "FS15 stage-object substitution OPEN_NOT_FIXED",
+    "BM03/BM04 same-inode bytes OPEN_NOT_FIXED",
+    "cleanup check→unlink authority OPEN",
+    "FS16 actual boundary NOT_RUN",
+    "MAP-CANCEL-WRAP beyond __exit__ NOT_RUN",
+    "MAP-LEGACY-WARNING NOT_RUN",
+    "SI01–SI05 and PC01–PC20 unaccepted",
+    "D005 OPEN",
+    "Stage2.48 NOT_ACCEPTED",
+    "All mandatory Linux/Windows/Mac physical cells remain required, including EN-P02/P03/P04",
+    "USB PENDING",
+    "No product apply/commit/tag/release acceptance"
+  ],
+  "followup": "Parent reviews this frozen scope/oracle before any harness implementation or case execution. GitHub independent confirmation may mirror exact accepted inputs later; no workflow created here.",
+  "execution_counters": {
+    "tests": 0,
+    "component_imports": 0,
+    "native_cases": 0,
+    "source_copies": 0,
+    "harness_implementation": 0,
+    "application_changes": 0,
+    "original_apply": false,
+    "physical_acceptance": false
+  },
+  "revision": 2,
+  "supersedes": {
+    "path": "/workspace/scratch/23003d4444d0/mokosh-actual-control-routes-20261029/analysis/SYNC_ACTUAL_COMPONENT_SCOPE.json",
+    "bytes": 10990,
+    "sha256": "54a74d614348d83cc3db84164d3f3d1bd92b7f383e2e425f6c6c97bd53fb4715"
+  },
+  "local_runtime": {
+    "python": [
+      3,
+      12,
+      14
+    ],
+    "system": "Linux",
+    "machine": "x86_64",
+    "uid": 0,
+    "euid": 0,
+    "limits": "Own-file component observations valid only in recorded identity; zero evidence of unprivileged access prevention, real attacker isolation, Dell3.12.3 or cross-platform acceptance."
+  }
+}

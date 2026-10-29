@@ -1,0 +1,1003 @@
+{
+  "schema": 1,
+  "date": "2026-10-29",
+  "status": "FROZEN_EXPECTATIONS_BEFORE_HARNESS_IMPLEMENTATION_PARENT_QA_PENDING",
+  "scope": "ACTUAL_SINK_SOURCE_COPY_AND_PURE_LIFECYCLE_WARNING_COMPONENT_ONLY",
+  "execution_status": "NOT_RUN",
+  "case_count": 14,
+  "variant_observation_count_if_executed": 28,
+  "inputs": {
+    "mokosh_v2_filesystem.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_filesystem.py",
+      "bytes": 31279,
+      "sha256": "1b997352cb45935ad8b49303de6188fec39d90dd747747981ec0541df6ea88bc"
+    },
+    "mokosh_v2_format.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_format.py",
+      "bytes": 17901,
+      "sha256": "9a08d0041f817e344e67881fa9e5664dc2b5e9ecb48cdfad769b18af49a1f63f"
+    },
+    "mokosh_v2_key_slots.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_key_slots.py",
+      "bytes": 11535,
+      "sha256": "bf0c6a16f764afe9c5b39ad7c44c6ca9804defae82065b9e8c84b6500ff4ad55"
+    },
+    "mokosh_v2_operation_journal.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_journal.py",
+      "bytes": 7644,
+      "sha256": "6353d0afec260ddad8fb135f99fae43ea7e326ead3fc2e2f6cc899ead70e95cd"
+    },
+    "mokosh_v2_operation_lease.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_lease.py",
+      "bytes": 8247,
+      "sha256": "5b28544ef2db4b4d7df4301878de5ca2a09200ff1d854b58c1ee2ac192e9d857"
+    },
+    "mokosh_v2_operation_lifecycle.py": {
+      "path": "/workspace/scratch/23003d4444d0/mokosh-app-security-check-20261025/source/mokosh_v2_operation_lifecycle.py",
+      "bytes": 14298,
+      "sha256": "79aa7a035dc4aae9ef07d4a16dcb900e5999181edb96d04482105f29a7e99e2b"
+    }
+  },
+  "candidate": {
+    "path": "/workspace/scratch/23003d4444d0/mokosh-file-protocol-design-20261029/candidate/mokosh_v2_filesystem.py",
+    "bytes": 31040,
+    "sha256": "1851a2ad5be8a95b277098e4665957717c6652a62e3dd225478cab351c2e0f90"
+  },
+  "functions": {
+    "baseline": {
+      "QuarantinePublishResult": {
+        "start_line": 91,
+        "end_line": 155,
+        "segment_bytes": 2390,
+        "segment_sha256": "fa250167180a49357900deb47cef2aea72e14c7cb02c5468b9ff182db0a2e227"
+      },
+      "_sync_directory": {
+        "start_line": 344,
+        "end_line": 355,
+        "segment_bytes": 427,
+        "segment_sha256": "f4ab1196745222d3b3fb9d243722a3cfc2dfc1c4deecbd2b4fef22dedb11935c"
+      },
+      "ExclusiveFileQuarantineSink.__init__": {
+        "start_line": 361,
+        "end_line": 415,
+        "segment_bytes": 2285,
+        "segment_sha256": "90bb7e63e6683e8eb28636b8458c769e6d7f995558d52744aa1f3ff16c10d637"
+      },
+      "ExclusiveFileQuarantineSink._create_private_journal": {
+        "start_line": 417,
+        "end_line": 480,
+        "segment_bytes": 2433,
+        "segment_sha256": "3667955bf7e0b201b827a4c1cdc4252e75f43c41b354eb85996380ddc5ff0018"
+      },
+      "ExclusiveFileQuarantineSink._create_private_temp": {
+        "start_line": 482,
+        "end_line": 553,
+        "segment_bytes": 2685,
+        "segment_sha256": "787f769c5810a18357036debe49c37c2d0bf38eb8623db6a82a2f1259b018014"
+      },
+      "ExclusiveFileQuarantineSink._close_runtime_resources": {
+        "start_line": 646,
+        "end_line": 659,
+        "segment_bytes": 500,
+        "segment_sha256": "854c34f56f94f73d58a5da07742ba659dbf6987d49cd40b188d4c48fb2d7a947"
+      },
+      "ExclusiveFileQuarantineSink.seal_for_verification": {
+        "start_line": 678,
+        "end_line": 695,
+        "segment_bytes": 734,
+        "segment_sha256": "e679bbe6787f297ceef1e908e1e686f3e83f174f151e48ec85fe55548c452de8"
+      },
+      "ExclusiveFileQuarantineSink.commit": {
+        "start_line": 721,
+        "end_line": 808,
+        "segment_bytes": 3803,
+        "segment_sha256": "0d763815b14e1f36e1147682e4b66494c81054bf783c91eeec494ae0bc4f689e"
+      },
+      "ExclusiveFileQuarantineSink.abort": {
+        "start_line": 810,
+        "end_line": 836,
+        "segment_bytes": 1151,
+        "segment_sha256": "6cbd1290e17e1eda4f40b4aa71f38e8914d43c2584eccfc6f599efbd3961e3ed"
+      },
+      "ExclusiveFileQuarantineSink.__exit__": {
+        "start_line": 841,
+        "end_line": 844,
+        "segment_bytes": 148,
+        "segment_sha256": "4197131045d1959f999f050c1ea65c9a0a88faf41e6b753565ec7270ab58986b"
+      }
+    },
+    "candidate": {
+      "QuarantinePublishResult": {
+        "start_line": 91,
+        "end_line": 155,
+        "segment_bytes": 2390,
+        "segment_sha256": "fa250167180a49357900deb47cef2aea72e14c7cb02c5468b9ff182db0a2e227"
+      },
+      "_sync_directory": {
+        "start_line": 344,
+        "end_line": 348,
+        "segment_bytes": 188,
+        "segment_sha256": "ccb590a1003b8c20a7f6b8d85e56f0d70a7447054a5eb3c222cf65a54e5378f9"
+      },
+      "ExclusiveFileQuarantineSink.__init__": {
+        "start_line": 354,
+        "end_line": 408,
+        "segment_bytes": 2285,
+        "segment_sha256": "90bb7e63e6683e8eb28636b8458c769e6d7f995558d52744aa1f3ff16c10d637"
+      },
+      "ExclusiveFileQuarantineSink._create_private_journal": {
+        "start_line": 410,
+        "end_line": 473,
+        "segment_bytes": 2433,
+        "segment_sha256": "3667955bf7e0b201b827a4c1cdc4252e75f43c41b354eb85996380ddc5ff0018"
+      },
+      "ExclusiveFileQuarantineSink._create_private_temp": {
+        "start_line": 475,
+        "end_line": 546,
+        "segment_bytes": 2685,
+        "segment_sha256": "787f769c5810a18357036debe49c37c2d0bf38eb8623db6a82a2f1259b018014"
+      },
+      "ExclusiveFileQuarantineSink._close_runtime_resources": {
+        "start_line": 639,
+        "end_line": 652,
+        "segment_bytes": 500,
+        "segment_sha256": "854c34f56f94f73d58a5da07742ba659dbf6987d49cd40b188d4c48fb2d7a947"
+      },
+      "ExclusiveFileQuarantineSink.seal_for_verification": {
+        "start_line": 671,
+        "end_line": 688,
+        "segment_bytes": 734,
+        "segment_sha256": "e679bbe6787f297ceef1e908e1e686f3e83f174f151e48ec85fe55548c452de8"
+      },
+      "ExclusiveFileQuarantineSink.commit": {
+        "start_line": 714,
+        "end_line": 801,
+        "segment_bytes": 3803,
+        "segment_sha256": "0d763815b14e1f36e1147682e4b66494c81054bf783c91eeec494ae0bc4f689e"
+      },
+      "ExclusiveFileQuarantineSink.abort": {
+        "start_line": 803,
+        "end_line": 829,
+        "segment_bytes": 1151,
+        "segment_sha256": "6cbd1290e17e1eda4f40b4aa71f38e8914d43c2584eccfc6f599efbd3961e3ed"
+      },
+      "ExclusiveFileQuarantineSink.__exit__": {
+        "start_line": 834,
+        "end_line": 837,
+        "segment_bytes": 148,
+        "segment_sha256": "4197131045d1959f999f050c1ea65c9a0a88faf41e6b753565ec7270ab58986b"
+      }
+    },
+    "lifecycle": {
+      "OperationCancelled": {
+        "start_line": 21,
+        "end_line": 22,
+        "segment_bytes": 124,
+        "segment_sha256": "ab3a7e1aef64064e2e4cd31013e647f4ba43b980dea5a4e5f81fe43174a96ed9"
+      },
+      "OperationOutcome": {
+        "start_line": 94,
+        "end_line": 114,
+        "segment_bytes": 782,
+        "segment_sha256": "3b64ae96806a6255751a7f4ca323ed904a14559f3bd6e10ad447851571126eab"
+      },
+      "_safe_publish_warning": {
+        "start_line": 335,
+        "end_line": 340,
+        "segment_bytes": 352,
+        "segment_sha256": "64b199a28ea849f3bb18a49cd56879ab786c61adcce6b2a9e3dac2d7f5017a59"
+      }
+    }
+  },
+  "fixtures": {
+    "FINAL_NAME": "result.bin",
+    "RETAINED_INPUT_NAME": "retained-input.bin",
+    "UNRELATED_SENTINEL_NAME": "unrelated-foreign.bin",
+    "OUTPUT_PAYLOAD": "4d4f4b4f53482073796e746865746963206f7574707574204153430a",
+    "RETAINED_PAYLOAD": "4d4f4b4f53482072657461696e65642073796e74686574696320696e7075740a",
+    "UNRELATED_PAYLOAD": "4d4f4b4f534820756e72656c617465642073796e7468657469632073656e74696e656c0a",
+    "COLLISION_PAYLOAD": "4d4f4b4f534820696e646570656e64656e7420636f6c6c6973696f6e207461726765740a",
+    "format": "hex encodes exact non-secret byte strings; never use user content",
+    "case_directory_mode": "0700",
+    "regular_file_mode": "0600",
+    "operation_names": "Actual random temp/journal names captured from actual sink; stable aliases TEMP_NAME/JOURNAL_NAME in reports; no patch to token generation"
+  },
+  "cases": [
+    {
+      "alias": "ASC01",
+      "name": "supported_normal_publish",
+      "actual_action": "construct, write OUTPUT_PAYLOAD completely, seal, commit; map real publish result via actual _safe_publish_warning and OperationOutcome",
+      "injection": null,
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": true
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "all three directory sync calls delegate to real fsync",
+        "final payload exact; retained-input and unrelated sentinel identical",
+        "temp and journal removed; all captured descriptors closed",
+        "no exception or failure outcome after L"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC02",
+      "name": "existing_target_constructor_collision",
+      "actual_action": "create own independent COLLISION_PAYLOAD at FINAL_NAME; attempt constructor",
+      "injection": null,
+      "expected_baseline": {
+        "exception": "OutputCollisionError",
+        "exception_message": "final output already exists",
+        "constructor_returns": false,
+        "new_sink_names": 0,
+        "sink_opens": 0,
+        "directory_sync_calls": 0,
+        "existing_final_identity_and_bytes_unchanged": true,
+        "narrow_contract_match_expected": true
+      },
+      "expected_candidate": {
+        "exception": "OutputCollisionError",
+        "exception_message": "final output already exists",
+        "constructor_returns": false,
+        "new_sink_names": 0,
+        "sink_opens": 0,
+        "directory_sync_calls": 0,
+        "existing_final_identity_and_bytes_unchanged": true,
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "existing final identity, bytes, mode and link count unchanged",
+        "no own temporary/journal names or handles created"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC03",
+      "name": "late_target_no_clobber_and_normal_abort",
+      "actual_action": "construct, write, seal; create own independent COLLISION_PAYLOAD at FINAL_NAME; actual commit must refuse; actual abort once",
+      "injection": null,
+      "expected_baseline": {
+        "exception": "OutputCollisionError",
+        "exception_message": "final output appeared before commit",
+        "committed_before_abort": false,
+        "publish_result_present_before_abort": false,
+        "temp_present_before_abort": true,
+        "journal_present_before_abort": true,
+        "late_final_identity_and_bytes_unchanged": true,
+        "abort_after_collision": {
+          "exception": null,
+          "final_present": true,
+          "temp_present": false,
+          "journal_present": false,
+          "committed": false,
+          "aborted": true,
+          "active": false,
+          "publish_result_present": false,
+          "captured_sink_descriptors_closed": true,
+          "narrow_contract_match_expected": true,
+          "final_payload": "COLLISION_PAYLOAD",
+          "final_identity_and_bytes_unchanged": true,
+          "interpretation": "Existing independent final is preserved; sink never published it. Abort only removes sink temp/journal."
+        },
+        "narrow_contract_match_expected": true
+      },
+      "expected_candidate": {
+        "exception": "OutputCollisionError",
+        "exception_message": "final output appeared before commit",
+        "committed_before_abort": false,
+        "publish_result_present_before_abort": false,
+        "temp_present_before_abort": true,
+        "journal_present_before_abort": true,
+        "late_final_identity_and_bytes_unchanged": true,
+        "abort_after_collision": {
+          "exception": null,
+          "final_present": true,
+          "temp_present": false,
+          "journal_present": false,
+          "committed": false,
+          "aborted": true,
+          "active": false,
+          "publish_result_present": false,
+          "captured_sink_descriptors_closed": true,
+          "narrow_contract_match_expected": true,
+          "final_payload": "COLLISION_PAYLOAD",
+          "final_identity_and_bytes_unchanged": true,
+          "interpretation": "Existing independent final is preserved; sink never published it. Abort only removes sink temp/journal."
+        },
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "normal constructor and seal fsyncs succeed",
+        "collision final remains after abort; no unlink or replacement of it",
+        "sink-created temp/journal gone after abort; unrelated sentinels unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC04",
+      "name": "constructor_directory_sync_EINVAL",
+      "actual_action": "attempt actual constructor after journal fsync and lease acquired",
+      "injection": {
+        "boundary": "constructor_directory",
+        "errno": "EINVAL",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "constructor_returns": true,
+        "exception": null,
+        "snapshot_before_teardown": {
+          "final_present": false,
+          "temp_present": true,
+          "journal_present": true,
+          "active": true,
+          "committed": false,
+          "publish_result_present": false
+        },
+        "teardown": "Disable injection; call actual abort exactly once, expecting abort_normal",
+        "narrow_contract_match_expected": false,
+        "injected_errno": "EINVAL"
+      },
+      "expected_candidate": {
+        "constructor_returns": false,
+        "exception": "FilesystemSafetyError",
+        "exception_message": "parent directory fsync failed",
+        "cause": "OSError",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "captured_constructor_descriptors_closed": true,
+        "narrow_contract_match_expected": true,
+        "rollback_claim": "Own unchanged fixture names removed; no concurrent substitution schedule tested.",
+        "cause_errno": "EINVAL"
+      },
+      "extra_assertions": [
+        "injection occurs only on held directory descriptor in _sync_directory ← _create_private_temp",
+        "journal regular-file fsync succeeds first",
+        "candidate rollback closes three captured descriptors and removes only unchanged own temp/journal names",
+        "baseline construction success is a desired-sync-contract mismatch; teardown is not counted as that success"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC05",
+      "name": "constructor_directory_sync_EBADF",
+      "actual_action": "attempt actual constructor after journal fsync and lease acquired",
+      "injection": {
+        "boundary": "constructor_directory",
+        "errno": "EBADF",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "constructor_returns": true,
+        "exception": null,
+        "snapshot_before_teardown": {
+          "final_present": false,
+          "temp_present": true,
+          "journal_present": true,
+          "active": true,
+          "committed": false,
+          "publish_result_present": false
+        },
+        "teardown": "Disable injection; call actual abort exactly once, expecting abort_normal",
+        "narrow_contract_match_expected": false,
+        "injected_errno": "EBADF"
+      },
+      "expected_candidate": {
+        "constructor_returns": false,
+        "exception": "FilesystemSafetyError",
+        "exception_message": "parent directory fsync failed",
+        "cause": "OSError",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "captured_constructor_descriptors_closed": true,
+        "narrow_contract_match_expected": true,
+        "rollback_claim": "Own unchanged fixture names removed; no concurrent substitution schedule tested.",
+        "cause_errno": "EBADF"
+      },
+      "extra_assertions": [
+        "injection occurs only on held directory descriptor in _sync_directory ← _create_private_temp",
+        "journal regular-file fsync succeeds first",
+        "candidate rollback closes three captured descriptors and removes only unchanged own temp/journal names",
+        "baseline construction success is a desired-sync-contract mismatch; teardown is not counted as that success"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC06",
+      "name": "constructor_directory_sync_ENOTSUP",
+      "actual_action": "attempt actual constructor after journal fsync and lease acquired",
+      "injection": {
+        "boundary": "constructor_directory",
+        "errno": "ENOTSUP",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "constructor_returns": true,
+        "exception": null,
+        "snapshot_before_teardown": {
+          "final_present": false,
+          "temp_present": true,
+          "journal_present": true,
+          "active": true,
+          "committed": false,
+          "publish_result_present": false
+        },
+        "teardown": "Disable injection; call actual abort exactly once, expecting abort_normal",
+        "narrow_contract_match_expected": false,
+        "injected_errno": "ENOTSUP"
+      },
+      "expected_candidate": {
+        "constructor_returns": false,
+        "exception": "FilesystemSafetyError",
+        "exception_message": "parent directory fsync failed",
+        "cause": "OSError",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "captured_constructor_descriptors_closed": true,
+        "narrow_contract_match_expected": true,
+        "rollback_claim": "Own unchanged fixture names removed; no concurrent substitution schedule tested.",
+        "cause_errno": "ENOTSUP"
+      },
+      "extra_assertions": [
+        "injection occurs only on held directory descriptor in _sync_directory ← _create_private_temp",
+        "journal regular-file fsync succeeds first",
+        "candidate rollback closes three captured descriptors and removes only unchanged own temp/journal names",
+        "baseline construction success is a desired-sync-contract mismatch; teardown is not counted as that success"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC07",
+      "name": "first_post_L_sync_EINVAL",
+      "actual_action": "construct, write, seal; actual commit creates no-clobber link L then injected first directory sync; map actual result to lifecycle warning",
+      "injection": {
+        "boundary": "commit_directory_1",
+        "errno": "EINVAL",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": false
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": false,
+        "temporary_removed": false,
+        "journal_removed": false,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": true,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 2,
+        "temp_present": true,
+        "journal_present": true,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "exact final payload present and committed=True even though directory sync raised",
+        "post-L error does not escape as retryable unpublished failure",
+        "candidate temp and final same inode and OUTPUT_PAYLOAD; journal bytes/identity equal precommit snapshot",
+        "candidate skips unlink branch and second commit directory sync",
+        "retained-input, unrelated sentinel and final correct bytes unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC08",
+      "name": "first_post_L_sync_EBADF",
+      "actual_action": "construct, write, seal; actual commit creates no-clobber link L then injected first directory sync; map actual result to lifecycle warning",
+      "injection": {
+        "boundary": "commit_directory_1",
+        "errno": "EBADF",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": false
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": false,
+        "temporary_removed": false,
+        "journal_removed": false,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": true,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 2,
+        "temp_present": true,
+        "journal_present": true,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "exact final payload present and committed=True even though directory sync raised",
+        "post-L error does not escape as retryable unpublished failure",
+        "candidate temp and final same inode and OUTPUT_PAYLOAD; journal bytes/identity equal precommit snapshot",
+        "candidate skips unlink branch and second commit directory sync",
+        "retained-input, unrelated sentinel and final correct bytes unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC09",
+      "name": "first_post_L_sync_ENOTSUP",
+      "actual_action": "construct, write, seal; actual commit creates no-clobber link L then injected first directory sync; map actual result to lifecycle warning",
+      "injection": {
+        "boundary": "commit_directory_1",
+        "errno": "ENOTSUP",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": false
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": false,
+        "temporary_removed": false,
+        "journal_removed": false,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": true,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 2,
+        "temp_present": true,
+        "journal_present": true,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "exact final payload present and committed=True even though directory sync raised",
+        "post-L error does not escape as retryable unpublished failure",
+        "candidate temp and final same inode and OUTPUT_PAYLOAD; journal bytes/identity equal precommit snapshot",
+        "candidate skips unlink branch and second commit directory sync",
+        "retained-input, unrelated sentinel and final correct bytes unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC10",
+      "name": "first_post_L_sync_EIO",
+      "actual_action": "construct, write, seal; actual commit creates no-clobber link L then injected first directory sync; map actual result to lifecycle warning",
+      "injection": {
+        "boundary": "commit_directory_1",
+        "errno": "EIO",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": false,
+        "temporary_removed": false,
+        "journal_removed": false,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": true,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 2,
+        "temp_present": true,
+        "journal_present": true,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": false,
+        "temporary_removed": false,
+        "journal_removed": false,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": true,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 2,
+        "temp_present": true,
+        "journal_present": true,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "exact final payload present and committed=True even though directory sync raised",
+        "post-L error does not escape as retryable unpublished failure",
+        "candidate temp and final same inode and OUTPUT_PAYLOAD; journal bytes/identity equal precommit snapshot",
+        "candidate skips unlink branch and second commit directory sync",
+        "retained-input, unrelated sentinel and final correct bytes unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC11",
+      "name": "second_post_L_sync_EINVAL",
+      "actual_action": "construct, write, seal, commit; first post-L directory sync succeeds; inject after temp and journal unlinks; map real result to lifecycle warning",
+      "injection": {
+        "boundary": "commit_directory_2",
+        "errno": "EINVAL",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": true,
+        "resources_closed": true,
+        "warning_required": false,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": null,
+        "narrow_contract_match_expected": false
+      },
+      "expected_candidate": {
+        "output_verified": true,
+        "publication_sync_complete": true,
+        "temporary_removed": true,
+        "journal_removed": true,
+        "cleanup_sync_complete": false,
+        "resources_closed": true,
+        "warning_required": true,
+        "residue_requires_review": false,
+        "committed": true,
+        "aborted": false,
+        "active": false,
+        "publish_result_present": true,
+        "final_present": true,
+        "final_payload": "OUTPUT_PAYLOAD",
+        "final_nlink": 1,
+        "temp_present": false,
+        "journal_present": false,
+        "operation_outcome_ok": true,
+        "operation_outcome_failure": null,
+        "lifecycle_warning": "published_cleanup_incomplete",
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "at injection final exists with exact OUTPUT_PAYLOAD and both residue names are absent",
+        "candidate warning required even with residue_requires_review=False",
+        "no journal recreation, final unlink, retry or claim of rollback"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC12",
+      "name": "normal_abort",
+      "actual_action": "construct, write; actual abort once; call abort again only to verify inactive no-op",
+      "injection": null,
+      "expected_baseline": {
+        "exception": null,
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "narrow_contract_match_expected": true
+      },
+      "expected_candidate": {
+        "exception": null,
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "narrow_contract_match_expected": true
+      },
+      "extra_assertions": [
+        "first abort removes own temp/journal; final never exists",
+        "second abort performs zero additional sync/unlink/close",
+        "retained-input and unrelated sentinel unchanged"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC13",
+      "name": "abort_cleanup_sync_EINVAL_with_initial_reason",
+      "actual_action": "construct, write; enter actual sink context manager and raise the exact supplied initial exception object; actual __exit__ calls actual abort",
+      "injection": {
+        "boundary": "abort_directory",
+        "errno": "EINVAL",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "exception": "OperationCancelled",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "narrow_contract_match_expected": false,
+        "initial_reason_is_final_exception": true,
+        "initial_reason_in_exception_graph": true,
+        "interpretation": "Baseline swallows injected directory fsync error and __exit__ propagates initial cancellation without cleanup-sync error."
+      },
+      "expected_candidate": {
+        "exception": "OwnedTemporaryFileError",
+        "exception_message": "refusing to remove an unverified quarantine path",
+        "cause_chain": [
+          "OwnedTemporaryFileError",
+          "FilesystemSafetyError",
+          "OSError"
+        ],
+        "inner_message": "parent directory fsync failed",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "initial_reason_in_exception_graph": true,
+        "initial_reason_is_final_exception": false,
+        "primary_reason_typed_field": false,
+        "narrow_contract_match_expected": true,
+        "interpretation": "Removed names plus failed cleanup sync; not proof that names remain, not a retry-safe or physically durable cleanup claim.",
+        "initial_reason": "OperationCancelled",
+        "cause_errno": "EINVAL"
+      },
+      "extra_assertions": [
+        "assert initial exception object remains reachable through bounded __cause__/__context__ graph, not only matching text",
+        "candidate terminal exception is cleanup wrapper; original reason is not a typed result field",
+        "record both primary reason and cleanup failure in raw observation; do not label full caller classification accepted",
+        "temp/journal were already removed before injected sync error; no final output",
+        "full pipeline _abort_transaction, safe_failure, run_*_operation and service/GUI cancellation classification remain NOT_RUN"
+      ],
+      "execution_status": "NOT_RUN"
+    },
+    {
+      "alias": "ASC14",
+      "name": "abort_cleanup_sync_EIO_with_initial_reason",
+      "actual_action": "construct, write; enter actual sink context manager and raise the exact supplied initial exception object; actual __exit__ calls actual abort",
+      "injection": {
+        "boundary": "abort_directory",
+        "errno": "EIO",
+        "maximum_injections": 1
+      },
+      "expected_baseline": {
+        "exception": "OwnedTemporaryFileError",
+        "exception_message": "refusing to remove an unverified quarantine path",
+        "cause_chain": [
+          "OwnedTemporaryFileError",
+          "FilesystemSafetyError",
+          "OSError"
+        ],
+        "inner_message": "parent directory fsync failed",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "initial_reason_in_exception_graph": true,
+        "initial_reason_is_final_exception": false,
+        "primary_reason_typed_field": false,
+        "narrow_contract_match_expected": true,
+        "interpretation": "Removed names plus failed cleanup sync; not proof that names remain, not a retry-safe or physically durable cleanup claim.",
+        "initial_reason": "SyntheticInitialFailure",
+        "cause_errno": "EIO"
+      },
+      "expected_candidate": {
+        "exception": "OwnedTemporaryFileError",
+        "exception_message": "refusing to remove an unverified quarantine path",
+        "cause_chain": [
+          "OwnedTemporaryFileError",
+          "FilesystemSafetyError",
+          "OSError"
+        ],
+        "inner_message": "parent directory fsync failed",
+        "final_present": false,
+        "temp_present": false,
+        "journal_present": false,
+        "committed": false,
+        "aborted": true,
+        "active": false,
+        "publish_result_present": false,
+        "captured_sink_descriptors_closed": true,
+        "initial_reason_in_exception_graph": true,
+        "initial_reason_is_final_exception": false,
+        "primary_reason_typed_field": false,
+        "narrow_contract_match_expected": true,
+        "interpretation": "Removed names plus failed cleanup sync; not proof that names remain, not a retry-safe or physically durable cleanup claim.",
+        "initial_reason": "SyntheticInitialFailure",
+        "cause_errno": "EIO"
+      },
+      "extra_assertions": [
+        "assert initial exception object remains reachable through bounded __cause__/__context__ graph, not only matching text",
+        "candidate terminal exception is cleanup wrapper; original reason is not a typed result field",
+        "record both primary reason and cleanup failure in raw observation; do not label full caller classification accepted",
+        "temp/journal were already removed before injected sync error; no final output",
+        "full pipeline _abort_transaction, safe_failure, run_*_operation and service/GUI cancellation classification remain NOT_RUN"
+      ],
+      "execution_status": "NOT_RUN"
+    }
+  ],
+  "common_assertions": {
+    "no_changes_to_original_inputs": true,
+    "retained_input": "Exact identity, bytes, mode, size, link count, mtime_ns and ctime_ns unchanged",
+    "unrelated_sentinel": "Exact same retention guard; independently created fresh fixture, not an external attacker or user file",
+    "real_io": "Actual named-file creation/write/fsync-success/hardlink/unlink/close and cooperative POSIX lease in own isolated fixture only; configured failure is injected, not actual device failure",
+    "post_L_truth": "Once link returns, final remains published; strict error cannot become unpublished, failed-link, or retry-safe result",
+    "resource_scope": "Check only descriptor integers captured from this component immediately after terminal action and before harness opens other descriptors; each must produce EBADF from real fstat",
+    "preserved_residue": "First-sync candidate cases retain exact TEMP_NAME inode/payload and exact JOURNAL_NAME bytes/identity. Later controlled teardown may touch only own enumerated fixture objects after frozen observation. No product cleanup/race claim.",
+    "lifecycle_scope": "Import full unchanged pure lifecycle module, execute actual _safe_publish_warning and OperationOutcome on harness carrier.publish equal to real publish_result. This proves warning mapping on real result, not real pipeline/service/GUI route.",
+    "primary_reason_scope": "ASC13/ASC14 use actual __exit__/abort and actual OperationCancelled or own synthetic error. No crypto pipeline cancellation replay or classifier execution."
+  },
+  "aggregation_rules": [
+    "Every expected observation is independent of case implementation and frozen here. Any mismatch remains mismatch; never edit this oracle to make a run pass.",
+    "Report raw underlying OSError errno, actual code boundary, injection count, descriptor kind and actual effect before scoring.",
+    "Baseline forecast: six unchanged controls match desired narrow contract (ASC01/02/03/10/12/14); eight swallowed-error cases mismatch (ASC04/05/06/07/08/09/11/13).",
+    "Candidate forecast: all 14 narrow sync/side-effect case contracts match, subject to execution; full product security remains unaccepted.",
+    "ASC13/14 initial-reason wrapping is explicitly an observed integration risk requiring later full caller work, even if these narrow expected contracts match.",
+    "If host cannot support required actual no-clobber link, owner directory, fsync normal path or POSIX lease, report NOT_RUN/ENVIRONMENT_UNSUPPORTED for affected cases; do not mock those capabilities to achieve PASS.",
+    "ENOTSUP and EOPNOTSUPP alias may be the same errno. This matrix tests named ENOTSUP once, not two independent numerical errors.",
+    "EBADF is an injected error on an otherwise valid own descriptor; it does not simulate or prove recovery from a genuinely invalid descriptor."
+  ],
+  "revision": 2,
+  "supersedes": {
+    "path": "/workspace/scratch/23003d4444d0/mokosh-actual-control-routes-20261029/analysis/SYNC_ACTUAL_COMPONENT_FROZEN_ORACLE.json",
+    "bytes": 41787,
+    "sha256": "3d23f459f961594b438f00c75feb80c851cef24697b54d364df92a0717f063cb"
+  },
+  "revision_reason": "Preimplementation static clarification: late-collision final sentinel survives abort; actual local root identity must be recorded rather than excluding safe own-file component observations.",
+  "runtime_limit": "Local observed CPython3.12.14 Linuxx86_64 uid=euid0; own-file component behavior only, not unprivileged prevention/isolation or pinned Dell3.12.3 proof. Runtime identity must be retained raw."
+}

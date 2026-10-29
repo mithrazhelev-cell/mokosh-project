@@ -1,0 +1,93 @@
+{
+  "candidate": {
+    "bytes": 31040,
+    "sha256": "1851a2ad5be8a95b277098e4665957717c6652a62e3dd225478cab351c2e0f90"
+  },
+  "case_count": 14,
+  "diagnostic_files": {
+    "README.txt": {
+      "bytes": 3839,
+      "sha256": "1063d8726f4e8cef1c9a51cee032c269ce333f7ce708b449228a3fdd14b633a9"
+    },
+    "SYNC_ACTUAL_COMPONENT_ORACLE_V2.json": {
+      "bytes": 42963,
+      "sha256": "f2135342c80e7b49f5c21e1926b3bf7f6d3f95800c577b6d0746ccfd5450ba58"
+    },
+    "SYNC_ACTUAL_COMPONENT_SCOPE_V2.json": {
+      "bytes": 11789,
+      "sha256": "bb2727048cc3b04b418c9a2e97eeec46d0bc793b952d9f0db4fb3f8037114439"
+    },
+    "candidate_sync_replacement.json": {
+      "bytes": 1257,
+      "sha256": "22a8d4c4c38e7a6b782dbd152a93d745009e7af4cf10c5f1d169d1ed27719941"
+    },
+    "run_actual_sink_sync.py": {
+      "bytes": 36701,
+      "sha256": "f3c5c150fcaa7f559caeb7e6cc79c447efd89867b7dfe01d014903be6dd073f5"
+    },
+    "run_github_confirmation.py": {
+      "bytes": 18504,
+      "sha256": "5237ce17b1413c50259fdae77a2d3565e0987813df4f20b1d1e65ffb8924cf2f"
+    }
+  },
+  "existing_tolerance_policy_conflict": {
+    "candidate_accepted_for_product": false,
+    "existing_test_changed_or_executed_by_this_matrix": false,
+    "interpretation": "The reliable fact is that failed directory fsync must not be labeled sync_complete. Constructor refusal is one stricter policy candidate; not the only possible error/reporting design and not mandated solely by man fsync. Must explicitly resolve this semantic choice and existing tests before product apply.",
+    "lines": [
+      599,
+      612
+    ],
+    "segment_sha256": "7d163e8d0c54891fd34877a922bb855f19ce912c4d77bf0365c03b0aea106b6c",
+    "source_bytes": 27943,
+    "source_sha256": "038de4ac61bc4a79783e7519a684a3a09f6b0d090194613c4ec40458f9d20d80",
+    "status": "STATIC_EXISTING_TEST_CONTRACT_CONFLICT_NOT_EXECUTED",
+    "symbol": "test_unsupported_directory_sync_is_tolerated"
+  },
+  "historical_remote_base_commit": "431422dac647569f2ed125c41ecdb0251569a377",
+  "job_network": "Hosted checkout/setup-Python/artifact services use network and write to the ephemeral job; selected component code itself has no network operation.",
+  "physical_acceptance": false,
+  "portable_oracle": "Frozen V2 bytes unchanged, including historical local absolute-path/runtime metadata. CLI selects the six byte-identical checkout inputs, constructed candidate and a fresh RUNNER_TEMP work-root; actual GitHub identity/runtime is recorded separately.",
+  "product_apply": false,
+  "runtime_update_on_dell": false,
+  "schema": 1,
+  "scope": "ACTUAL_SINK_SOURCE_COPY_AND_PURE_LIFECYCLE_WARNING_COMPONENT_ONLY",
+  "scope_limits": [
+    "Injected fsync failures, not native device faults or power loss.",
+    "No FS15/BM03/BM04/cleanup authority repair or acceptance.",
+    "No cryptography/GUI/keys/service/whole product or Windows/macOS run.",
+    "No protection backend/policy/privilege/account/service changes.",
+    "No security percentage or license/certification claim."
+  ],
+  "source_files": {
+    "mokosh_v2_filesystem.py": {
+      "bytes": 31279,
+      "sha256": "1b997352cb45935ad8b49303de6188fec39d90dd747747981ec0541df6ea88bc"
+    },
+    "mokosh_v2_format.py": {
+      "bytes": 17901,
+      "sha256": "9a08d0041f817e344e67881fa9e5664dc2b5e9ecb48cdfad769b18af49a1f63f"
+    },
+    "mokosh_v2_key_slots.py": {
+      "bytes": 11535,
+      "sha256": "bf0c6a16f764afe9c5b39ad7c44c6ca9804defae82065b9e8c84b6500ff4ad55"
+    },
+    "mokosh_v2_operation_journal.py": {
+      "bytes": 7644,
+      "sha256": "6353d0afec260ddad8fb135f99fae43ea7e326ead3fc2e2f6cc899ead70e95cd"
+    },
+    "mokosh_v2_operation_lease.py": {
+      "bytes": 8247,
+      "sha256": "5b28544ef2db4b4d7df4301878de5ca2a09200ff1d854b58c1ee2ac192e9d857"
+    },
+    "mokosh_v2_operation_lifecycle.py": {
+      "bytes": 14298,
+      "sha256": "79aa7a035dc4aae9ef07d4a16dcb900e5999181edb96d04482105f29a7e99e2b"
+    }
+  },
+  "source_identity_scope": "Only six actual unchanged component modules, not the whole latest263-file Dell reconstruction.",
+  "variants": [
+    "baseline",
+    "candidate"
+  ]
+}

@@ -1,0 +1,100 @@
+# Diagnostic only. Does not apply a product or dependency change.
+name: MOKOSH sink sync component confirmation only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-sink-sync-component-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sink-sync-component:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+      MOKOSH_SYNC_MANIFEST_SHA256: 42d14ceb75279f48dca270815d59bc553b7387057ec28fbacf1ea79cc5ac583e
+    steps:
+      - name: Checkout the reviewed diagnostic and six exact read-only inputs
+        id: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /diagnostics/sink_sync_component_20261029/
+            /.github/workflows/mokosh-sink-sync-component.yml
+            /project/mokosh_v2_filesystem.py
+            /project/mokosh_v2_format.py
+            /project/mokosh_v2_key_slots.py
+            /project/mokosh_v2_operation_journal.py
+            /project/mokosh_v2_operation_lease.py
+            /project/mokosh_v2_operation_lifecycle.py
+      - name: Select the exact confirmation Python
+        id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12.3'
+          architecture: x64
+          check-latest: false
+      - name: Check all frozen diagnostic bytes before executing them
+        id: guard
+        run: |
+          python -I -B - <<'PY'
+          import hashlib, json, os, pathlib, re, stat, sys
+          assert sys.version_info[:3] == (3, 12, 3)
+          assert sys.flags.isolated and sys.dont_write_bytecode and not sys.flags.optimize
+          expected = os.environ["MOKOSH_SYNC_MANIFEST_SHA256"]
+          assert re.fullmatch(r"[0-9a-f]{64}", expected)
+          root = pathlib.Path(os.environ["GITHUB_WORKSPACE"]) / "diagnostics/sink_sync_component_20261029"
+          def read(path):
+              info = path.lstat()
+              assert stat.S_ISREG(info.st_mode) and info.st_size <= 1024 * 1024
+              data = path.read_bytes()
+              assert len(data) == info.st_size
+              return data
+          data = read(root / "INPUT_MANIFEST.json")
+          assert hashlib.sha256(data).hexdigest() == expected
+          manifest = json.loads(data)
+          assert set(manifest["diagnostic_files"]) == {"run_github_confirmation.py", "run_actual_sink_sync.py", "SYNC_ACTUAL_COMPONENT_SCOPE_V2.json", "SYNC_ACTUAL_COMPONENT_ORACLE_V2.json", "candidate_sync_replacement.json", "README.txt"}
+          for name, record in manifest["diagnostic_files"].items():
+              assert pathlib.Path(name).name == name
+              content = read(root / name)
+              assert len(content) == record["bytes"] and hashlib.sha256(content).hexdigest() == record["sha256"]
+          print("FROZEN_DIAGNOSTIC_BYTES=PASS; COMPONENT_NOT_RUN_BY_GUARD; PRODUCT_APPLY=NO")
+          PY
+      - name: Run both exact variants and capture the component exit
+        id: component
+        run: python -I -B diagnostics/sink_sync_component_20261029/run_github_confirmation.py --run
+      - name: Seal the allowlisted existing raw result or failure evidence
+        id: stage
+        if: ${{ always() && steps.guard.outcome == 'success' && steps.component.outputs.capture_dir != '' }}
+        env:
+          CAPTURE_DIRECTORY: ${{ steps.component.outputs.capture_dir }}
+        run: >-
+          python -I -B diagnostics/sink_sync_component_20261029/run_github_confirmation.py
+          --stage --capture-dir "$CAPTURE_DIRECTORY" --destination "$GITHUB_WORKSPACE/artifact_upload"
+      - name: Preserve the sealed component evidence
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: mokosh-sink-sync-component-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false
+          overwrite: false
