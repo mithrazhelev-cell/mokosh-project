@@ -1,0 +1,13 @@
+{
+  "ORACLE.json": "50ce179c3c9e8c369d000ec45f9caa1ca30f63f719eecb0ba266c9b845e5c412",
+  "RECORD_CONTRACT.json": "a747385b7753710338299b815bdcc4639023a463f02b58535ec634da6f96e858",
+  "WORK_SCOPE.json": "7e3802771f46fd3286aec4341517ce29b60c3d82c03436329e5262be17bdd776",
+  "run_macos_probe.py": "894eab120347c4bab8bed149cd7b7e4267652908c67212f185a295417ac9daf0",
+  "src/__init__.py": "c26210a82de479b267eb03e5e3403f397a43f9f06fba76b2f948826f7d6a5f4f",
+  "src/darwin_file_api.py": "13e615644eeb2e4253efedf5f29b83ac3a2e5ec6bec960b9bb75789374b14abc",
+  "src/collect_own_files.py": "fbf02b5ae281104d46e58602f6831166aac816ef9fa925322b23627fa27c713b",
+  "src/evaluate_records.py": "c50a7fd2a66c8d57f830a85c03d79de88b72932ad08f3efefc6c8d716d311d65",
+  "tests/__init__.py": "883fe1a2d0925886110727b639dfd4dbc7f3ec59e8f87ec87b569846f7da1a99",
+  "tests/pure_cases.py": "8ac7569be71e92daad65de7acbe31a5055c9a4bacf05754b2be01a14bff0f3cf",
+  "tests/binding_checks.py": "06806b479821ff5dbcccae9075b05de25f12fbedf6b01deede78831b61cd4c84"
+}

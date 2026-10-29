@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "date": "2026-10-27",
+  "timezone": "Europe/London",
+  "user_instruction": "Да,но ако искаш подготви и запази и за Мак както за Уиндоус и като се прибера ще започнем с действията.",
+  "authorized": "ISOLATED_MACOS_OWN_FILE_PREPARATION_AND_SAVING;WINDOWS_PUBLICATION_APPROVED_BUT_DEFERRED_UNTIL_USER_RETURN",
+  "allowed": [
+    "Primary Apple/Python documentation research",
+    "Independent oracle before implementation",
+    "New own-file Darwin instrument and portable guards with mocked/synthetic records",
+    "Unexecuted manual workflow draft",
+    "Save code/evidence and exact resume state",
+    "Statvfs numerical metadata only; filesystem type NOT_COLLECTED unless actually measured, no APFS gate or claim inferred from runner label"
+  ],
+  "excluded": [
+    "No GitHub publication or runs before return",
+    "No original application changes/imports/execution",
+    "No privileges/accounts/services/policies",
+    "No process/foreign-handle/paused-P01-P11 native route",
+    "No installed dependencies",
+    "No target native pass from current Linux checks",
+    "No weakened FS15/BM/cleanup/physical criteria"
+  ],
+  "scope_limit": "Finite own-file prerequisites; not whole FS15 or complete platform approval. macOS behavior is not assumed equivalent to Windows share handles."
+}

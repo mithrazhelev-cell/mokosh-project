@@ -1,0 +1,101 @@
+# DRAFT_NO_RUN_NO_PUBLICATION. Actions deferred until the user returns.
+name: MOKOSH macOS own-file observations only
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos-own-files:
+    runs-on: macos-15-intel
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - name: Checkout only the reviewed diagnostic files and this workflow
+        id: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /diagnostics/macos-own-files-20261027/
+            /.github/workflows/mokosh-macos-own-files-pilot.yml
+      - name: Select the exact isolated Python runtime
+        id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12.3'
+          architecture: x64
+          check-latest: false
+      - name: Collect one native own-file observation and its exact exit
+        id: native
+        run: |
+          python -I -B - <<'PY'
+          import json, os, pathlib, re, subprocess, sys, time
+          run_id = os.environ["GITHUB_RUN_ID"]
+          attempt = os.environ["GITHUB_RUN_ATTEMPT"]
+          assert re.fullmatch(r"[0-9]+", run_id) and re.fullmatch(r"[0-9]+", attempt)
+          capture = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("MOKOSH_MAC_CAPTURE_" + run_id + "_" + attempt)
+          capture.mkdir(exist_ok=False)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8", newline="\n") as stream:
+              stream.write("capture_dir=" + str(capture) + "\n")
+          started = time.time_ns()
+          code = None
+          status = "LAUNCH_ERROR"
+          error = None
+          probe = pathlib.Path(os.environ["GITHUB_WORKSPACE"]) / "diagnostics" / "macos-own-files-20261027" / "run_macos_probe.py"
+          environment = dict(os.environ)
+          for key in ("GITHUB_TOKEN", "GH_TOKEN", "ACTIONS_RUNTIME_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"):
+              environment.pop(key, None)
+          with (capture / "stdout.txt").open("xb") as out, (capture / "stderr.txt").open("xb") as err:
+              try:
+                  if sys.version_info[:3] != (3, 12, 3):
+                      raise RuntimeError("exact Python3.12.3 required")
+                  result = subprocess.run([sys.executable, "-I", "-B", str(probe), "--native-run"],
+                      stdin=subprocess.DEVNULL, stdout=out, stderr=err, cwd=probe.parent,
+                      env=environment, check=False)
+                  code = result.returncode
+                  status = "RETURNED"
+              except BaseException as exc:
+                  error = type(exc).__name__ + ": " + str(exc)[:3500]
+          record = {"schema": 1, "run_id": run_id, "run_attempt": attempt,
+              "github_sha": os.environ["GITHUB_SHA"], "started_ns": started,
+              "ended_ns": time.time_ns(), "native_exit_code": code,
+              "launcher_status": status, "launcher_error": error,
+              "application_accepted": False, "stage_accepted": False, "physical_accepted": False}
+          with (capture / "CAPTURE.json").open("x", encoding="utf-8", newline="\n") as stream:
+              json.dump(record, stream, ensure_ascii=True, indent=2)
+          print(json.dumps({"capture_directory": str(capture), "native_exit_code": code,
+              "launcher_status": status, "application_accepted": False}, ensure_ascii=True))
+          raise SystemExit(0 if status == "RETURNED" and code == 0 else 1)
+          PY
+      - name: Seal only the allowlisted existing evidence or failure logs
+        id: stage
+        if: ${{ always() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success' && steps.native.outputs.capture_dir != '' }}
+        env:
+          CAPTURE_DIRECTORY: ${{ steps.native.outputs.capture_dir }}
+        run: |
+          python -I -B diagnostics/macos-own-files-20261027/stage_native_evidence.py --capture-dir "$CAPTURE_DIRECTORY" --destination artifact_upload
+      - name: Preserve the sealed evidence subset
+        if: ${{ always() && steps.stage.outputs.sealed == 'true' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: mokosh-macos-own-files-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifact_upload/
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false
+          overwrite: false

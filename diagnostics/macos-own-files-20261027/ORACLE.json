@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "date": "2026-10-27",
+  "timezone": "Europe/London",
+  "scope": "MACOS_OWN_FILES_DIAGNOSTIC_SEVEN_GROUPS_NOT_APPLICATION_FIX",
+  "native_execution_status": "NOT_RUN",
+  "design_status": "INDEPENDENT_SEMANTIC_ORACLE_ROOT_FROZEN_BEFORE_IMPLEMENTATION",
+  "common": {
+    "native_runtime": {
+      "system": "Darwin",
+      "sys_platform": "darwin",
+      "implementation": "CPython",
+      "python_minor": [
+        3,
+        12
+      ],
+      "isolated": true,
+      "dont_write_bytecode": true,
+      "optimize": 0,
+      "pointer_bytes": 8,
+      "machine_allowed": [
+        "arm64",
+        "x86_64"
+      ],
+      "uid_nonzero": true,
+      "uid_equals_euid": true,
+      "filesystem_policy": "Actual volume results only; filesystem type NOT_COLLECTED unless independently measured. No APFS-only claim from runner label. statvfs fields recorded; required rename operations themselves must execute with exact results. All seven remain NOT_RUN until actual Darwin invocation."
+    },
+    "storage": "Fresh own mkdtemp child under actual TEMP; per-case own subdirectory, single directory FD, fixed leaf names; retain artifacts, no recursive cleanup.",
+    "no_application_or_security_acceptance": true,
+    "payloads": {
+      "A": {
+        "bytes": 4096,
+        "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "construction": "bytes(range(256))*16"
+      },
+      "B": {
+        "bytes": 4096,
+        "sha256": "725bcd6c66d02acf6ebeab9c92410e010ea22e336876256aaf05a211f4ce1902",
+        "construction": "b'B'*4096"
+      },
+      "C": {
+        "bytes": 4096,
+        "sha256": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "construction": "b'C'*4096"
+      }
+    },
+    "facts_required": "Raw operation sequence with integer return/errno, exact intent/leaf/fd role, phase, synthetic read hex+sha256+size and fstat/lstat device/inode/link/size. Summary assertions require raw support. All own handles closed once. Failure/partial/unavailable is not a prevention PASS.",
+    "success_errno": 0,
+    "rename_excl": 4,
+    "rename_collision_errno": 17,
+    "same_identity_fields": [
+      "st_dev",
+      "st_ino"
+    ],
+    "read_bound": 4096,
+    "forbidden": [
+      "application imports/launch",
+      "profile/key/Vault/user documents",
+      "foreign process/FD access",
+      "policy or privilege changes",
+      "paused P01-P11 route",
+      "GitHub publish/run before user return",
+      "fallback to replacement rename",
+      "automatic cleanup of retained artifacts"
+    ],
+    "limitations": [
+      "No ancestor namespace adversary proof",
+      "No separate OS authority/process isolation",
+      "No complete FS15/BM/cleanup repair",
+      "No crash/power-loss/recovery acceptance",
+      "No mandatory content freeze from held descriptor",
+      "No advisory lock enforcement assumption"
+    ]
+  },
+  "cases": [
+    {
+      "id": "M01",
+      "name": "ordinary_create_write_fsync_pread",
+      "category": "POSITIVE_FUNCTION_OBSERVATION",
+      "steps": [
+        "create stage.bin O_RDWR|O_CREAT|O_EXCL|O_NOFOLLOW mode0600",
+        "write exact A, fsync",
+        "pread exact4096 from offset0; fstat",
+        "close each own FD once",
+        "reopen same own stage.bin readonly nofollow, read A, close"
+      ],
+      "expected": {
+        "normal_function": true,
+        "stage_payload": "A",
+        "read_payload": "A",
+        "same_identity_across_reopen": true,
+        "every_required_operation_succeeded": true
+      },
+      "limit": "fsync success is not byte immutability or powerloss proof"
+    },
+    {
+      "id": "M02",
+      "name": "rename_excl_fresh_destination",
+      "category": "POSITIVE_FUNCTION_OBSERVATION",
+      "steps": [
+        "create stage.bin writeA/fsync, hold own FD",
+        "renameatx_np(case_dirfd,stage.bin,case_dirfd,published.bin,RENAME_EXCL4)",
+        "check stage absent, publishedA, identityheld==published; preadheldA",
+        "close own descriptors once"
+      ],
+      "expected": {
+        "rename_return": 0,
+        "errno": 0,
+        "source_exists_after": false,
+        "destination_payload": "A",
+        "held_payload": "A",
+        "destination_same_identity_as_held": true
+      },
+      "limit": "source selected by a leaf name relative to held directory, not rename-by-source-FD"
+    },
+    {
+      "id": "M03",
+      "name": "rename_excl_existing_destination_preserved",
+      "category": "PREVENTION_OBSERVATION_NO_CLOBBER_ONLY",
+      "steps": [
+        "create distinct stageA and existing publishedC, write/fsync, hold source FD",
+        "renameatx_np(case_dirfd,stage.bin,case_dirfd,published.bin,RENAME_EXCL4)",
+        "record -1/EEXIST17 and reread stageA/publishedC/heldA",
+        "check distinct identities preserved; close"
+      ],
+      "expected": {
+        "rename_return": -1,
+        "errno": 17,
+        "source_payload_after": "A",
+        "destination_payload_after": "C",
+        "held_payload": "A",
+        "source_and_destination_distinct": true,
+        "identities_unchanged": true
+      },
+      "limit": "Required paired M02 successful rename; ENOENT/EACCES/ENOTSUP are not no-clobber credit"
+    },
+    {
+      "id": "M04",
+      "name": "unicode_exclusive_rename",
+      "category": "POSITIVE_FUNCTION_OBSERVATION",
+      "steps": [
+        "create stage.bin withA/fsync, hold FD",
+        "renameatx_np with target published-Δ-Ж.bin UTF8 leaf under same held directory",
+        "check source absent exact target name lookup A and same identity; readheldA, close"
+      ],
+      "expected": {
+        "target_leaf": "published-Δ-Ж.bin",
+        "target_utf8_hex": "7075626c69736865642dce942dd0962e62696e",
+        "rename_return": 0,
+        "errno": 0,
+        "source_exists_after": false,
+        "destination_payload": "A",
+        "destination_same_identity_as_held": true
+      },
+      "limit": "Finite exact Unicode path example, not normalization/casefold/full locale support"
+    },
+    {
+      "id": "M05",
+      "name": "held_object_survives_pathname_replacement",
+      "category": "DELIBERATE_LIMITATION_OBSERVATION",
+      "steps": [
+        "create stageA/fsync and hold readonly FD",
+        "rename own stage.bin to original.bin",
+        "create a different own fileB at stage.bin/fsync",
+        "read heldFD A; read stage pathnameB; read original.binA",
+        "check held identity==original, heldidentity!=newstage; close"
+      ],
+      "expected": {
+        "held_payload": "A",
+        "original_payload": "A",
+        "current_path_payload": "B",
+        "held_same_identity_as_original": true,
+        "held_different_identity_from_current_path": true,
+        "prevention_claim_allowed": false
+      },
+      "limit": "Own deterministic sequence, no foreign-process attacker or original app defect newly executed"
+    },
+    {
+      "id": "M06",
+      "name": "held_descriptor_does_not_freeze_same_inode_bytes",
+      "category": "DELIBERATE_LIMITATION_OBSERVATION",
+      "steps": [
+        "create stageA/fsync, hold own readonly FD; readA and fstat",
+        "open same stage via second own O_WRONLY|O_NOFOLLOW FD; pwrite exact B at0; fsync; close writer",
+        "read heldFD B and fstat same device/inode before-after; read pathB",
+        "close remaining own descriptors once"
+      ],
+      "expected": {
+        "held_payload_before": "A",
+        "held_payload_after": "B",
+        "current_path_payload": "B",
+        "same_identity_before_after": true,
+        "same_length_before_after": true,
+        "prevention_claim_allowed": false
+      },
+      "limit": "Ownership of a descriptor proves selected object, not immutable contents; no advisory lock/native process experiment"
+    },
+    {
+      "id": "M07",
+      "name": "own_unlink_retains_open_object",
+      "category": "POSITIVE_OWN_CLEANUP_OBSERVATION",
+      "steps": [
+        "create stageA and controlC/fsync; hold readonly source FD",
+        "unlink own stage.bin relative case directory FD",
+        "check stage ENOENT2; heldFD stillA and identityunchanged; controlC preserved",
+        "close heldFD once; close directoryFD once; retain control and evidence"
+      ],
+      "expected": {
+        "unlink_return": 0,
+        "errno": 0,
+        "path_exists_after": false,
+        "path_missing_errno": 2,
+        "held_payload_after": "A",
+        "held_identity_unchanged": true,
+        "control_payload_after": "C",
+        "control_identity_unchanged": true
+      },
+      "limit": "No concurrent substitution between checks/unlink; not an expected-inode conditional-delete API or FS15 cleanup repair"
+    }
+  ],
+  "acceptance": {
+    "required_case_order": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07"
+    ],
+    "native_cases_required": 7,
+    "case_count_is_exact_integer": true,
+    "same_integers_not_bool": true,
+    "unsupported": "NOT_EXERCISED_UNSUPPORTED, incomplete/native acceptance false; preserve raw errno; no fallback",
+    "partial_or_unexpected": "INCOMPLETE_OR_UNEXPECTED, nonzero collector exit, raw retained; not app or platform approval",
+    "matching": "SCOPED_SEVEN_OBSERVATIONS_MATCH_NOT_APPLICATION_FIX",
+    "application_fix": false,
+    "FS15_accepted": false,
+    "physical_acceptance": false
+  },
+  "optional_not_in_first_pilot": {
+    "F_FULLFSYNC": "Apple recommends for tighter storage ordering; not executed in7casepilot, not silently credited by fsync",
+    "advisory_flock": "Documented cooperative/advisory, not executed in first ownfilepilot or treated as mandatory protection"
+  },
+  "primary_sources": [
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/stdio.h",
+      "git_blob_sha1": "bf60d7784c1ffb984602717303e26068029b9a93",
+      "claim": "RENAME_EXCL4 and renameatx_np exact signature; macOS10.12 API availability"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/rename.2",
+      "git_blob_sha1": "e879a1cd782ba9b252e50c998992e01eb5977c8a",
+      "claim": "Directory-FD relative selection, supported-filesystem RENAME_EXCL EEXIST; unsupported ENOTSUP; ordinary rename replacement not permitted fallback"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/unlink.2",
+      "git_blob_sha1": "3120af94ff531c861c5d6b83d140351af3f4fe26",
+      "claim": "unlink removes name; last open ref retains object; no expected-inode argument"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/flock.2",
+      "git_blob_sha1": "5b0b60a220a11633727f3ff21112ffbcc2667c74",
+      "claim": "flock advisory/cooperative, not noncooperating-byte freeze; no flock execution planned"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/fsync.2",
+      "git_blob_sha1": "c772a497e66388eda0f74ab655da86988452c1ce",
+      "claim": "fsync host-to-drive, hardware caching/order limitations; F_FULLFSYNC tighter request not global proof"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/foundation/urlresourcevalues/volumesupportsexclusiverenaming",
+      "claim": "Native volume support for RENAME_EXCL must not be assumed for all filesystems"
+    }
+  ],
+  "record_schema_proposal": {
+    "envelope": {
+      "schema": 1,
+      "origin": "SYNTHETIC_NOT_NATIVE or NATIVE_DARWIN_OWN_FILES",
+      "scope": "MACOS_OWN_FILES_DIAGNOSTIC_SEVEN_GROUPS_NOT_APPLICATION_FIX",
+      "oracle_sha256": "exact frozenORACLE SHA256",
+      "runtime": "actual system/platform/Python/architecture/isolation/uid/euid plus volume_metadata with filesystem_type NOT_COLLECTED unless measured",
+      "case_records": "exact ordered7"
+    },
+    "case_record": {
+      "id": "M01..M07",
+      "category": "exact oraclecategory",
+      "events": "ordered raw eventlist",
+      "reads": "bounded payload readrecords",
+      "snapshots": "named stat snapshots for raw identity/bytes facts",
+      "facts": "named summary results, independently crossvalidated against events/reads/snapshots",
+      "complete": "exactbool true only after all plannedrequiredoperations including finalclose"
+    },
+    "event": {
+      "op": "exact operation name",
+      "role": "logical own FD role or relative leaf role",
+      "leaf": "fixed own leaf if applicable",
+      "phase": "ordered phase string",
+      "return": "exact integer native/normalizedPython return, bool excluded",
+      "errno": "exact integer0 on success; actualpositive errno on exception/native-1; bool excluded",
+      "success": "exactbool consistent with return anderrno",
+      "args": "finite operation-specific flags/mode/dir_role/offset/count"
+    },
+    "read": {
+      "role": "held/path/original/control",
+      "phase": "before/after/after_close",
+      "count": 4096,
+      "offset": 0,
+      "hex": "exact8192 ASCII hexchars for4096 syntheticbytes",
+      "sha256": "hash of decodedhex",
+      "identity": "device/inode at supportedphase"
+    },
+    "snapshot": {
+      "role": "source/destination/held/original/control",
+      "phase": "before/after/after_close",
+      "exists": "exactbool",
+      "errno": "0 if exists else exact2 for absent expectedpath",
+      "st_dev": "exact nonnegativeint",
+      "st_ino": "exact nonnegativeint",
+      "st_size": "exact nonnegativeint",
+      "st_nlink": "exact nonnegativeint",
+      "st_mode": "exactint",
+      "st_uid": "exactint"
+    },
+    "strictness": "Missing/duplicate/extra/reordered cases, boolean integers, unsupportedrawsummary, missing attempted operation, false completion, closefailure, nonzero unexpectederrno reject. Schema may be refined by root BEFORE first execution; no postoutcome weakening. Concrete RECORD_CONTRACT is a separate prerequired schema freeze; it cannot change these semantic outcomes.",
+    "native_origin_rule": "Nativeorigin requires actualDarwinruntime; syntheticfixture cannot be relabelednative, and aLinux wronghost refusal cannot count7 nativecases."
+  }
+}

@@ -1,0 +1,1697 @@
+{
+  "schema": 1,
+  "scope": "MACOS_OWN_FILES_DIAGNOSTIC_SEVEN_GROUPS_NOT_APPLICATION_FIX",
+  "status": "ROOT_FROZEN_PREIMPLEMENTATION_RECORD_CONTRACT",
+  "event_fields": [
+    "index",
+    "op",
+    "role",
+    "leaf",
+    "phase",
+    "args",
+    "return",
+    "errno",
+    "success"
+  ],
+  "event_index": "zero-based integer exactly listposition",
+  "event_expectation": "expect fields are independent evaluator-only, nativecollector must not fabricate observations from them",
+  "open_observations": {
+    "actual_flags": "integer os flags used; evaluator checks against runtime.flag_values and contract policy",
+    "actual_inheritable": "actual os.get_inheritable result; must exactfalse",
+    "actual_mode": "384 oncreate, 0 onotheropens"
+  },
+  "runtime_flag_names": [
+    "O_RDONLY",
+    "O_WRONLY",
+    "O_RDWR",
+    "O_CREAT",
+    "O_EXCL",
+    "O_NOFOLLOW",
+    "O_CLOEXEC",
+    "O_DIRECTORY"
+  ],
+  "open_flag_policy": {
+    "open_dir": [
+      "O_RDONLY",
+      "O_DIRECTORY",
+      "O_NOFOLLOW",
+      "O_CLOEXEC"
+    ],
+    "create": [
+      "O_RDWR",
+      "O_CREAT",
+      "O_EXCL",
+      "O_NOFOLLOW",
+      "O_CLOEXEC"
+    ],
+    "open_read": [
+      "O_RDONLY",
+      "O_NOFOLLOW",
+      "O_CLOEXEC"
+    ],
+    "open_write": [
+      "O_WRONLY",
+      "O_NOFOLLOW",
+      "O_CLOEXEC"
+    ]
+  },
+  "create_mode": 384,
+  "read_fields": [
+    "event_index",
+    "role",
+    "phase",
+    "count",
+    "offset",
+    "hex",
+    "sha256",
+    "identity"
+  ],
+  "identity_fields": [
+    "observed_by",
+    "st_dev",
+    "st_ino",
+    "st_size",
+    "st_nlink",
+    "st_mode",
+    "st_uid"
+  ],
+  "identity_source": "fstat actually sampled immediately before pread; not bytefreeze",
+  "snapshot_fields": [
+    "event_index",
+    "role",
+    "phase",
+    "leaf",
+    "exists",
+    "errno"
+  ],
+  "facts_policy": "No per-case facts accepted: raw steps/reads/snapshots and independently frozen identityrelations are evaluated directly. Extra casefields rejected.",
+  "case_fields": [
+    "id",
+    "category",
+    "events",
+    "reads",
+    "snapshots",
+    "complete"
+  ],
+  "envelope_fields": [
+    "schema",
+    "origin",
+    "scope",
+    "oracle_sha256",
+    "record_contract_sha256",
+    "runtime",
+    "case_records",
+    "case_count",
+    "application_fix",
+    "FS15_accepted",
+    "physical_acceptance"
+  ],
+  "cases": [
+    {
+      "id": "M01",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "stage",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "stage_before"
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "close",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "open_read",
+          "role": "verify",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "pread",
+          "role": "verify",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "reopened_after"
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "close",
+          "role": "verify",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "stage_before",
+          "reopened_after"
+        ]
+      ]
+    },
+    {
+      "id": "M02",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "stage",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "stage_before"
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "rename_excl",
+          "role": "dir",
+          "leaf": "stage.bin",
+          "args": {
+            "to_leaf": "published.bin",
+            "flags": 4,
+            "to_dir_role": "dir"
+          },
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "path_stat",
+          "role": "missing",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": -1,
+            "errno": 2,
+            "exists": false
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "open_read",
+          "role": "verify",
+          "leaf": "published.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "pread",
+          "role": "verify",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "destination_after"
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "close",
+          "role": "verify",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "close",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "stage_before",
+          "destination_after"
+        ],
+        [
+          "same",
+          "stage_before",
+          "held_after"
+        ]
+      ]
+    },
+    {
+      "id": "M03",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "stage",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "stage_before"
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "create",
+          "role": "target",
+          "leaf": "published.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "pwrite",
+          "role": "target",
+          "leaf": null,
+          "args": {
+            "payload": "C",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "fsync",
+          "role": "target",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "pread",
+          "role": "target",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "C",
+            "read_label": "target_before"
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "rename_excl",
+          "role": "dir",
+          "leaf": "stage.bin",
+          "args": {
+            "to_leaf": "published.bin",
+            "flags": 4,
+            "to_dir_role": "dir"
+          },
+          "expect": {
+            "return": -1,
+            "errno": 17
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "open_read",
+          "role": "sourcecheck",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "pread",
+          "role": "sourcecheck",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "source_after"
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "open_read",
+          "role": "targetcheck",
+          "leaf": "published.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s14",
+          "op": "pread",
+          "role": "targetcheck",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "C",
+            "read_label": "target_after"
+          }
+        },
+        {
+          "phase": "s15",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s16",
+          "op": "pread",
+          "role": "target",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "C",
+            "read_label": "held_target_after"
+          }
+        },
+        {
+          "phase": "s17",
+          "op": "close",
+          "role": "sourcecheck",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s18",
+          "op": "close",
+          "role": "targetcheck",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s19",
+          "op": "close",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s20",
+          "op": "close",
+          "role": "target",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s21",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "stage_before",
+          "source_after"
+        ],
+        [
+          "same",
+          "stage_before",
+          "held_after"
+        ],
+        [
+          "same",
+          "target_before",
+          "target_after"
+        ],
+        [
+          "same",
+          "target_before",
+          "held_target_after"
+        ],
+        [
+          "different",
+          "stage_before",
+          "target_before"
+        ]
+      ]
+    },
+    {
+      "id": "M04",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "stage",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "stage_before"
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "rename_excl",
+          "role": "dir",
+          "leaf": "stage.bin",
+          "args": {
+            "to_leaf": "published-Δ-Ж.bin",
+            "flags": 4,
+            "to_dir_role": "dir"
+          },
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "path_stat",
+          "role": "missing",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": -1,
+            "errno": 2,
+            "exists": false
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "open_read",
+          "role": "verify",
+          "leaf": "published-Δ-Ж.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "pread",
+          "role": "verify",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "destination_after"
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "pread",
+          "role": "stage",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "close",
+          "role": "verify",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "close",
+          "role": "stage",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "stage_before",
+          "destination_after"
+        ],
+        [
+          "same",
+          "stage_before",
+          "held_after"
+        ]
+      ]
+    },
+    {
+      "id": "M05",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "writer",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "writer",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "close",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "open_read",
+          "role": "held",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_before"
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "rename_excl",
+          "role": "dir",
+          "leaf": "stage.bin",
+          "args": {
+            "to_leaf": "original.bin",
+            "flags": 4,
+            "to_dir_role": "dir"
+          },
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "create",
+          "role": "replacement",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "pwrite",
+          "role": "replacement",
+          "leaf": null,
+          "args": {
+            "payload": "B",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "fsync",
+          "role": "replacement",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "close",
+          "role": "replacement",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "open_read",
+          "role": "current",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s14",
+          "op": "pread",
+          "role": "current",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "B",
+            "read_label": "current_after"
+          }
+        },
+        {
+          "phase": "s15",
+          "op": "open_read",
+          "role": "original",
+          "leaf": "original.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s16",
+          "op": "pread",
+          "role": "original",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "original_after"
+          }
+        },
+        {
+          "phase": "s17",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s18",
+          "op": "close",
+          "role": "current",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s19",
+          "op": "close",
+          "role": "original",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s20",
+          "op": "close",
+          "role": "held",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s21",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "held_before",
+          "original_after"
+        ],
+        [
+          "same",
+          "held_before",
+          "held_after"
+        ],
+        [
+          "different",
+          "held_before",
+          "current_after"
+        ]
+      ]
+    },
+    {
+      "id": "M06",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "writer",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "writer",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "close",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "open_read",
+          "role": "held",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_before"
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "open_write",
+          "role": "editor",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "pwrite",
+          "role": "editor",
+          "leaf": null,
+          "args": {
+            "payload": "B",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "fsync",
+          "role": "editor",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "close",
+          "role": "editor",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "B",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "open_read",
+          "role": "current",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s14",
+          "op": "pread",
+          "role": "current",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "B",
+            "read_label": "current_after"
+          }
+        },
+        {
+          "phase": "s15",
+          "op": "close",
+          "role": "current",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s16",
+          "op": "close",
+          "role": "held",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s17",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "held_before",
+          "held_after"
+        ],
+        [
+          "same",
+          "held_before",
+          "current_after"
+        ]
+      ]
+    },
+    {
+      "id": "M07",
+      "steps": [
+        {
+          "phase": "s01",
+          "op": "open_dir",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s02",
+          "op": "create",
+          "role": "writer",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s03",
+          "op": "pwrite",
+          "role": "writer",
+          "leaf": null,
+          "args": {
+            "payload": "A",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s04",
+          "op": "fsync",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s05",
+          "op": "close",
+          "role": "writer",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s06",
+          "op": "create",
+          "role": "control",
+          "leaf": "control.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s07",
+          "op": "pwrite",
+          "role": "control",
+          "leaf": null,
+          "args": {
+            "payload": "C",
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s08",
+          "op": "fsync",
+          "role": "control",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s09",
+          "op": "pread",
+          "role": "control",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "C",
+            "read_label": "control_before"
+          }
+        },
+        {
+          "phase": "s10",
+          "op": "open_read",
+          "role": "held",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": "nonnegative_fd",
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s11",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_before"
+          }
+        },
+        {
+          "phase": "s12",
+          "op": "unlink",
+          "role": "dir",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s13",
+          "op": "path_stat",
+          "role": "missing",
+          "leaf": "stage.bin",
+          "args": {},
+          "expect": {
+            "return": -1,
+            "errno": 2,
+            "exists": false
+          }
+        },
+        {
+          "phase": "s14",
+          "op": "pread",
+          "role": "held",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "A",
+            "read_label": "held_after"
+          }
+        },
+        {
+          "phase": "s15",
+          "op": "pread",
+          "role": "control",
+          "leaf": null,
+          "args": {
+            "offset": 0,
+            "count": 4096
+          },
+          "expect": {
+            "return": 4096,
+            "errno": 0,
+            "read_payload": "C",
+            "read_label": "control_after"
+          }
+        },
+        {
+          "phase": "s16",
+          "op": "close",
+          "role": "held",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s17",
+          "op": "close",
+          "role": "control",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        },
+        {
+          "phase": "s18",
+          "op": "close",
+          "role": "dir",
+          "leaf": null,
+          "args": {},
+          "expect": {
+            "return": 0,
+            "errno": 0
+          }
+        }
+      ],
+      "identity_relations": [
+        [
+          "same",
+          "held_before",
+          "held_after"
+        ],
+        [
+          "same",
+          "control_before",
+          "control_after"
+        ],
+        [
+          "different",
+          "held_before",
+          "control_before"
+        ]
+      ]
+    }
+  ],
+  "leaf_policy": "For descriptor operations leaf is null; logicalrole was bound by its openevent. Rename/unlink/path_stat contain leaf. No claim fdrole implies still-current pathname.",
+  "case_extra_flags": "application_fix/FS15_accepted/physical_acceptance only envelope exactfalse; no facts accepted",
+  "event_fields_policy": "event_fields are exactrequired basefields; open_dir/create/open_read/open_write add exactly open_event_extra_fields; no other eventkeys accepted",
+  "open_event_extra_fields": [
+    "actual_flags",
+    "actual_inheritable",
+    "actual_mode"
+  ],
+  "identity_policy": {
+    "observed_by": "fstat",
+    "integer_fields": "allotheridentityfields exactnonnegativeint, bool excluded",
+    "st_size": 4096,
+    "st_mode": "regularfile (S_ISREG), permissions do not exceed0600",
+    "st_uid": "equals runtime.euid for everyownread",
+    "st_nlink": "exact1 for allreads exceptM07 held_after exact0; actualDarwinunlinkproof remains scoped"
+  }
+}
