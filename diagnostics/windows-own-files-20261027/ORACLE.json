@@ -1,0 +1,660 @@
+{
+  "schema": 1,
+  "date": "2026-10-27",
+  "timezone": "Europe/London",
+  "author": "/root/windows_scope_oracle",
+  "status": "FROZEN_INDEPENDENT_PREIMPLEMENTATION_WINDOWS_PREPARATION_EXPECTATIONS_NATIVE_NOT_RUN",
+  "scope": "SEVEN_OWN_FILE_WIN32_API_GROUPS_NOT_APPLICATION_FIX_OR_PROCESS_SECURITY",
+  "work_scope_file": "WORK_SCOPE.json",
+  "native_case_count": 7,
+  "native_cases_executed": 0,
+  "case_order": [
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07"
+  ],
+  "payloads": {
+    "A": {
+      "recipe": "bytes(range(256))*16",
+      "bytes": 4096,
+      "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+    },
+    "B": {
+      "recipe": "b'B'*4096",
+      "bytes": 4096,
+      "sha256": "725bcd6c66d02acf6ebeab9c92410e010ea22e336876256aaf05a211f4ce1902"
+    },
+    "C": {
+      "recipe": "b'C'*4096",
+      "bytes": 4096,
+      "sha256": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466"
+    }
+  },
+  "native_runtime": {
+    "system": "Windows",
+    "machine": "AMD64/x86_64",
+    "python_major_minor": [
+      3,
+      12
+    ],
+    "pointer_bits": 64,
+    "isolated": true,
+    "dont_write_bytecode": true,
+    "optimize": 0,
+    "filesystem": "NTFS",
+    "drive_type": "FIXED_LOCAL",
+    "record_exact_patch_build_volume": true,
+    "rights": "Record actual available context or NOT_COLLECTED; do not infer unprivileged execution or modify privileges.",
+    "all_app_source_imports": 0,
+    "native_execution_now": "NOT_RUN",
+    "os_name": "nt",
+    "sys_platform": "win32",
+    "pointer_bytes": 8,
+    "wchar_bytes": 2
+  },
+  "namespace": {
+    "root": "A freshly created exclusive owned run directory, no preexisting run reused. All case directories and fixed leaf names derived beneath it.",
+    "leaves": {
+      "source": "stage.bin",
+      "control_c": "control.bin",
+      "W03_move": "moved.bin",
+      "W05_target": "published-Δ-Ж.bin"
+    },
+    "no_user_data_or_arbitrary_target": true,
+    "control_c": "Every case creates its own4096B C witness before the tested operation; W06 this is the deliberate existing collision target.",
+    "retention": "Retain fresh workspace and normal evidence fixtures. No recursive deletion. Tested deletion only of the exact own W03 source after release and W07 held unpublished stage.",
+    "path_limits": "Bound absolute paths and UTF16 buffer lengths; reject UNC/remote/unsupported runtime before cases. Fresh-path/reparse checks do not prove all ancestor authority."
+  },
+  "record_contract": {
+    "case_shape": [
+      "id",
+      "events",
+      "facts"
+    ],
+    "exact_case_order_required": true,
+    "no_missing_extra_duplicate_or_skipped_case": true,
+    "events": "All native calls actually attempted, with operation, unique logical role, request arguments, exact-bool success and exact-int winerror. Data I/O may have bounded repeated progress events. No fabricated successful event or raw handle address.",
+    "critical_event_order": "critical_event_contracts must occur in listed relative order; each specified critical role occurs once. Other bounded metadata/I/O events remain recorded.",
+    "handles": "Own logical IDs such as H001 only. A source rename and disposition refer to its original held logical ID, not a reopened pathname handle. No foreign or duplicate-handle experiments.",
+    "types": "type(value) must be the exact declared bool/int/str/list. Bool is never accepted as integer0/1. All listed expected facts must match exactly; comparison of digest/identity flags must be supported by retained pre/post snapshots, not self-assertion alone.",
+    "winerror": "On success, record normalized0 after clearing last error before the call; on failure, capture GetLastError immediately as an exact nonzero integer. APIs do not generally define last-error success meaning.",
+    "snapshot_contract": "Retained snapshots include existence,4096-byte count, SHA256 and observed file identity (volume serial and file index); same-identity claims require actual equality of pre/post identity records.",
+    "raw_crosschecks": "Evaluator crosschecks critical event request/result and snapshot fields against facts. A denial without an attempted exact operation receives no prevention credit.",
+    "resources": "Every own handle gets one recorded successful close. Retire numeric ownership before CloseHandle and do not retry an uncertain failed close. Any close failure or unresolved resource ownership makes this finite result NOT_MATCH.",
+    "result_limit": "Matching serialized records does not authenticate their origin or prove native execution. A pure fixture remains explicitly SYNTHETIC; stage/application/physical acceptance is always false."
+  },
+  "cases": [
+    {
+      "id": "W01",
+      "title": "exclusive own create, bounded I/O, flush and identity",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "owner_write_bytes": 4096,
+        "owner_read_bytes": 4096,
+        "owner_read_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "after_close_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "same_file_identity_after_close": true,
+        "stage_present_after_close": true,
+        "output_present": false
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_flush",
+          "operation": "FlushFileBuffers",
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "Own writer/reader operation and flush return only; no power-loss durability or hostile process proof.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W02",
+      "title": "additional write denied until owner explicitly releases",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "blocked_write_open_success": false,
+        "blocked_write_open_winerror": 32,
+        "before_release_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "release_close_success": true,
+        "after_release_write_open_success": true,
+        "after_release_write_bytes": 4096,
+        "after_release_sha256": "725bcd6c66d02acf6ebeab9c92410e010ea22e336876256aaf05a211f4ce1902",
+        "same_file_identity_after_release": true
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "blocked_write_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 1073741824,
+            "share_mode": 7,
+            "creation_disposition": 3
+          },
+          "success": false,
+          "winerror": 32
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "released_write_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 1073741824,
+            "share_mode": 7,
+            "creation_disposition": 3
+          },
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "Same-process additional native open; explicit release followed by allowed B write is a required function control, not a protected-after-handoff guarantee.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W03",
+      "title": "DELETE open and name operations refused while owner held",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "blocked_delete_open_success": false,
+        "blocked_delete_open_winerror": 32,
+        "blocked_deletefile_success": false,
+        "blocked_deletefile_error_nonzero": true,
+        "blocked_move_success": false,
+        "blocked_move_error_nonzero": true,
+        "source_sha256_after_refusals": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "source_identity_after_refusals_unchanged": true,
+        "rename_destination_absent_while_held": true,
+        "after_release_move_success": true,
+        "after_release_moved_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "after_release_delete_success": true,
+        "both_source_and_moved_absent_at_end": true
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "blocked_delete_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 65536,
+            "share_mode": 7,
+            "creation_disposition": 3
+          },
+          "success": false,
+          "winerror": 32
+        },
+        {
+          "role": "blocked_deletefile",
+          "operation": "DeleteFileW",
+          "success": false,
+          "winerror_constraint": "exact_int_gt_0"
+        },
+        {
+          "role": "blocked_move",
+          "operation": "MoveFileExW",
+          "request": {
+            "flags": 0
+          },
+          "success": false,
+          "winerror_constraint": "exact_int_gt_0"
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "released_move",
+          "operation": "MoveFileExW",
+          "request": {
+            "flags": 0
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "released_deletefile",
+          "operation": "DeleteFileW",
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "No guessed exact error for DeleteFileW/MoveFileExW; raw failure codes remain recorded, same valid operations must succeed after release. No foreign or ancestor namespace protection proof.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W04",
+      "title": "preexisting writable handle prevents exclusive acquisition",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "preexisting_share_mode": 7,
+        "exclusive_open_with_existing_writer_success": false,
+        "exclusive_open_with_existing_writer_winerror": 32,
+        "preexisting_owner_sha256_unchanged": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "exclusive_open_after_writer_close_success": true,
+        "exclusive_owner_read_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "same_file_identity_preserved": true
+      },
+      "critical_event_contracts": [
+        {
+          "role": "preexisting_writer_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221225472,
+            "share_mode": 7,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "exclusive_conflict_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 3
+          },
+          "success": false,
+          "winerror": 32
+        },
+        {
+          "role": "preexisting_writer_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "exclusive_after_release_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 3
+          },
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "The candidate refuses incompatible preexisting authority; it does not revoke existing handles or establish process isolation.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W05",
+      "title": "held-source no-replace rename preserves identity and exclusion until release",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "rename_while_owner_held_success": true,
+        "old_source_name_absent_after_rename": true,
+        "unicode_destination_name": "published-Δ-Ж.bin",
+        "owner_read_after_rename_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "blocked_target_write_success": false,
+        "blocked_target_write_winerror": 32,
+        "blocked_target_delete_open_success": false,
+        "blocked_target_delete_open_winerror": 32,
+        "target_after_close_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "same_file_identity_after_rename_and_close": true
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_rename",
+          "operation": "SetFileInformationByHandle",
+          "request": {
+            "information_class": 3,
+            "replace_if_exists": false,
+            "root_directory_null": true,
+            "target_kind": "absolute_own_fresh_case_leaf",
+            "target_leaf": "published-Δ-Ж.bin",
+            "filename_length_unit": "utf16le_bytes"
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "blocked_target_write_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 1073741824,
+            "share_mode": 7,
+            "creation_disposition": 3
+          },
+          "success": false,
+          "winerror": 32
+        },
+        {
+          "role": "blocked_target_delete_open",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 65536,
+            "share_mode": 7,
+            "creation_disposition": 3
+          },
+          "success": false,
+          "winerror": 32
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "Ordinary held-object rename/share compatibility on one fresh NTFS path only. Holding the source does not prove complete ancestor, process-handle or application C/H authority.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W06",
+      "title": "held-source rename collision refuses without altering A or C",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "rename_collision_success": false,
+        "rename_collision_error_nonzero": true,
+        "source_present_after_refusal": true,
+        "source_sha256_after_refusal": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "source_identity_after_refusal_unchanged": true,
+        "collision_target_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "collision_target_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "collision_target_identity_unchanged": true,
+        "copy_or_replace_fallback_used": false
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_rename_collision",
+          "operation": "SetFileInformationByHandle",
+          "request": {
+            "information_class": 3,
+            "replace_if_exists": false,
+            "root_directory_null": true,
+            "target_kind": "absolute_own_preexisting_control_c",
+            "target_leaf": "control.bin",
+            "filename_length_unit": "utf16le_bytes"
+          },
+          "success": false,
+          "winerror_constraint": "exact_int_gt_0"
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "FILE_RENAME_INFO documents refusal but not one universal Win32 collision code. Record the actual nonzero integer; do not invent80/183 oracle. W05 same binding is a mandatory normal-operation positive control.",
+      "native_execution_status": "NOT_RUN"
+    },
+    {
+      "id": "W07",
+      "title": "own-handle disposition removes only unpublished stage on close",
+      "expected_facts": {
+        "handles_closed": true,
+        "close_uncertainty": false,
+        "control_c_bytes_before": 4096,
+        "control_c_bytes_after": 4096,
+        "control_c_sha256_before": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_sha256_after": "b23f99e1f653e62fa5bc14cc528a9ec3b6d11be482b2ee51b519d1d6ad8c5466",
+        "control_c_identity_unchanged": true,
+        "disposition_mark_success": true,
+        "owner_read_after_mark_sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193",
+        "stage_absent_after_close": true,
+        "output_present": false,
+        "name_based_cleanup_used": false
+      },
+      "critical_event_contracts": [
+        {
+          "role": "owner_create",
+          "operation": "CreateFileW",
+          "request": {
+            "desired_access": 3221291008,
+            "share_mode": 0,
+            "creation_disposition": 1
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_disposition",
+          "operation": "SetFileInformationByHandle",
+          "request": {
+            "information_class": 4,
+            "delete_file": true
+          },
+          "success": true,
+          "winerror": 0
+        },
+        {
+          "role": "owner_close",
+          "operation": "CloseHandle",
+          "success": true,
+          "winerror": 0
+        }
+      ],
+      "claim_limit": "Own unpublished ordinary handle disposition only. It is not application cancellation, journal crash recovery, or arbitrary-name conditional cleanup proof.",
+      "native_execution_status": "NOT_RUN"
+    }
+  ],
+  "pure_evaluator_controls": {
+    "positive": "One complete synthetic seven-case record set consistent with this oracle, clearly labelled SYNTHETIC_NOT_NATIVE; additional per-case positives may be used without native credit.",
+    "required_mutations": [
+      {
+        "id": "M01",
+        "change": "Missing W05 case",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M02",
+        "change": "Duplicate native case",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M03",
+        "change": "Case order changed",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M04",
+        "change": "Boolean used where an integer Win32 error is required",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M05",
+        "change": "Missing-path error2 substituted for expected sharing error32",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M06",
+        "change": "Denial reported but required attempted operation missing",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M07",
+        "change": "Exclusive owner share_mode changed to7",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M08",
+        "change": "Required postrelease normal B write is missing or failed",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M09",
+        "change": "Collision/control C bytes replaced by B",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M10",
+        "change": "Normal owner A read reports B",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M11",
+        "change": "No-clobber rename uses replace_if_exists=true",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M12",
+        "change": "Close failure hidden by handles_closed fact",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M13",
+        "change": "Unicode target FileNameLength counts characters instead of UTF16LE bytes",
+        "expected": "REJECT"
+      },
+      {
+        "id": "M14",
+        "change": "Result escalates stage/application/physical acceptance true",
+        "expected": "REJECT"
+      }
+    ],
+    "no_test_execution_by_oracle_author": true
+  },
+  "deferred_and_unproved": [
+    "All application cancellation/journal/lease/crash/recovery integration (former proposedW08/W09 are not duplicated primitive cases).",
+    "Complete same-account hostile-process protection, inherited/duplicated handles, process access or privileged compromise.",
+    "Whole ancestor namespace/reparse-race protection, all filesystems, power loss and late lifecycle guarantees.",
+    "FS15/20PC acceptance, Linux/macOS applicability, full app suite and all mandatory physical gates."
+  ],
+  "prohibitions": [
+    "No app/source/profile/Vault/key access or changes.",
+    "No GitHub writes/dispatch/publication, executable release or native run authorized by oracle alone.",
+    "No policy/account/service/privilege changes, remote tests, process security, foreign handles, proc/pidfd/fork or pausedP01-P11 resumption/offload.",
+    "No copy/replace/pathname fallback that silently changes the tested guarantee; unsupported prerequisites or unexpected operations are explicit refusal/NOT_MATCH, never skipped-as-PASS."
+  ],
+  "sources": [
+    {
+      "id": "MS_CREATE",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+      "basis": "Access/share compatibility, existing writable-handle conflicts, exclusive opens and CREATE_NEW."
+    },
+    {
+      "id": "MS_RENAME",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_rename_info",
+      "basis": "No-replacement refusal, absolute target and UTF16 byte length."
+    },
+    {
+      "id": "MS_SET",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfileinformationbyhandle",
+      "basis": "Documented classes3/4, appropriate access and exclusive handle disposition example."
+    },
+    {
+      "id": "MS_DELETE",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-deletefilew",
+      "basis": "Open-handle share-delete conditions and close-time deletion."
+    },
+    {
+      "id": "MS_MOVE",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw",
+      "basis": "Same-volume rename flags; flags0 avoids replacement/copy/reboot scheduling."
+    },
+    {
+      "id": "MS_ERRORS",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-",
+      "basis": "ERROR_SHARING_VIOLATION numeric32, not unrelated missing-path or access errors."
+    }
+  ]
+}

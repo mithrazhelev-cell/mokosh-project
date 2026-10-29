@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "date": "2026-10-27",
+  "timezone": "Europe/London",
+  "status": "USER_APPROVED_ISOLATED_WINDOWS_FILE_TEST_PREPARATION_NOT_PRODUCTION_CHANGE",
+  "authorization": {
+    "user_latest": "Добре,продължи по необходимост и със необходимото внимание за сигурност.",
+    "approved_context": "Separate Windows own-file test preparation, normal workflow/publication/no-clobber/refusal/cleanup; no original app changes.",
+    "conditional_production_apply_standing": true,
+    "production_apply_gates_met": false
+  },
+  "allowed": [
+    "Read official Win32 documentation and exact existing project contracts",
+    "Write an isolated Windows-only own-file instrument and pure evidence evaluator/test harness",
+    "Run reviewed pure/CLI preparation checks on current Linux lab without native Windows claims",
+    "Prepare an unexecuted reviewable Windows workflow draft if useful",
+    "Save code, results and exact continuity"
+  ],
+  "excluded": [
+    "No live app/source/profiles/keys/Vault changes or execution",
+    "No GitHub publication/commit/tag/workflow dispatch",
+    "No Windows native claim on Linux or Wine",
+    "No process/handle stealing, foreign process handles, policy/privilege/account/service changes",
+    "No resumption/offload of paused P01-P11 native process route",
+    "No internet dependency install or third-party code download/execution",
+    "No weakened FS15/PC criteria or moving completion/handoff"
+  ],
+  "finite_goal": "Prepare exact guarded probes of Windows share compatibility, held-object no-clobber rename and own-handle cleanup. These are prerequisites, not whole application or security acceptance.",
+  "runtime_policy": "Pure checks portable CPython3.12+; actual native run only explicitly guarded Windows x64 CPython3.12 and ordinary fresh local fixed-drive NTFS owned files. Actual Windows version, Python patch, filesystem and rights recorded, not inferred from Dell. Full native invocation pending separate review of exact artifact and target.",
+  "scope_limit": "No proof of process isolation, entire ancestor namespace, all filesystems, crash durability, journal recovery or prevention against all same-account actors. Own calls exercise native compatibility, not cross-process exploit coverage.",
+  "freeze": "Independent ORACLE written before implementation, root reviews/refines before actual code. No native code/test execution by subagents."
+}

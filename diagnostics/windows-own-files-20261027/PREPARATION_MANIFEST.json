@@ -1,0 +1,12 @@
+{
+  "ORACLE.json": "c0f4d7e84a4feacbdbea2d9ee967a06abf00db75b11b91bd22940b4d9bae81aa",
+  "WORK_SCOPE.json": "01f14dbeb128206a8d595c764243139f3c2004dba3d54b4ea41dcc6597f6a8bd",
+  "run_windows_probe.py": "e55f6040f994cc1831ffbd8756d63ae4afffc88048096d700258878a658cd5e9",
+  "src/__init__.py": "c66ce70c53833b1dd3583828d0d5a1035b214418669ff583a3f94409ab88ad87",
+  "src/windows_file_api.py": "ac65d5c687ad49e543f53a194b68fdebda72162794644617206253da44b2e860",
+  "src/collect_own_files.py": "0b3d67a4a981a257de86e8dc5e37f8fe074529892d23025e9579885a80f740d8",
+  "src/evaluate_records.py": "c7aec31df6f044b99566712d76e6b3de361256cf32b5acf16da8c18db3ccb9a9",
+  "tests/__init__.py": "dbd606199f80e13b145d28b77bed2a2bd0cdd7ecb0b4576426cc8ebb590aa593",
+  "tests/pure_cases.py": "cf3f4a5bacf26e8bc2ad15dabf462dbb94864b9b3afc57baee63d2102b391898",
+  "tests/binding_checks.py": "662676cb411d4f004edae0def7a558b00f4f535baa302f68564276c147e066cf"
+}
