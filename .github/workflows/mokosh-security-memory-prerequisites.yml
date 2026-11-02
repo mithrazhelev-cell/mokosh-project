@@ -1,0 +1,78 @@
+# PREPARED LOCALLY; NOT PUBLISHED OR DISPATCHED. Synthetic API diagnostic only.
+name: MOKOSH security memory prerequisites
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mokosh-security-memory-prerequisites
+  cancel-in-progress: false
+
+jobs:
+  native-api:
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - label: linux-x64
+            runner: ubuntu-24.04
+            arch: x64
+          - label: windows-x64
+            runner: windows-2022
+            arch: x64
+          - label: macos-intel
+            runner: macos-15-intel
+            arch: x64
+          - label: macos-arm64
+            runner: macos-15
+            arch: arm64
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - name: Checkout fixed diagnostic paths at this workflow commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          lfs: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /diagnostics/security-memory-20261101/
+            /.github/workflows/mokosh-security-memory-prerequisites.yml
+      - name: Select exact Python for the selected architecture
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12.3'
+          architecture: ${{ matrix.arch }}
+          check-latest: false
+      - name: Verify inputs, test oracle, run own-memory probes
+        id: native
+        run: python -I -B diagnostics/security-memory-20261101/run_ci.py --output memory_evidence
+      - name: Preserve only synthetic reports, including failures
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: mokosh-memory-${{ matrix.label }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            memory_evidence/SUMMARY.json
+            memory_evidence/ORACLE_TESTS.log
+            memory_evidence/native/RESULT.json
+          retention-days: 7
+          if-no-files-found: error
+          include-hidden-files: false
+          overwrite: false
