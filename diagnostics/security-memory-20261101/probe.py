@@ -20,6 +20,22 @@ import time
 VALUE = b'MOKOSH-SYNTHETIC-MEMORY-ONLY-00001'
 MODES = ('roundtrip', 'readonly_write', 'noaccess_read',
          'control_write', 'control_read', 'timeout')
+TRACE_EVENTS = {'API_CALL', 'PAGE_STATE', 'MEMORY_ZEROED', 'CLEANUP_ERROR'}
+
+
+class NativeCallError(OSError):
+    def __init__(self, operation, phase, code):
+        self.operation, self.phase, self.win32_code = operation, phase, code
+        super().__init__(code, operation + ' failed at ' + phase)
+
+
+def decode_working_set(flags):
+    """Windows PSAPI_WORKING_SET_EX_BLOCK; invalid entries have no Locked bit."""
+    if type(flags) is not int or flags < 0:
+        raise ValueError('invalid working-set flags')
+    valid = bool(flags & 1)
+    return {'valid': valid, 'locked': bool(flags & (1 << 22)) if valid else None,
+            'protection': (flags >> 4) & 0x7ff if valid else None}
 
 
 def emit(event, **fields):
@@ -28,7 +44,8 @@ def emit(event, **fields):
 
 class Page:
     """One dedicated anonymous page; never alter a Python heap page."""
-    def __init__(self):
+    def __init__(self, case=None):
+        self.case = case
         self.size = mmap.PAGESIZE
         self.address = None
         self.locked = False
@@ -41,13 +58,13 @@ class Page:
                 'VirtualLock': ([ctypes.c_void_p, ctypes.c_size_t], ctypes.c_int),
                 'VirtualUnlock': ([ctypes.c_void_p, ctypes.c_size_t], ctypes.c_int),
                 'VirtualProtect': ([ctypes.c_void_p, ctypes.c_size_t, ctypes.c_ulong, ctypes.POINTER(ctypes.c_ulong)], ctypes.c_int),
+                'GetCurrentProcess': ([], ctypes.c_void_p),
+                'K32QueryWorkingSetEx': ([ctypes.c_void_p, ctypes.c_void_p, ctypes.c_ulong], ctypes.c_int),
             }
             for name, (args, result) in specs.items():
                 getattr(self.api, name).argtypes = args
                 getattr(self.api, name).restype = result
-            self.address = self.api.VirtualAlloc(None, self.size, 0x3000, 4)
-            if not self.address:
-                raise ctypes.WinError(ctypes.get_last_error())
+            self.address = self._win_call('VirtualAlloc', None, self.size, 0x3000, 4, phase='allocate')
         else:
             if sys.platform not in ('linux', 'darwin'):
                 raise RuntimeError('unsupported platform; no fallback')
@@ -61,25 +78,50 @@ class Page:
             self.api.mprotect.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]
             self.api.mprotect.restype = ctypes.c_int
         try:
-            result = (self.api.VirtualLock if self.windows else self.api.mlock)(self.address, self.size)
-            if (not result) if self.windows else (result != 0):
+            if self.windows:
+                self._win_call('VirtualLock', self.address, self.size, phase='initial_lock')
+            elif self.api.mlock(self.address, self.size) != 0:
                 raise OSError('page locking unavailable')
             self.locked = True
             ctypes.memmove(self.address, VALUE, len(VALUE))
             if ctypes.string_at(self.address, len(VALUE)) != VALUE:
                 raise RuntimeError('initial readback mismatch')
+            self.snapshot('initial_readback')
         except BaseException:
             self.close()
             raise
+
+    def _win_call(self, operation, *args, phase):
+        # Capture before emit, formatting, snapshot, cleanup or any subsequent API.
+        ctypes.set_last_error(0)
+        result = getattr(self.api, operation)(*args)
+        code = ctypes.get_last_error() if not result else 0
+        emit('API_CALL', mode=self.case, operation=operation, phase=phase,
+             succeeded=bool(result), win32_error=code)
+        if not result:
+            raise NativeCallError(operation, phase, code)
+        return result
+
+    def snapshot(self, phase):
+        if not self.windows:
+            return
+        class WorkingSetInformation(ctypes.Structure):
+            _fields_ = [('VirtualAddress', ctypes.c_void_p), ('VirtualAttributes', ctypes.c_size_t)]
+        entry = WorkingSetInformation(self.address, 0)
+        process = self.api.GetCurrentProcess()
+        self._win_call('K32QueryWorkingSetEx', process, ctypes.byref(entry), ctypes.sizeof(entry),
+                       phase='query:' + phase)
+        emit('PAGE_STATE', mode=self.case, phase=phase, **decode_working_set(entry.VirtualAttributes))
 
     def protect(self, mode):
         if mode not in ('rw', 'ro', 'none'):
             raise ValueError('invalid protection')
         if self.windows:
+            self.snapshot('before_protect:' + mode)
             old = ctypes.c_ulong()
-            if not self.api.VirtualProtect(self.address, self.size,
-                    {'rw': 4, 'ro': 2, 'none': 1}[mode], ctypes.byref(old)):
-                raise ctypes.WinError(ctypes.get_last_error())
+            self._win_call('VirtualProtect', self.address, self.size,
+                           {'rw': 4, 'ro': 2, 'none': 1}[mode], ctypes.byref(old), phase='protect:' + mode)
+            self.snapshot('after_protect:' + mode)
         elif self.api.mprotect(self.address, self.size, {'rw': 3, 'ro': 1, 'none': 0}[mode]) != 0:
             raise OSError(ctypes.get_errno(), 'mprotect failed')
 
@@ -89,19 +131,26 @@ class Page:
         try:
             self.protect('rw')
             ctypes.memset(self.address, 0, self.size)
-            if ctypes.string_at(self.address, len(VALUE)) != bytes(len(VALUE)):
+            if ctypes.string_at(self.address, self.size) != bytes(self.size):
                 raise RuntimeError('own-page zero readback failed')
-            if self.locked:
-                result = (self.api.VirtualUnlock if self.windows else self.api.munlock)(self.address, self.size)
-                if (not result) if self.windows else (result != 0):
-                    raise OSError('page unlock failed')
-        finally:
             if self.windows:
-                if not self.api.VirtualFree(self.address, 0, 0x8000):
-                    raise ctypes.WinError(ctypes.get_last_error())
-            else:
-                self.mapping.close()
-            self.address = None
+                emit('MEMORY_ZEROED', mode=self.case, bytes=self.size, readback_bytes=self.size)
+            if self.locked:
+                if self.windows:
+                    self.snapshot('before_unlock')
+                    self._win_call('VirtualUnlock', self.address, self.size, phase='cleanup_unlock')
+                    self.snapshot('after_unlock')
+                elif self.api.munlock(self.address, self.size) != 0:
+                    raise OSError('page unlock failed')
+                self.locked = False
+        finally:
+            try:
+                if self.windows:
+                    self._win_call('VirtualFree', self.address, 0, 0x8000, phase='cleanup_free')
+                else:
+                    self.mapping.close()
+            finally:
+                self.address = None
 
 
 def configure_child():
@@ -121,7 +170,7 @@ def child(mode):
         emit('READY', mode=mode)
         while True:
             time.sleep(1)
-    page = Page()
+    page = Page(case=mode)
     try:
         if mode == 'roundtrip':
             page.protect('ro')
@@ -178,11 +227,14 @@ def run_child(mode):
         if process.poll() is None:
             process.kill()
             process.wait(timeout=5)
-    if len(stdout) > 8192 or len(stderr) > 8192:
+    if len(stdout) > 65536 or len(stderr) > 8192:
         raise RuntimeError('unexpected diagnostic output size')
-    events = [json.loads(line) for line in stdout.decode('utf-8').splitlines()]
+    emitted = [json.loads(line) for line in stdout.decode('utf-8').splitlines()]
+    trace = [e for e in emitted if e.get('event') in TRACE_EVENTS]
+    events = [e for e in emitted if e.get('event') not in TRACE_EVENTS]
     return {'mode': mode, 'exit': process.returncode, 'timed_out': timed_out,
             'reaped': process.poll() is not None, 'elapsed_seconds': round(time.monotonic() - started, 3),
+            'trace': trace,
             'events': events, 'stderr': stderr.decode('utf-8', 'replace')}
 
 

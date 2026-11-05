@@ -1,5 +1,5 @@
-# PREPARED LOCALLY; NOT PUBLISHED OR DISPATCHED. Synthetic API diagnostic only.
-name: MOKOSH security memory prerequisites
+# Windows-only cause investigation. Synthetic memory only; baseline FAIL is retained.
+name: MOKOSH Windows memory cause R2
 "on":
   workflow_dispatch:
 
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: mokosh-security-memory-prerequisites
+  group: mokosh-windows-memory-cause-r2
   cancel-in-progress: false
 
 jobs:
@@ -17,21 +17,12 @@ jobs:
     timeout-minutes: 12
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         include:
-          - label: linux-x64
-            runner: ubuntu-24.04
-            arch: x64
           - label: windows-x64
             runner: windows-2022
             arch: x64
-          - label: macos-intel
-            runner: macos-15-intel
-            arch: x64
-          - label: macos-arm64
-            runner: macos-15
-            arch: arm64
     defaults:
       run:
         shell: bash

@@ -1,55 +1,37 @@
-MOKOSH platform memory prerequisites — preparation 2026-11-01
+MOKOSH WINDOWS MEMORY CAUSE INVESTIGATION R2 — 2026-11-05
 
-Purpose: establish a narrow, repeatable native API baseline before designing
-Windows and macOS equivalents of the reviewed Linux security components.
-This package contains no application source, profiles, keys, personal files,
-credentials, dependency installation, network client or host policy change.
-It is not a product implementation or a complete security test suite.
+Only own synthetic anonymous memory and owned child processes. No MOKOSH
+imports, profiles, keys, personal files, privileged operations, GUI or product
+backend. Existing Windows FAIL from run41989639271/attempt1 is retained.
 
-Six native cases, eight assertions:
-1. Lock one private anonymous page; check known synthetic bytes; make it
-   read-only, inaccessible, accessible again; verify, zero own page, release.
-2. Attempt a write to read-only memory in a dedicated child; require the READY
-   precondition and an actual access violation, not an arbitrary failure.
-3. Attempt a read from inaccessible memory under the same conditions.
-4–5. Controls without those restrictions must actually read/write successfully;
-   the unchanged denial oracle must reject those results as protection.
-6. Deliberately waiting own child must start, reach deadline, be killed/reaped.
-   This is ONE child, not a process-tree containment or job-object test.
+This revision captures each memory API return and Win32 last-error immediately,
+before logging/cleanup can change it; records QueryWorkingSetEx snapshots before
+and after protection/unlock transitions; preserves the six original cases and
+all eight result expectations. Invalid working-set entries have unknown Locked
+and protection values. Query failure is a diagnostic failure, never a fallback.
 
-Each probe uses only its own dedicated anonymous page. No Python heap pages
-are changed. Child runtime <=30 seconds (waiting case 5), bounded output.
-On POSIX RLIMIT_CORE=0 is set in each child. On Windows process error dialogs
-are disabled. OS crash-report services may still observe deliberate faults;
-only the fixed synthetic value is involved, never any real secret.
-Normal runs write only a new output directory. Reuse is refused.
+The exact cleanup error remains a failure. No ignored VirtualUnlock error,
+new VirtualLock/relock, changed protection policy, longer child deadline or
+claim of continuous lock. Query snapshots cannot establish absence of all swap,
+dump or Python copies, nor protection against a compromised kernel.
 
-Current prototype families:
-Linux/macOS: mmap, mlock, mprotect, munlock, unmap.
-Windows: VirtualAlloc, VirtualLock, VirtualProtect, VirtualUnlock, VirtualFree.
-The same process can re-enable its own memory access: intentional limitation.
-This does not prevent arbitrary execution inside that process, external
-privileged reads, compromised kernels, dumps, hibernation or all key copies.
-No claim of absence from swap is derived from reading back a test value.
+One existing readback weakness is strengthened: verify zeros across the entire
+owned page, not merely the synthetic-value prefix. Pointer/page attributes are
+metadata only; no process memory addresses or value bytes are logged.
 
-Native results bind OS, architecture, Python, page size, effective privilege,
-probe SHA256, available GitHub run/commit and runner image metadata.
-GitHub Windows runners normally use administrators; POSIX hosted runners may
-have passwordless sudo. This diagnostic does not escalate and reports actual
-effective privilege. Neither situation establishes an ordinary desktop or
-hostile-process boundary for the application.
+API_CALL/PAGE_STATE/MEMORY_ZEROED traces are kept separately from the original
+phase result events. Error return from finally still makes the case fail even
+if an ACCESS_VIOLATION was observed. A green unit suite is not a native result.
+38 preflight tests consist of22 legacy assessment controls and16 mocked-API
+instrumentation controls. Models never invoke real Windows protection APIs.
 
-22 oracle tests include simulated result records for Windows/macOS; they are
-parser/control tests only, never claimed as native results for those systems.
-Green CI means only scoped API observations matched the specified assertions.
-Product/backend/native integration/physical GUI/release acceptance stay false.
-Windows/macOS implementations still require design and separate adversarial
-checks for worker isolation, authenticated IPC, controller integrity, private
-file access, safe publication, cleanup, cancellation and user interactions.
+Manual workflow only, Windows2022/x64/Python3.12.3, pinned actions and inputs;
+no repetition of successful unchanged Linux/macOS API cases. Raw reports and
+failures uploaded for7days. This is cause instrumentation, not a proven fix of
+Windows lock/protection interaction or a product acceptance gate.
 
-Manual workflow only. Fixed diagnostic path, no user-provided command/ref/URL.
-Read-only repository token; checkout does not retain credentials. No secrets,
-no permissions upgrade, no auto-merge/deploy/release, no scheduled background task.
-Artifacts are an allowlist of SUMMARY.json, ORACLE_TESTS.log and native/RESULT.json.
-Repository and Actions artifacts may be public; this payload is synthetic only.
-No application files should be added to this diagnostic publication.
+References:
+https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualunlock
+https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtuallock
+https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-queryworkingsetex
+https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_ex_block
