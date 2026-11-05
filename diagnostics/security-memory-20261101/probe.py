@@ -111,7 +111,9 @@ class Page:
         process = self.api.GetCurrentProcess()
         self._win_call('K32QueryWorkingSetEx', process, ctypes.byref(entry), ctypes.sizeof(entry),
                        phase='query:' + phase)
-        emit('PAGE_STATE', mode=self.case, phase=phase, **decode_working_set(entry.VirtualAttributes))
+        state = decode_working_set(entry.VirtualAttributes)
+        emit('PAGE_STATE', mode=self.case, phase=phase, **state)
+        return state
 
     def protect(self, mode):
         if mode not in ('rw', 'ro', 'none'):

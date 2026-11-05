@@ -1,37 +1,42 @@
-MOKOSH WINDOWS MEMORY CAUSE INVESTIGATION R2 — 2026-11-05
+MOKOSH SYNTHETIC WINDOWS EMPTY-PAGE PROTOCOL R3 — 2026-11-05
 
-Only own synthetic anonymous memory and owned child processes. No MOKOSH
-imports, profiles, keys, personal files, privileged operations, GUI or product
-backend. Existing Windows FAIL from run41989639271/attempt1 is retained.
+This is a separate experimental state protocol, NOT a product memory backend,
+secret vault, key reload mechanism or Windows product acceptance. Only public
+fixture bytes are used. Original Dell/candidate122/labc09 are untouched.
 
-This revision captures each memory API return and Win32 last-error immediately,
-before logging/cleanup can change it; records QueryWorkingSetEx snapshots before
-and after protection/unlock transitions; preserves the six original cases and
-all eight result expectations. Invalid working-set entries have unknown Locked
-and protection values. Query failure is a diagnostic failure, never a fallback.
+Native R2 run41995657846/attempt1 atfc8fa59d measured VirtualUnlock error158,
+valid unlocked working-set state after NOACCESS/RW, and successful RO controls.
+The old original six-case FAIL remains evidence; this candidate does not rename
+or force it green. Its stronger claimed combination is not supported by that
+observed Windows path. R3 tests a DIFFERENT explicitly named state protocol.
 
-The exact cleanup error remains a failure. No ignored VirtualUnlock error,
-new VirtualLock/relock, changed protection policy, longer child deadline or
-claim of continuous lock. Query snapshots cannot establish absence of all swap,
-dump or Python copies, nor protection against a compromised kernel.
+LIVE: owned data page must have an observed valid Locked bit; RO/RW guarded.
+Entering NOACCESS while LIVE is refused before the native transition.
+PARK: zero and read back the FULL page while locked; explicitly unlock EMPTY
+memory; then PAGE_NOACCESS. There are no live fixture bytes in this page now.
+RELOAD: restore RW on an EMPTY page; VirtualLock and observe Locked before
+writing the PUBLIC fixture again. Real key recovery/transport is NOT provided.
+CLOSE: zero/readback all bytes and release; unexpected API errors still fail.
+No ignored158, silent relock of live data, or claim that NOACCESS stays locked.
 
-One existing readback weakness is strengthened: verify zeros across the entire
-owned page, not merely the synthetic-value prefix. Pointer/page attributes are
-metadata only; no process memory addresses or value bytes are logged.
+Six NEW scoped cases: locked_ro_cycle,park_reload,parked_noaccess_read,
+live_noaccess_refused,control_read_write,timeout. Whole ordered API/state traces
+are reviewed. This is not the old roundtrip preserving live data through
+NOACCESS. All original raw FAILs and branch commits remain available.
 
-API_CALL/PAGE_STATE/MEMORY_ZEROED traces are kept separately from the original
-phase result events. Error return from finally still makes the case fail even
-if an ACCESS_VIOLATION was observed. A green unit suite is not a native result.
-38 preflight tests consist of22 legacy assessment controls and16 mocked-API
-instrumentation controls. Models never invoke real Windows protection APIs.
+Preflight:38 existing common instrumentation controls plus18 protocol controls.
+They use a modeled API; they are NOT native Windows evidence. Native execution
+is Windows2022/x64/Python3.12.3, own anonymous page and own child only. The
+workflow is manual, read-only repository permissions, pinned actions/inputs,
+no product source upload, no GUI, real profiles, secrets, privileged changes,
+network probing, timing-policy change or kernel/dump/swap guarantee.
 
-Manual workflow only, Windows2022/x64/Python3.12.3, pinned actions and inputs;
-no repetition of successful unchanged Linux/macOS API cases. Raw reports and
-failures uploaded for7days. This is cause instrumentation, not a proven fix of
-Windows lock/protection interaction or a product acceptance gate.
+The protocol cannot prevent privileged kernel access or prove absence of all
+Python copies. A product implementation must bind real key reloading to its
+existing trusted authorization/transport and prove every relevant caller.
+No product integration or selection of this protocol is authorized by a PASS.
 
 References:
-https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualunlock
 https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtuallock
-https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-queryworkingsetex
+https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualunlock
 https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-psapi_working_set_ex_block

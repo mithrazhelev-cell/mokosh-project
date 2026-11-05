@@ -163,7 +163,7 @@ class FakeWindowsAPI:
         self.invalid_query = invalid_query
         self.calls = []
         for name in ('VirtualAlloc','VirtualFree','VirtualLock','VirtualUnlock','VirtualProtect',
-                     'GetCurrentProcess','K32QueryWorkingSetEx'):
+                     'GetCurrentProcess','K32QueryWorkingSetEx','SetErrorMode'):
             setattr(self, name, FakeFunction(lambda *args, n=name: self.call(n, *args)))
 
     def call(self, name, *args):
