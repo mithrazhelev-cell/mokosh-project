@@ -1,0 +1,37 @@
+MOKOSH RETAINED SESSION-KEY LABORATORY EXPERIMENT R4
+
+This is a separate Windows-only public-fixture experiment. It imports no MOKOSH
+product code and uses no real passwords, keys, profiles, personal files or network.
+The Python runtime is selected by the workflow; no third-party package is installed.
+
+Unlike R3 empty-page parking, this experiment retains the SAME32-byte fixture
+inside CryptProtectMemory SAME_PROCESS encrypted memory between uses. A locked
+dedicated page remains RO while idle. A use scope changes to RW, decrypts in place,
+observes the lock, exposes a read-only borrowed view, releases it, re-encrypts in
+place, re-observes the lock and restores RO. No NOACCESS transition is attempted.
+On close the whole page is zeroed and read back before unlock/free. Native API
+errors, lost/unknown locks or failed cleanup remain failures; no plaintext fallback.
+Crypt32 is loaded with SYSTEM32 search policy. All API lengths cover the full page.
+
+83 UNIQUE preflight model/oracle tests:38 common+21 lifecycle+9 bindings+15 trace
+oracle controls. The XOR FakeOS/FakeCrypt implementations are MODELS ONLY, not
+cryptography or Windows protection. They do not run in the native child cases.
+The separate LOCAL18 actual AES-GCM store compatibility tests are not included
+in this job and must not be reported as Windows product execution.
+
+The six native cases check same-fixture repeated scopes, reseal after a consumer
+exception, RO write denial for idle ciphertext and active plaintext, a positive RW
+write control and owned-child timeout termination/reap. All data are PUBLIC.
+Test budgets5/30seconds are diagnostic deadlines, not MOKOSH operation budgets.
+
+CryptProtectMemory is not an authenticated-encryption contract. A future real
+provider must rely on the existing authenticated catalog before returning records.
+Its SAME_PROCESS and boot/session limits are not persistent recovery or IPC.
+Plaintext still exists during use. Python/backend copies, same-process arbitrary
+execution, compromised kernel/admin, dumps/hibernation and all swap copies are not
+covered. No post-quantum/FIPS certification claim is made for this OS API.
+
+Original R2 NOACCESS/lock-loss failure remains recorded; R3 six-case API PASS is
+unchanged. R4 is neither a relabeling of those results nor a selected product
+architecture. Linux sealed transport/NOACCESS guards, file formats, KDF/AEAD,
+worker READY/GO, M008/Stage2.48/original apply/physical gates remain unchanged.

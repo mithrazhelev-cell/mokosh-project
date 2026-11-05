@@ -1,5 +1,5 @@
 # Windows-only cause investigation. Synthetic memory only; baseline FAIL is retained.
-name: MOKOSH Windows empty-page protocol R3
+name: MOKOSH Windows retained-session key R4
 "on":
   workflow_dispatch:
 
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: mokosh-windows-memory-safe-r3
+  group: mokosh-windows-session-key-r4
   cancel-in-progress: false
 
 jobs:
@@ -53,7 +53,7 @@ jobs:
           check-latest: false
       - name: Verify inputs, test oracle, run own-memory probes
         id: native
-        run: python -I -B diagnostics/security-memory-20261101/run_safe_ci.py --output memory_evidence
+        run: python -I -B diagnostics/security-memory-20261101/run_session_ci.py --output memory_evidence
       - name: Preserve only synthetic reports, including failures
         if: ${{ always() && steps.native.outcome != 'skipped' }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
